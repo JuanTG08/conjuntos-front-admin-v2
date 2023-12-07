@@ -1,0 +1,2 @@
+export const CONST_PATH_SEPARATOR_METHOD_TO_PATH = "~";
+export const CONST_PATH_SEPARATOR_PATHS = "|";
