@@ -80,7 +80,7 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
       label: "Fecha de ingreso",
       span: 3,
       children: accessPerson?.start_day_allowed
-        ? DateUtils.getDateInLettersSpanish(accessPerson?.start_day_allowed)
+        ? DateUtils.getDateInLettersSpanish(DateUtils.getDateDependMyUTC(accessPerson?.start_day_allowed))
         : "",
       span: 2,
     },
@@ -88,7 +88,7 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
       key: "7",
       label: "Fecha de salida",
       children: accessPerson?.end_day_allowed
-        ? DateUtils.getDateInLettersSpanish(accessPerson?.end_day_allowed)
+        ? DateUtils.getDateInLettersSpanish(DateUtils.getDateDependMyUTC(accessPerson?.end_day_allowed))
         : "",
       span: 2,
     },

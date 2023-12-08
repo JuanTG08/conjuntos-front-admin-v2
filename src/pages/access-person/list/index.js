@@ -55,7 +55,7 @@ const AccessPersonList = () => {
         </Link>
       ),
       dates: `${DateUtils.getHourInLettersSpanish(
-        visitor?.start_hour_day
+        DateUtils.getDateDependMyUTC(visitor?.start_hour_day)
       )} - ${DateUtils.getHourInLettersSpanish(visitor?.end_hour_day)}`,
     }));
 

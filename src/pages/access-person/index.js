@@ -164,8 +164,8 @@ const AccessPersonListToUser = () => {
       ),
       registeredBy: `${visitor?.users?.name} ${visitor?.users?.last_name}`,
       dates: `${DateUtils.getDateInLettersSpanish(
-        visitor?.start_day_allowed
-      )} - ${DateUtils.getDateInLettersSpanish(visitor?.end_day_allowed)}`,
+        DateUtils.getDateDependMyUTC(visitor?.start_day_allowed)
+      )} - ${DateUtils.getDateInLettersSpanish(DateUtils.getDateDependMyUTC(visitor?.end_day_allowed))}`,
       options: (
         <Dropdown
           menu={{
@@ -216,10 +216,7 @@ const AccessPersonListToUser = () => {
       {contextHolder}
       <HeaderPage title="Visitantes" />
       <TitlePage level={3}>Visitantes</TitlePage>
-      <ButtonCreateNew
-        value="Programar visita"
-        href="/access-person/create"
-      />
+      <ButtonCreateNew value="Programar visita" href="/access-person/create" />
       <RenderedTable />
     </>
   );

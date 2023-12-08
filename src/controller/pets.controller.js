@@ -3,6 +3,7 @@ import Utils from "@/helpers/helpers";
 import { PetModel } from "@/model/Pets.model";
 import { env } from "../../next.config";
 import dayjs from "dayjs";
+import { DateUtils } from "@/utils/date.utils";
 
 export class PetsController {
   static async apiSSRGetDataForm(cookie) {
@@ -180,9 +181,11 @@ export class PetsController {
       age: data?.age || "",
       gender: data?.gender || "",
       color: data?.color || "",
-      birth_day: data?.birth_day ? dayjs(data?.birth_day).add(5, "hour") : "",
+      birth_day: data?.birth_day
+        ? dayjs(DateUtils.getDateDependMyUTC(data?.birth_day))
+        : "",
       last_vaccine: data?.last_vaccine
-        ? dayjs(data?.last_vaccine).add(5, "hour")
+        ? dayjs(DateUtils.getDateDependMyUTC(data?.last_vaccine))
         : "",
       behavior: data?.behavior || "",
     };
