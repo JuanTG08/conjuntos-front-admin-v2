@@ -8,3 +8,12 @@ export class PetRouter extends RoutingClass {
     });
   }
 }
+
+export class PetIDRouter extends RoutingClass {
+  constructor(req, res) {
+    super(req, res, {
+      put: PetsController.apiUpdatePet,
+      delete: PetsController.apiDeletePet,
+    });
+  }
+}

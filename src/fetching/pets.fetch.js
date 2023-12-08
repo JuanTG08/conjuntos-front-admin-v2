@@ -53,4 +53,71 @@ export default class PetsFetching {
       return Utils.Message(true, 500, "Server Error");
     }
   }
+
+  static async getApiPrincipalOnePetToResident(idPet, tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.pets.find_upd_del + idPet;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
+  static async putApiPrincipalUpdatePet(data, idPet, tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.pets.find_upd_del + idPet;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+        method: "PUT",
+        body: data,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
+  static async putApiLocalUpdatePet(data, idPet) {
+    try {
+      const url = URL_API_LOCAL + "/" + idPet;
+      const res = await FetchUtils.send(url, {
+        method: "PUT",
+        body: data,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
+  static async deleteApiPrincipalDeletePet(idPet, tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.pets.find_upd_del + idPet;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+        method: "DELETE",
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
+  static async deleteApiLocalDeletePet(idPet) {
+    try {
+      const url = URL_API_LOCAL + "/" + idPet;
+      const res = await FetchUtils.send(url, { method: "DELETE" });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
 }

@@ -210,6 +210,7 @@ const nextConfig = {
           url: "/api/pet",
           list_create: "/handler-CR-pets",
           get_data_form: "/handler-R-data-form",
+          find_upd_del: "/handler-RUD-pet/",
         },
         roles: {
           url: "/api/roles",

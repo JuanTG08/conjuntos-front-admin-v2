@@ -4,36 +4,42 @@ import PetsFormComponent from "@/components/views/pets/PetsFormComponent";
 import { PetsController } from "@/controller/pets.controller";
 import { TokenUtils } from "@/utils/token.utils";
 import { message } from "antd";
-import { useRouter } from "next/router";
 import React from "react";
 
-const CreatePets = ({ petTypes, colorsPet, otherBreed, behaviorPet }) => {
+const ViewUpdatePet = ({
+  pet,
+  petTypes,
+  colorsPet,
+  otherBreed,
+  behaviorPet,
+  idPet,
+}) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const router = useRouter();
+
   const onSubmit = async (values) => {
     try {
-      const send = await PetsController.viewSubmitNew(values);
-      if (send.error || send.statusCode != 200) throw new Error(send.message);
-      router.push("/pets");
+      const send = await PetsController.viewUpdatePet(values, idPet);
+      if (send.error || send.statusCode != 200)
+        return messageApi.error(send.message);
+      messageApi.success("Se actualizó correctamente");
     } catch (error) {
-      messageApi.error("No fue posible crear tu mascota");
+      console.log(error);
     }
   };
   return (
     <>
       {contextHolder}
-      <HeaderPage title="Crear mascota" />
-      <TitlePage>Crear mascota</TitlePage>
+      <HeaderPage title="Editar tu mascota" />
+      <TitlePage>Editar tu mascota</TitlePage>
       <PetsFormComponent
+        valuesToForm={PetsController.viewGetDataToForm(pet)}
         onSubmit={onSubmit}
         typePets={petTypes}
         colorsPet={colorsPet}
         behaviorPet={behaviorPet}
         otherBreed={otherBreed}
-        buttonLabel="Crear mascota"
-        valuesToForm={PetsController.viewGetDataToForm()}
+        buttonLabel="Actualizar mascota"
       />
-      <div>CreatePets</div>
     </>
   );
 };
@@ -42,23 +48,34 @@ export async function getServerSideProps(context) {
   try {
     // Obtenemos todas las cookies para hacer peticiones al backend
     const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    const idPet = context.query?.idPet;
+    // Obtenemos el listado de mascotas
+    const getPet = await PetsController.apiSSRGetOnePetToResident(
+      idPet,
+      getCookies
+    );
+    if (getPet.error || getPet.statusCode != 200)
+      throw new Error("No fue posible obtener los datos");
     // Obtenemos los datos necesarios para el formulario
     const getData = await PetsController.apiSSRGetDataForm(getCookies);
     if (getData.error || getData.statusCode != 200)
       throw new Error("No fue posible obtener los datos");
     return {
       props: {
+        pet: getPet.payload,
+        idPet,
         ...getData.payload,
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       redirect: {
-        destination: "/dashboard",
+        destination: "/pets",
         permanent: false,
       },
     };
   }
 }
 
-export default CreatePets;
+export default ViewUpdatePet;

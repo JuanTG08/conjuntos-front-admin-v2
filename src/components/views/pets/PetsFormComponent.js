@@ -5,14 +5,14 @@ import {
 import { DatePicker, Form, Input, InputNumber, Select } from "antd";
 import dayjs from "dayjs";
 const { Option } = Select;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonFormSubmit from "../partials/ButtonFormSubmit";
 import "dayjs/locale/es";
 dayjs.locale("es");
 
 const PetsFormComponent = ({
   onSubmit,
-  valuesToForm = {},
+  valuesToForm,
   typePets = [],
   colorsPet = [],
   behaviorPet = [],
@@ -22,6 +22,11 @@ const PetsFormComponent = ({
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
   const [breedPets, setBreedPets] = useState([]);
+
+  useEffect(() => {
+    if (!valuesToForm?.type_pet) return;
+    setBreedPets(typePets.find((type) => type.id_type_pet === valuesToForm.type_pet).breed_pets);
+  }, [])
   const changeTypePet = (value) => {
     typePets.map(
       (typePet) =>
@@ -194,7 +199,7 @@ const PetsFormComponent = ({
           placeholder="(Opcional)"
         />
       </Form.Item>
-      <Form.Item name="last_vaccine" label="Ultima vacuna">
+      <Form.Item name="last_vaccine" label="Última vacuna">
         <DatePicker
           disabledDate={disabledDate}
           style={{ width: "100%" }}
