@@ -33,7 +33,6 @@ const CreatePets = ({ petTypes, colorsPet, otherBreed, behaviorPet }) => {
         buttonLabel="Crear mascota"
         valuesToForm={PetsController.viewGetDataToForm()}
       />
-      <div>CreatePets</div>
     </>
   );
 };
