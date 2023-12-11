@@ -128,21 +128,6 @@ const PetsFormComponent = ({
         </Form.Item>
       )}
       <Form.Item
-        name="age"
-        label="Edad (años)"
-        rules={[
-          {
-            required: true,
-            type: "number",
-            min: 0,
-            max: 100,
-            message: "Se necesita especificar la edad de la mascota válida",
-          },
-        ]}
-      >
-        <InputNumber style={{ width: "100%" }} />
-      </Form.Item>
-      <Form.Item
         name="gender"
         label="Sexo de la mascota"
         rules={[

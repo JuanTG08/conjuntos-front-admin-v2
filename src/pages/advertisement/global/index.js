@@ -4,10 +4,10 @@ import { AdvertisementController } from "@/controller/advertisement.controller";
 import { Image, Skeleton, Card as CardNextUI } from "@nextui-org/react";
 import { Card, Empty, Typography, message } from "antd";
 import React, { useEffect, useState } from "react";
-const { Title, Text } = Typography;
+const { Title, Paragraph } = Typography;
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { FilesUtils } from "@/utils/files.utils";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 const AdvertisementGlobal = () => {
   const [loading, setLoading] = useState(true);
@@ -96,7 +96,14 @@ const AdvertisementGlobal = () => {
           <Title level={3} strong>
             {advertisement.title}
           </Title>
-          <Text>{advertisement.description}</Text>
+          <Paragraph
+            ellipsis={{
+              rows: 4,
+            }}
+            style={{ marginBottom: 0 }}
+          >
+            {advertisement.description}
+          </Paragraph>
         </CardNextUI>
       </div>
     ));

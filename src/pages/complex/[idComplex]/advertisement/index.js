@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { CONST_ADVERTISEMENT_VALID_DATE } from "@/constants/advertisement.constant";
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Badge, Card, Empty, Typography, message } from "antd";
+const { Paragraph } = Typography;
 import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import { Image, Skeleton } from "@nextui-org/react";
 import HeaderPage from "@/components/views/partials/HeaderPage";
@@ -172,7 +173,14 @@ const AdvertisementIndex = ({ idComplex }) => {
                     />
                   }
                 >
-                  <p>{advertisement.description}</p>
+                  <Paragraph
+                    ellipsis={{
+                      rows: 4,
+                    }}
+                    style={{ marginBottom: 0 }}
+                  >
+                    {advertisement.description}
+                  </Paragraph>
                 </Card>
               </div>
             ))}

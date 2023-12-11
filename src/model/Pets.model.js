@@ -6,7 +6,6 @@ export class PetModel extends Model {
   VAR_NAME = "name";
   VAR_TYPE_PET = "type_pet";
   VAR_BREED = "breed";
-  VAR_AGE = "age";
   VAR_GENDER = "gender";
   VAR_COLOR = "color";
   VAR_BIRTH_DAY = "birth_day";
@@ -20,7 +19,6 @@ export class PetModel extends Model {
   name;
   type_pet;
   breed;
-  age;
   gender;
   color;
   birth_day;
@@ -36,7 +34,6 @@ export class PetModel extends Model {
     this.name = Utils._length(pet.name, 100, 1);
     this.type_pet = parseInt(pet.type_pet);
     this.breed = parseInt(pet.breed);
-    this.age = parseInt(pet.age);
     this.gender = parseInt(pet.gender);
     this.color = parseInt(pet.color);
     this.birth_day = Utils.isDate(pet.birth_day);
@@ -53,7 +50,6 @@ export class PetModel extends Model {
       name: this.name,
       type_pet: this.type_pet,
       breed: this.breed,
-      age: this.age,
       gender: this.gender,
       color: this.color,
       birth_day: this.birth_day,
@@ -71,7 +67,6 @@ export class PetModel extends Model {
       name: this.name || "",
       type_pet: this.type_pet || "",
       breed: this.breed || "",
-      age: this.age || "",
       gender: this.gender || "",
       color: this.color || "",
       birth_day: this.birth_day || "",

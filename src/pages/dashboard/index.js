@@ -1,7 +1,7 @@
 import { AdvertisementController } from "@/controller/advertisement.controller";
 import { Image, Card as CardNextUI } from "@nextui-org/react";
 import { Card, Typography } from "antd";
-const { Title, Text } = Typography;
+const { Title, Paragraph } = Typography;
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { FilesUtils } from "@/utils/files.utils";
 import { TokenUtils } from "@/utils/token.utils";
@@ -48,7 +48,14 @@ const DashboardIndex = ({ advertisements }) => {
               <Title level={3} strong>
                 {advertisement.title}
               </Title>
-              <Text>{advertisement.description}</Text>
+              <Paragraph
+                ellipsis={{
+                  rows: 4,
+                }}
+                style={{ marginBottom: 0 }}
+              >
+                {advertisement.description}
+              </Paragraph>
             </CardNextUI>
           </div>
         ))}

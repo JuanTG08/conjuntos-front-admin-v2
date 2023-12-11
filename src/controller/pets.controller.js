@@ -178,7 +178,6 @@ export class PetsController {
       name: data?.name || "",
       type_pet: data?.type_pet || "",
       breed: data?.breed || "",
-      age: data?.age || "",
       gender: data?.gender || "",
       color: data?.color || "",
       birth_day: data?.birth_day

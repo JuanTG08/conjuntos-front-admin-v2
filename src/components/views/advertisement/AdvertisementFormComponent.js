@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CONST_TYPE_ADVERTISEMENT } from "@/constants/advertisement_types.constant";
-import { Form, Input, Modal, Select, Space, Upload } from "antd";
+import { Form, Input, Modal, Select, Space, Typography, Upload } from "antd";
+const { Text } = Typography;
 import { PlusOutlined } from "@ant-design/icons";
 import ButtonFormSubmit from "../partials/ButtonFormSubmit";
 import dayjs from "dayjs";
@@ -183,7 +184,7 @@ const AdvertisementFormComponent = ({
         </Form.Item>
       );
     // Si el "typeAdvertisement" es igual a tipo "torres"
-    // Se visualizara un campo con el nombre del conjunto residencial en cuestión
+    // Se visualizara un campo con el nombre del conju nto residencial en cuestión
     // Se visualizaran todas las torres que contengan el conjunto residencial en forma de "checkbox"
     if (typeAdvertisement === CONST_TYPE_ADVERTISEMENT.TOWERS.id)
       return (
@@ -377,9 +378,10 @@ const AdvertisementFormComponent = ({
         rules={[
           {
             type: "string",
-            len: [1, 300],
+            min: 1,
+            max: 1000,
             message:
-              "La descripción del anuncio debe tener entre 1 y 300 caracteres",
+              "La descripción del anuncio debe tener entre 1 y 1000 caracteres",
           },
           {
             required: true,
@@ -387,7 +389,7 @@ const AdvertisementFormComponent = ({
           },
         ]}
       >
-        <TextArea rows={4} />
+        <TextArea rows={4} showCount maxLength={1000} />
       </Form.Item>
       <Form.Item name="miniature" label="Miniatura del anuncio">
         <Space>

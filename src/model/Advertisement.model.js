@@ -56,7 +56,7 @@ export class AdvertisementModel extends Model {
     this.id_advertisement = parseInt(id_advertisement);
     this.id_complex = parseInt(id_complex);
     this.title = Utils._length(title, 64, 4);
-    this.description = Utils._length(description, 300, 1);
+    this.description = Utils._length(description, 1000, 1);
     this.miniature = parseInt(miniature);
     this.status_type = parseInt(status_type);
     this.transmitter = parseInt(transmitter);
