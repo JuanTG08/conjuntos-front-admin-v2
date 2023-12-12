@@ -8,7 +8,7 @@ import { Card, Empty, Image, Table, Typography, message } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
+ 
 const VehiclesView = ({ _vehicles }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [vehicles, setVehicles] = useState(_vehicles);
