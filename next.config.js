@@ -243,6 +243,10 @@ const nextConfig = {
           find_upd_del: "/handdler-RUD-tower-complex/",
           tower_apartment: "/handler-R-tower-apartment",
         },
+        type_vehicle: {
+          url: "/api/type-vehicles",
+          list: "/handler-R-types-vehicle",
+        },
         user: {
           url: "/api/user",
           find_upd: "/handler-RU-user-perfil/",
@@ -270,6 +274,7 @@ const nextConfig = {
         vehicles: {
           url: "/api/vehicles",
           create_list: "/handler-CR-vehicles",
+          find_upd_del: "/handler-RUD-vehicles/",
         },
       },
       encrypt: {
