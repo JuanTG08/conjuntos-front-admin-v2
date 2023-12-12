@@ -42,7 +42,7 @@ const VehiclesView = ({ _vehicles }) => {
                 alt={vehicle.name}
                 src={VehicleUtils.defineUrlImageVehicle(
                   vehicle?.id_type_vehicle,
-                  "/svg/car.svg"
+                  false
                 )}
                 className="w-full object-contain h-[200px]"
                 width="100%"

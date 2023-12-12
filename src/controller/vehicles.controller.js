@@ -11,7 +11,6 @@ export class VehiclesController {
       const verifyData = modelVehicle.verifyData([
         modelVehicle.VAR_ID_APARTMENT,
         modelVehicle.VAR_ID_USER_ROLE,
-        modelVehicle.VAR_PLATE,
         modelVehicle.VAR_DESCRIPTION,
         modelVehicle.VAR_ID_STATUS,
       ]);
@@ -34,7 +33,6 @@ export class VehiclesController {
       const verifyData = modelVehicle.verifyData([
         modelVehicle.VAR_ID_APARTMENT,
         modelVehicle.VAR_ID_USER_ROLE,
-        modelVehicle.VAR_PLATE,
         modelVehicle.VAR_DESCRIPTION,
         modelVehicle.VAR_ID_STATUS,
       ]);
@@ -102,7 +100,6 @@ export class VehiclesController {
       const verifyData = modelVehicle.verifyData([
         modelVehicle.VAR_ID_APARTMENT,
         modelVehicle.VAR_ID_USER_ROLE,
-        modelVehicle.VAR_PLATE,
         modelVehicle.VAR_DESCRIPTION,
         modelVehicle.VAR_ID_STATUS,
       ]);
@@ -129,7 +126,6 @@ export class VehiclesController {
       const verifyData = modelVehicle.verifyData([
         modelVehicle.VAR_ID_APARTMENT,
         modelVehicle.VAR_ID_USER_ROLE,
-        modelVehicle.VAR_PLATE,
         modelVehicle.VAR_DESCRIPTION,
         modelVehicle.VAR_ID_STATUS,
       ]);

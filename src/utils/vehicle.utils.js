@@ -6,7 +6,7 @@ export class VehicleUtils {
       (type) => type.id === typeVehicle
     );
     if (!url) {
-      if (typeVehicle) return typeVehicleGet?.defaultImage;
+      if (typeVehicleGet) return typeVehicleGet?.defaultImage;
       return "/svg/car.svg";
     }
     return url;

@@ -92,9 +92,13 @@ const VehiclesFormComponent = ({ onSubmit, typesVehicles, buttonLabel, valuesToF
             max: 15,
             message: "La placa del vehículo debe tener entre 1 y 15 caracteres",
           },
+          {
+            required: true,
+            message: "Se necesita especificar una placa de vehículo",
+          }
         ]}
       >
-        <Input placeholder="(Opcional)" />
+        <Input placeholder="Ej: ABC 123" />
       </Form.Item>
       <Form.Item
         name="description"
