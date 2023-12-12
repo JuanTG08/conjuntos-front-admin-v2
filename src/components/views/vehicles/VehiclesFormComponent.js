@@ -3,7 +3,12 @@ import React, { useState } from "react";
 import ButtonFormSubmit from "../partials/ButtonFormSubmit";
 const { TextArea } = Input;
 
-const VehiclesFormComponent = ({ onSubmit, typesVehicles, buttonLabel, valuesToForm }) => {
+const VehiclesFormComponent = ({
+  onSubmit,
+  typesVehicles,
+  buttonLabel,
+  valuesToForm,
+}) => {
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
 
@@ -95,7 +100,7 @@ const VehiclesFormComponent = ({ onSubmit, typesVehicles, buttonLabel, valuesToF
           {
             required: true,
             message: "Se necesita especificar una placa de vehículo",
-          }
+          },
         ]}
       >
         <Input placeholder="Ej: ABC 123" />
