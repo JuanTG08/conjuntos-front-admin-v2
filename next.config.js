@@ -74,6 +74,7 @@ const nextConfig = {
           },
           pqrs: {
             url: "/pqrs",
+            urlThread: "/thread",
           },
           roles: {
             url: "/roles",
@@ -213,13 +214,15 @@ const nextConfig = {
           url: "/api/pet",
           list_create: "/handler-CR-pets",
           get_data_form: "/handler-R-data-form",
-          find_upd_del: "/handler-RUD-pet/",
+          find_upd_del: "/handler-RUD-pet",
         },
         pqrs: {
           url: "/api/pqrs",
           get_data_form: "/handler-R-pqrs-data-form",
           list_create: "/handler-CR-pqrs",
           find_upd: "/handler-RU-pqrs/",
+          list_admin: "/handler-R-pqrs-admin/",
+          find_upd_reply: "/handler-RU-pqrs-reply/",
         },
         roles: {
           url: "/api/roles",

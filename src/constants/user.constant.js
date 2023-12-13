@@ -141,6 +141,30 @@ export const CONST_NAVBAR_USERS = [
           },
         ],
       },
+      {
+        key: "requirement",
+        label: "Requerimientos",
+        children: [
+          {
+            key: "pqr",
+            label: "PQRS",
+            description: "Gestiona tus Pqrs hacia la administración.",
+            link: "/pqrs",
+            icon: (color) => (
+              <SolutionOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+          {
+            key: "moving",
+            label: "Mudanzas",
+            description: "Gestiona tus solicitudes de mudanzas.",
+            link: "/moving",
+            icon: (color) => (
+              <CompassOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+        ],
+      },
     ],
   },
   {

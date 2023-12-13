@@ -1,4 +1,3 @@
-import { PetsController } from "@/controller/pets.controller";
 import { PQRSController } from "@/controller/pqrs.controller";
 import { RoutingClass } from "@/lib/Routing";
 

@@ -2,9 +2,10 @@ import TitlePage from "@/components/data/title";
 import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { PQRSController } from "@/controller/pqrs.controller";
+import { DateUtils } from "@/utils/date.utils";
 import { PQRSUtils } from "@/utils/pqrs.utils";
 import { TokenUtils } from "@/utils/token.utils";
-import { Badge, Table, message } from "antd";
+import { Badge, Descriptions, Table, message } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -59,8 +60,7 @@ const ViewPQRSInfo = ({ pqrs }) => {
             text={pqr.pqrs_status.name}
           />
         ),
-        response:
-          pqr.pqrs_response.length === 0 ? false : pqr.pqrs_response.length,
+        response: pqr.pqrs_response.length === 0 ? false : pqr.pqrs_response,
       };
     });
     return dataTable;
@@ -73,7 +73,43 @@ const ViewPQRSInfo = ({ pqrs }) => {
         bordered
         size="large"
         expandable={{
-          expandedRowRender: (record) => <p>{record.response?.response}</p>,
+          expandedRowRender: (record) => (
+            <>
+              {record.response.map((response, ind) => {
+                const itemDescription = [
+                  {
+                    key: "reply",
+                    label: "Respondido por",
+                    children: `${response.users_roles.users.name} ${response.users_roles.users.last_name}`,
+                    span: 2,
+                  },
+                  {
+                    key: "dateToReply",
+                    label: "Fecha de Respuesta",
+                    children: DateUtils.getDateInLettersSpanish(
+                      response.created_at
+                    ),
+                    span: 1,
+                  },
+                  {
+                    key: "response",
+                    label: "Respuesta",
+                    children: response.response,
+                    span: 3,
+                  },
+                ];
+                return (
+                  <Descriptions
+                    key={ind}
+                    bordered
+                    layout="vertical"
+                    title="Información de la respuesta"
+                    items={itemDescription}
+                  />
+                );
+              })}
+            </>
+          ),
           rowExpandable: (record) => record.response,
         }}
       />

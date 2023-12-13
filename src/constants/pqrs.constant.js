@@ -3,11 +3,13 @@ export const CONST_PQRS_STATUS = {
     id: 1,
     name: "Pendiente",
     color: "orange",
+    namePlural: "Pendientes",
   },
   RESOLVED: {
     id: 2,
     name: "Resuelto",
     color: "green",
+    namePlural: "Resueltas",
   },
 };
 

@@ -19,4 +19,12 @@ export class PQRSUtils {
       return CONST_PQRS_PRIORITY.MEDIUM.color;
     return CONST_PQRS_PRIORITY.HIGH.color;
   }
+
+  static getNamePluralStatus(idStatus) {
+    if (idStatus === CONST_PQRS_STATUS.PENDING.id)
+      return CONST_PQRS_STATUS.PENDING.namePlural;
+    else if (idStatus === CONST_PQRS_STATUS.RESOLVED.id)
+      return CONST_PQRS_STATUS.RESOLVED.namePlural;
+    return CONST_PQRS_STATUS.PENDING.namePlural;
+  }
 }

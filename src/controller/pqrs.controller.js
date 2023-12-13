@@ -72,6 +72,15 @@ export class PQRSController {
     }
   }
 
+  static async apiSSRGetListPQRSToAdmin(cookie) {
+    try {
+      const send = await PQRSFetching.getApiPrincipalListPQRSToAdmin(cookie);
+      return send;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
   static async apiSSRGetOnePQRS(cookie, idPQRS) {
     try {
       idPQRS = parseInt(idPQRS);
@@ -86,9 +95,48 @@ export class PQRSController {
     }
   }
 
+  static async apiSSRGetOnePQRSToReply(cookie, idPQRS) {
+    try {
+      idPQRS = parseInt(idPQRS);
+      if (!Utils.verifyId(idPQRS)) return Utils.Message(true, 400, "Error");
+      const send = await PQRSFetching.getApiPrincipalOnePQRSToReply(
+        cookie,
+        idPQRS
+      );
+      return send;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
   static async apiPostSetResponse(req, res) {
     try {
-    } catch (error) {}
+      const cookie = req.cookies[env.server.cookies.main_cookie.name];
+      const idPQRS = parseInt(req.query.idPQRS);
+      const response = Utils._length(req.body?.response, 600, 1);
+      if (!Utils.verifyId(idPQRS) || !response)
+        return res.json(Utils.Message(true, 500, "Datos erróneos"));
+      const send = await PQRSFetching.postApiPrincipalSetResponse(
+        req.body,
+        idPQRS,
+        cookie
+      );
+      return res.json(send);
+    } catch (error) {
+      return res.json(Utils.Message(true, 500, "Error"));
+    }
+  }
+
+  static async viewPostSetResponse(data, idPQRS) {
+    try {
+      idPQRS = parseInt(idPQRS);
+      if (!Utils.verifyId(idPQRS) || !Utils._length(data.response, 600, 1))
+        return Utils.Message(true, 500, "Datos erróneos");
+      const send = await PQRSFetching.postApiLocalSetResponse(data, idPQRS);
+      return send;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error");
+    }
   }
 
   static viewGetDataToForm(data = null) {

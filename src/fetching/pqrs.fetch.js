@@ -66,4 +66,58 @@ export class PQRSFetching {
       return Utils.Message(true, 500, "Server Error");
     }
   }
+
+  static async getApiPrincipalListPQRSToAdmin(tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.pqrs.list_admin;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
+  static async getApiPrincipalOnePQRSToReply(tokenOuth, idPQRS) {
+    try {
+      const url =
+        URL_API_PRINCIPAL + env._API.routes.pqrs.find_upd_reply + idPQRS;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
+  static async postApiPrincipalSetResponse(data, idPQRS, tokenOuth) {
+    try {
+      const url =
+        URL_API_PRINCIPAL + env._API.routes.pqrs.find_upd_reply + idPQRS;
+      const res = await FetchUtils.send(url, {
+        method: "POST",
+        body: data,
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
+  static async postApiLocalSetResponse(data, idPQRS) {
+    try {
+      const url =
+        URL_API_LOCAL + env.server.api.routes.pqrs.urlThread + "/" + idPQRS;
+      const res = await FetchUtils.send(url, { method: "POST", body: data });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
 }

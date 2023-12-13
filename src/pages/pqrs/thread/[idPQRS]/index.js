@@ -74,9 +74,39 @@ const ViewThreadPQRS = ({ pqr, idPQR }) => {
       label: "Respuestas",
       children:
         pqr.pqrs_response.length > 0 ? (
-          pqrs.pqrs_response.map((response) => (
-            <Text key={response.id_pqrs_response}>{response.response}</Text>
-          ))
+          pqr.pqrs_response.map((response, ind) => {
+            const itemDescription = [
+              {
+                key: "reply",
+                label: "Respondido por",
+                children: `${response.users_roles.users.name} ${response.users_roles.users.last_name}`,
+                span: 2,
+              },
+              {
+                key: "dateToReply",
+                label: "Fecha de Respuesta",
+                children: DateUtils.getDateInLettersSpanish(
+                  response.created_at
+                ),
+                span: 1,
+              },
+              {
+                key: "response",
+                label: "Respuesta",
+                children: response.response,
+                span: 3,
+              },
+            ];
+            return (
+              <Descriptions
+                key={ind}
+                bordered
+                layout="vertical"
+                title="Información de la respuesta"
+                items={itemDescription}
+              />
+            );
+          })
         ) : (
           <Empty description="No hay respuestas" />
         ),
