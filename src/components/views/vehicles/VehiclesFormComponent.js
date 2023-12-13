@@ -23,7 +23,7 @@ const VehiclesFormComponent = ({
 
   return (
     <Form
-      name="PetsForm"
+      name="VehicleForm"
       form={form}
       onFinish={onFinish}
       style={{ width: "100%" }}

@@ -27,7 +27,7 @@ const data = [
           "Anuncios",
           "Correspondencia",
           "Citofonía (previa cotización)",
-          "Solicitudes y reclamos (PQRs)",
+          "Solicitudes y reclamos (PQRS)",
         ],
       },
       {
@@ -74,7 +74,7 @@ const data = [
           "Anuncios",
           "Correspondencia",
           "Citofonía (previa cotización)",
-          "Solicitudes y reclamos (PQRs)",
+          "Solicitudes y reclamos (PQRS)",
         ],
       },
       {
@@ -128,7 +128,7 @@ const data = [
           "Anuncios",
           "Correspondencia",
           "Citofonía (previa cotización)",
-          "Solicitudes y reclamos (PQRs)",
+          "Solicitudes y reclamos (PQRS)",
         ],
       },
       {

@@ -219,7 +219,7 @@ export const CONST_NAVBAR_USERS = [
         children: [
           {
             key: "pqr",
-            label: "PQRs",
+            label: "PQRS",
             description: "Gestiona tus Pqrs hacia la administración.",
             link: "/pqrs/info",
             icon: (color) => (
@@ -410,7 +410,7 @@ export const CONST_NAVBAR_USERS = [
         children: [
           {
             key: "pqr",
-            label: "PQRs",
+            label: "PQRS",
             description: "Gestiona tus Pqrs hacia la administración.",
             link: "/pqrs/info",
             icon: (color) => (
@@ -497,8 +497,8 @@ export const CONST_NAVBAR_USERS = [
         children: [
           {
             key: "pqr",
-            label: "PQRs",
-            description: "Gestiona tus Pqrs hacia la administración.",
+            label: "PQRS",
+            description: "Gestiona tus PQRS hacia la administración.",
             link: "/pqrs/info",
             icon: (color) => (
               <SolutionOutlined style={{ color, fontSize: "2em" }} />
@@ -553,8 +553,8 @@ export const CONST_NAVBAR_USERS = [
         children: [
           {
             key: "pqr",
-            label: "PQRs",
-            description: "Gestiona tus Pqrs hacia la administración.",
+            label: "PQRS",
+            description: "Gestiona tus PQRS hacia la administración.",
             link: "/pqrs/info",
             icon: (color) => (
               <SolutionOutlined style={{ color, fontSize: "2em" }} />

@@ -72,6 +72,9 @@ const nextConfig = {
           pets: {
             url: "/pet",
           },
+          pqrs: {
+            url: "/pqrs",
+          },
           roles: {
             url: "/roles",
             urlRUD: "/rud",
@@ -211,6 +214,12 @@ const nextConfig = {
           list_create: "/handler-CR-pets",
           get_data_form: "/handler-R-data-form",
           find_upd_del: "/handler-RUD-pet/",
+        },
+        pqrs: {
+          url: "/api/pqrs",
+          get_data_form: "/handler-R-pqrs-data-form",
+          list_create: "/handler-CR-pqrs",
+          find_upd: "/handler-RU-pqrs/",
         },
         roles: {
           url: "/api/roles",
