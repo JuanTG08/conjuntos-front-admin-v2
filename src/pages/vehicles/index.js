@@ -4,7 +4,7 @@ import HeaderPage from "@/components/views/partials/HeaderPage";
 import { VehiclesController } from "@/controller/vehicles.controller";
 import { TokenUtils } from "@/utils/token.utils";
 import { VehicleUtils } from "@/utils/vehicle.utils";
-import { Card, Empty, Image, Table, Typography, message } from "antd";
+import { Card, Empty, Image, Typography, message } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";

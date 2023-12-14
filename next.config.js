@@ -287,6 +287,7 @@ const nextConfig = {
           url: "/api/vehicles",
           create_list: "/handler-CR-vehicles",
           find_upd_del: "/handler-RUD-vehicles/",
+          consult_list: "/handler-R-vehicles-consult",
         },
       },
       encrypt: {

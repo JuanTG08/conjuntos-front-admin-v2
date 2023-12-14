@@ -120,4 +120,16 @@ export class VehiclesFetching {
       return Utils.Message(true, 500, "Server Error");
     }
   }
+
+  static async getApiPrincipalListConsult(tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.vehicles.consult_list;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
 }

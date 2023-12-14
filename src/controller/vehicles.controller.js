@@ -168,6 +168,15 @@ export class VehiclesController {
     }
   }
 
+  static async apiSSRGetListConsult(cookie) {
+    try {
+      const list = await VehiclesFetching.getApiPrincipalListConsult(cookie);
+      return list;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
   static viewGetDataToForm(data = null) {
     const valuesForm = {
       plate: data?.plate || "",
