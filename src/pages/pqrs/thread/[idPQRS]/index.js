@@ -117,16 +117,12 @@ const ViewThreadPQRS = ({ pqr, idPQR }) => {
     <>
       <HeaderPage title="PQR" />
       <TitlePage level={1}>PQR</TitlePage>
-      <Card>
-        <CardBody>
           <Descriptions
             bordered
             layout="vertical"
             title="Información de la PQR"
             items={items}
           />
-        </CardBody>
-      </Card>
     </>
   );
 };

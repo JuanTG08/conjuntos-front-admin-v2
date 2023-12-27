@@ -52,6 +52,7 @@ export default class Utils {
 
   /* Verificacion de las variables */
   static isNumeric(value) {
+    if (typeof value == "string") value = parseInt(value);
     if (Number.isNaN(value)) return undefined;
     return typeof value === "number" ? parseInt(value.toString()) : undefined;
   }

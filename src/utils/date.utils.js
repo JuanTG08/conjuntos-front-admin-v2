@@ -58,11 +58,21 @@ export class DateUtils {
       // Calcular la diferencia de horas entre la zona horaria del cliente y UTC
       const diferenciaHoras = -dayjs().tz(zonaHorariaCliente).utcOffset() / 60;
       // Convertir la fecha de la base de datos a la zona horaria del cliente y aplicar ajuste dinámico
-      const fechaAjustada = dayjs(fechaDB).add(diferenciaHoras, 'hour');
+      const fechaAjustada = dayjs(fechaDB).add(diferenciaHoras, "hour");
       return fechaAjustada.format(); // Puedes devolver la fecha formateada como desees
     }
 
     // Si no se puede obtener la zona horaria del cliente, devolver la fecha sin ajustes
     return fechaDB;
+  }
+
+  static compareDatesToDate(date) {
+    const today = dayjs();
+
+    const dateToCompare = dayjs(date).utc();
+    if (dateToCompare.isSame(today) || dateToCompare.isAfter(today)) {
+      return true;
+    }
+    return false;
   }
 }

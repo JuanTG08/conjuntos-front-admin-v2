@@ -63,6 +63,9 @@ const nextConfig = {
           department: {
             url: "/department_country",
           },
+          moving: {
+            url: "/moving",
+          },
           municipality: {
             url: "/municipality",
           },
@@ -201,6 +204,16 @@ const nextConfig = {
         files: {
           url: "/api/files",
           list_create: "/handdler-CR-files",
+        },
+        moving: {
+          url: "/api/moving",
+          list_create: "/handler-CR-moving",
+          find_one: "/handler-R-moving/",
+          find_one_owner: "/handler-R-moving-by-owner/",
+          set_response: "/handler-CU-moving-response/",
+          list_admin: "/handler-R-moving-admin-complex",
+          find_one_admin: "/handler-R-moving-by-reply-admin/",
+          list_authorized: "/handler-R-moving-complex-authorized",
         },
         municipality: {
           url: "/api/municipality",

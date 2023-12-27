@@ -144,7 +144,7 @@ export async function getServerSideProps(context) {
   } catch (error) {
     return {
       redirect: {
-        destination: "/pqrs/info",
+        destination: "/dashboard",
         permanent: false,
       },
     };

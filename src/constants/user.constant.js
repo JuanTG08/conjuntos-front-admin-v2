@@ -90,7 +90,7 @@ export const CONST_NAVBAR_USERS = [
     ],
   },
   {
-    idRole: [CONST_USER_SUAC.id, CONST_USER_UAC.id],
+    idRole: [CONST_USER_SUAC.id, CONST_USER_UAC.id], // Usuario administradores de conjuntos
     isLogin: true,
     role: "S/UAC",
     mainPage: "/dashboard",
@@ -158,7 +158,7 @@ export const CONST_NAVBAR_USERS = [
             key: "moving",
             label: "Mudanzas",
             description: "Gestiona tus solicitudes de mudanzas.",
-            link: "/moving",
+            link: "/moving/list/admin",
             icon: (color) => (
               <CompassOutlined style={{ color, fontSize: "2em" }} />
             ),
@@ -168,7 +168,103 @@ export const CONST_NAVBAR_USERS = [
     ],
   },
   {
-    idRole: [CONST_USER_UPA.id, CONST_USER_UEA.id, CONST_USER_UFP.id], // USUARIO PROPIETARIO / ENCARGADO DEL APARTAMENTO
+    idRole: [CONST_USER_UPA.id], // USUARIO PROPIETARIO
+    isLogin: true,
+    role: "UPA/UEA",
+    mainPage: "/dashboard",
+    routesNavbar: [
+      {
+        key: "advertisements",
+        label: "Anuncios",
+        children: [
+          {
+            key: "globalAdvertisement",
+            label: "Anuncios Globales",
+            description: "Listado de anuncios generales o globales",
+            link: "/advertisement/global",
+            icon: (color) => (
+              <GlobalOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+        ],
+      },
+      {
+        key: "apartment",
+        label: "Mi Unidad",
+        children: [
+          {
+            key: "info",
+            label: "Información",
+            description: "Información de mi unidad",
+            link: "/apartment/information",
+            icon: (color) => (
+              <SolutionOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+          {
+            key: "accessPerson",
+            label: "Visitantes",
+            description: "Visualiza y programa tus visitas",
+            link: "/access-person",
+            icon: (color) => (
+              <UserSwitchOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+          {
+            key: "correspondence",
+            label: "Correspondencia",
+            description: "Mi correspondencia",
+            link: "/advertisement/correspondence/list",
+            icon: (color) => (
+              <MailOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+          {
+            key: "vehicles",
+            label: "Vehiculos",
+            description: "Registra y consulta tus vehiculos autorizados",
+            link: "/vehicles",
+            icon: (color) => <CarOutlined style={{ color, fontSize: "2em" }} />,
+          },
+          {
+            key: "pets",
+            label: "Mascotas",
+            description: "Registra y gestiona tus mascotas",
+            link: "/pets",
+            icon: (color) => (
+              <HeartOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+        ],
+      },
+      {
+        key: "requirement",
+        label: "Requerimientos",
+        children: [
+          {
+            key: "pqr",
+            label: "PQRS",
+            description: "Gestiona tus Pqrs hacia la administración.",
+            link: "/pqrs/info",
+            icon: (color) => (
+              <SolutionOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+          {
+            key: "moving",
+            label: "Mudanzas",
+            description: "Gestiona tus solicitudes de mudanzas.",
+            link: "/moving/list",
+            icon: (color) => (
+              <CompassOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    idRole: [CONST_USER_UEA.id, CONST_USER_UFP.id], // ENCARGADO DEL APARTAMENTO / USUARIO FAMILIAR PROPIETARIO
     isLogin: true,
     role: "UPA/UEA",
     mainPage: "/dashboard",
@@ -261,19 +357,10 @@ export const CONST_NAVBAR_USERS = [
           },
         ],
       },
-      {
-        key: "zones",
-        label: "Zonas Comunes",
-        description: "Gestiona tus zonas comunes con gran facilidad.",
-        link: "/common-zones",
-        icon: (color) => (
-          <NodeIndexOutlined style={{ color, fontSize: "2em" }} />
-        ),
-      },
     ],
   },
   {
-    idRole: [CONST_USER_UEV.id],
+    idRole: [CONST_USER_UEV.id], // Vigilante
     isLogin: true,
     role: "UEV",
     mainPage: "/dashboard",
@@ -441,6 +528,15 @@ export const CONST_NAVBAR_USERS = [
               <SolutionOutlined style={{ color, fontSize: "2em" }} />
             ),
           },
+          {
+            key: "moving",
+            label: "Mudanzas",
+            description: "Gestiona tus solicitudes de mudanzas.",
+            link: "/moving/list",
+            icon: (color) => (
+              <CompassOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
         ],
       },
     ],
@@ -538,15 +634,6 @@ export const CONST_NAVBAR_USERS = [
             ),
           },
         ],
-      },
-      {
-        key: "zones",
-        label: "Zonas Comunes",
-        description: "Gestiona tus zonas comunes con gran facilidad.",
-        link: "/common-zones",
-        icon: (color) => (
-          <NodeIndexOutlined style={{ color, fontSize: "2em" }} />
-        ),
       },
     ],
   },
