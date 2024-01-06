@@ -32,6 +32,7 @@ import { useRouter } from "next/router";
 import Utils from "@/helpers/helpers";
 import { Drawer } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
+import LogoAviv from "@/components/logos/LogoAviv";
 
 export function MenuNavBarPages({ dataUser }) {
   const { user } = useUser();
@@ -125,8 +126,10 @@ export function MenuNavBarPages({ dataUser }) {
       </NavbarContent>
 
       <NavbarBrand>
-        <LinkNextUI as={Link} href={navBarData.mainPage}>
-          <AcmeLogo />
+        <LinkNextUI as={Link} href={navBarData.mainPage} className="flex gap-2">
+          <figure className="w-[30px]">
+            <LogoAviv className="text-primary-500" />
+          </figure>
           <p className="font-bold text-inherit">
             {process.env.NEXT_PUBLIC_NAME_APP}
           </p>
@@ -196,8 +199,9 @@ export function MenuNavBarPages({ dataUser }) {
                     : "https://i.pravatar.cc/150?u=a042581f4e29026704d"
                 }
                 onError={(e) => {
-                  console.log(e)
-                  e.target.src = "https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                  console.log(e);
+                  e.target.src =
+                    "https://i.pravatar.cc/150?u=a042581f4e29026704d";
                 }}
               />
             </DropdownTrigger>

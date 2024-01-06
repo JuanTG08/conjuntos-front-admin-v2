@@ -51,12 +51,16 @@ export class AuthFetching {
     }
   }
 
-  static async postLocalLoginWeb(data) {
+  static async postApiPrincipalPreLoginWeb(data) {
     try {
-      const url = URL_API_LOCAL + env.server.api.routes.auth.login;
-      const res = await FetchUtils.send(url, { method: "POST", body: data });
+      const url = URL_API_PRINCIPAL + env._API.routes.auth.pre_login;
+      const res = await FetchUtils.send(url, {
+        method: "POST",
+        body: data,
+      });
       return res;
     } catch (error) {
+      console.log(error);
       return Utils.Message(true, 500, "Server Error");
     }
   }
@@ -87,9 +91,7 @@ export class AuthFetching {
   static async getApiPrincipalFindByToken(token) {
     try {
       const url =
-        URL_API_PRINCIPAL +
-        env._API.routes.auth.find_register +
-        token;
+        URL_API_PRINCIPAL + env._API.routes.auth.find_register + token;
       const res = await FetchUtils.send(url);
       return res;
     } catch (error) {

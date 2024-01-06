@@ -179,6 +179,7 @@ const nextConfig = {
           url: "/api/auth",
           find_register: "/user-register-web/",
           login: "/login-apps",
+          pre_login: "/pre-login-apps",
         },
         call: {
           url: "/api/call",

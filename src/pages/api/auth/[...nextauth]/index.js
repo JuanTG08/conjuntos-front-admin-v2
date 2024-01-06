@@ -22,7 +22,7 @@ export const authOptions = (req, res) => ({
   callbacks: {
     async signIn({ user, account, profile }) {
       try {
-        const getTokens = await AuthController.apiPostLoginUser(user.email);
+        const getTokens = await AuthController.apiPostPreLoginUser(user.email);
         if (getTokens.error || getTokens.statusCode != 200)
           throw new Error("Usuario no existente");
         return true;
@@ -63,7 +63,7 @@ export const authOptions = (req, res) => ({
   },
   secret: process.env.NEXTAUTH_SECRET,
 });
- 
+
 export default (req, res) => {
   return NextAuth(req, res, authOptions(req, res));
 };

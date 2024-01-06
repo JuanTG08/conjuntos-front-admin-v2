@@ -13,7 +13,7 @@ export class AuthController {
       };
       // Validamos los datos del formulario
       if (Utils.verifyDataObject(dataLogin) !== true)
-        return Utils.Message(true, 400, "Datos erroneos");
+        return Utils.Message(true, 400, "Datos erróneos");
       // Realizamos la petición a la API Principal para obtener un token mediante el login
       const loginUser = await AuthFetching.postApiLoginWeb(dataLogin);
       // Si hay un error, lo devolvemos
@@ -32,18 +32,23 @@ export class AuthController {
     }
   }
 
-  // Validamos y hacemos la petición al API LOCAL para realizar el login
-  static async viewSubmitLoginUser(data) {
+  static async apiPostPreLoginUser(email) {
     try {
-      data = {
-        email: Utils.isMail(data?.email),
-        password: Utils._length(data?.password, 64, 8),
+      // Establecemos los datos del formulario
+      const dataLogin = {
+        email: Utils.isMail(email),
       };
-      if (Utils.verifyDataObject(data) !== true)
-        return Utils.Message(true, 400, "Datos erroneos");
-      const loginUser = await AuthFetching.postLocalLoginWeb(data);
-      return loginUser;
+      // Validamos los datos del formulario
+      if (Utils.verifyDataObject(dataLogin) !== true)
+        return Utils.Message(true, 400, "Datos erróneos");
+      // Realizamos la petición a la API Principal para obtener un token mediante el login
+      const loginUser = await AuthFetching.postApiPrincipalPreLoginWeb(dataLogin);
+      // Si hay un error, lo devolvemos
+      if (loginUser.error || loginUser.statusCode != 200 || !loginUser.payload)
+        return loginUser;
+      return Utils.Message(false, 200, "Ok");
     } catch (error) {
+      console.log(error);
       return Utils.Message(true, 500, "Server Error");
     }
   }
