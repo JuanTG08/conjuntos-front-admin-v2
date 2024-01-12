@@ -1,11 +1,18 @@
 import { AdvertisementController } from "@/controller/advertisement.controller";
 import { RoutingClass } from "@/lib/Routing";
 
-export class AdvertisementByComplexRouter extends RoutingClass {
+export class AdvertisementByComplexRouterPost extends RoutingClass {
+  constructor(req, res) {
+    super(req, res, {
+      post: AdvertisementController.apiPostNew,
+    });
+  }
+}
+
+export class AdvertisementByComplexRouterGet extends RoutingClass {
   constructor(req, res) {
     super(req, res, {
       get: AdvertisementController.apiListByComplex,
-      post: AdvertisementController.apiPostNew,
     });
   }
 }
@@ -14,7 +21,6 @@ export class AdvertisementIdRouter extends RoutingClass {
   constructor(req, res) {
     super(req, res, {
       get: AdvertisementController.apiGetOneById,
-      put: AdvertisementController.apiPutEdit,
       delete: AdvertisementController.apiDelete,
     });
   }

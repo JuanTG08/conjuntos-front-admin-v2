@@ -4,6 +4,7 @@ import HeaderPage from "@/components/views/partials/HeaderPage";
 import { CONST_ADVERTISEMENT_TYPES } from "@/constants/advertisement.constant";
 import { AdvertisementTypesByComplexController } from "@/controller/advertisement_types.controller";
 import { CorrespondenceController } from "@/controller/correspondence.controller";
+import { Button } from "@nextui-org/react";
 import { message } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -37,11 +38,14 @@ const CorrespondenceCreate = () => {
     try {
       const send = await CorrespondenceController.viewSubmitNew(values);
       if (send.error || send.statusCode != 200)
-        return messageApi.warning("No fue posible crear la correspondencia");
-      messageApi.success("Correspondencia creada con éxito");
-      router.push("/advertisement/correspondence/list-admin");
+        throw new Error("No fue posible crear la correspondencia");
+      messageApi.success("Correspondencia creada con éxito", 1, () =>
+        router.push("/advertisement/correspondence/list-admin")
+      );
+      return true;
     } catch (error) {
-      console.log(error);
+      messageApi.warning("No fue posible crear la correspondencia");
+      return false;
     }
   };
 

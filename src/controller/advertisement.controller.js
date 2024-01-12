@@ -51,118 +51,33 @@ export class AdvertisementController {
     }
   }
 
-  static async apiPostNew(req, res) {
+  static async apiAsyncSegmentationAndNotify(
+    dataArraysIds,
+    idAdvertisement,
+    cookie
+  ) {
     try {
-      const cookie = req.cookies[env.server.cookies.main_cookie.name];
-      let idComplex = parseInt(req.query?.idComplex);
-      if (
-        !Utils.verifyId(idComplex) &&
-        req.query?.idComplex != CONST_SYSTEM_NOT_PARAM_VIEW
-      )
-        return res.json(Utils.Message(true, 500, "Datos erróneos"));
-      idComplex = Utils.verifyId(idComplex)
-        ? idComplex
-        : CONST_SYSTEM_NOT_PARAM_VIEW;
-      const advModel = new AdvertisementModel(req.body);
-      advModel.id_complex = idComplex;
-      const verifyData = advModel.verifyData([
-        advModel.VAR_ID_ADVERTISEMENT,
-        advModel.VAR_STATUS_ADV,
-        advModel.VAR_TRANSMITTER,
-        advModel.VAR_COMPLEX_IDS,
-        advModel.VAR_TOWERS_IDS,
-        advModel.VAR_APARTMENTS_IDS,
-        advModel.VAR_USERS_IDS,
-        advModel.VAR_ID_APARTMENT,
-        advModel.VAR_MINIATURE,
-        advModel.VAR_DATE_END,
-      ]);
-      if (verifyData !== true)
-        return res.json(Utils.Message(true, 500, "Datos erróneos", verifyData));
-
-      // Validamos los datos de la segmentación
-      const dataArraysIds = {};
-      const dataVerifyArrays = {
-        complex_ids: Utils.verifyArrayNumber(advModel.complex_ids),
-        towers_ids: Utils.verifyArrayNumber(advModel.towers_ids),
-        apartments_ids: Utils.verifyArrayNumber(advModel.apartments_ids),
-        users_ids: Utils.verifyArrayNumber(advModel.users_ids),
-      };
-      switch (advModel.status_type) {
-        case CONST_TYPE_ADVERTISEMENT.COMPLEX.id:
-          // Validamos los datos del complex
-          if (!dataVerifyArrays.complex_ids)
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.complex_ids = advModel.complex_ids;
-          break;
-        case CONST_TYPE_ADVERTISEMENT.TOWERS.id:
-          // Validamos los datos de las torres
-          if (!dataVerifyArrays.towers_ids)
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.towers_ids = advModel.towers_ids;
-          break;
-        case CONST_TYPE_ADVERTISEMENT.APARTMENT.id:
-          // Validamos los datos del apartamento
-          if (!dataVerifyArrays.apartments_ids)
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.apartments_ids = advModel.apartments_ids;
-          break;
-        case CONST_TYPE_ADVERTISEMENT.USERS.id:
-          // Validamos los datos del usuario
-          if (
-            !Utils.verifyId(advModel.idApartment) ||
-            !dataVerifyArrays.users_ids
-          )
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.idApartment = advModel.idApartment;
-          dataArraysIds.users_ids = advModel.users_ids;
-          break;
-        default:
-          break;
-      }
-      // Validamos la existencia del "category_Adv"
-      if (!Utils.verifyId(advModel.category_adv))
-        return res.json(Utils.Message(false, 0, "Datos erróneos"));
-      // Estructuramos los datos para guardar el anuncio
-      const dataSendAdvertisement = {
-        id_complex: idComplex,
-        title: advModel.title,
-        description: advModel.description,
-        miniature: advModel.miniature,
-        status_adv: advModel.status_adv || CONST_ADVERTISEMENT_STATUS.ACTIVE.id,
-        status_type: advModel.status_type,
-        category_adv: advModel.category_adv,
-      };
-      const sendAdvertisement = await AdvertisementFetching.postApiPrincipalNew(
-        dataSendAdvertisement,
-        cookie
-      );
-      if (sendAdvertisement.error || sendAdvertisement.statusCode != 200)
-        return res.json(sendAdvertisement);
-      // Guardamos los datos de la segmentación
       const sendSegmentation =
         await SegmentationAdvertisementFetching.setApiPrincipalSegmentation(
           dataArraysIds,
-          sendAdvertisement.payload.id_advertisement,
+          idAdvertisement,
           cookie
         );
       if (sendSegmentation.error || sendSegmentation.statusCode != 200)
-        return res.json(
-          Utils.Message(
-            false,
-            200,
-            "Anuncio creado, pero no se guardo sus elecciones"
-          )
+        return Utils.Message(
+          false,
+          200,
+          "Anuncio creado, pero no se guardo sus elecciones"
         );
       const sendAndNotify =
         await AdvertisementFetching.getApiPrincipalSendAndNotify(
-          sendAdvertisement.payload.id_advertisement,
+          idAdvertisement,
           cookie
         );
-      return res.json(Utils.Message(false, 200, "Ok"));
+      return Utils.Message(false, 200, "Ok");
     } catch (error) {
       console.log(error);
-      return res.json(Utils.Message(true, 500, "Error al procesar"));
+      return Utils.Message(true, 500, "Error al procesar");
     }
   }
 
@@ -218,22 +133,12 @@ export class AdvertisementController {
         default:
           break;
       }
-      // Sí obtenemos una Imagen
-      if (image) {
-        // Enviamos la imagen para que se cree la miniatura de la misma
-        const formData = new FormData();
-        formData.append("file", image);
-        // Obtenemos el ID de la miniatura
-        const sendImage = await FileFetching.setLocalFile(formData);
-        if (!sendImage.error && sendImage.statusCode === 200) {
-          advModel.miniature = sendImage.payload.id_file;
-        }
-      } else {
-        advModel.miniature = null;
-      }
       // Enviamos los datos para crear un anuncio con sus respectiva segmentación
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("data", JSON.stringify(advModel.getAll));
       const sendAdvertisement = await AdvertisementFetching.postApiLocalNew(
-        advModel.getAll,
+        formData, //advModel.getAll,
         idComplex
       );
       return sendAdvertisement;
@@ -308,103 +213,6 @@ export class AdvertisementController {
     }
   }
 
-  static async apiPutEdit(req, res) {
-    try {
-      const cookie = req.cookies[env.server.cookies.main_cookie.name];
-      const idAdvertisement = parseInt(req.query?.idAdvertisement);
-      const idComplex = req.body?.id_complex;
-      if (!Utils.verifyId(idAdvertisement))
-        return res.json(Utils.Message(true, 500, "Datos erróneos"));
-      const advModel = new AdvertisementModel(req.body);
-      const strObject = Utils.structureObject(advModel.getAll);
-      if (!strObject)
-        return res.json(Utils.Message(true, 500, "Datos erróneos"));
-      // Validamos los datos de la segmentación
-      const dataArraysIds = {};
-      const dataVerifyArrays = {
-        complex_ids: Utils.verifyArrayNumber(advModel.complex_ids),
-        towers_ids: Utils.verifyArrayNumber(advModel.towers_ids),
-        apartments_ids: Utils.verifyArrayNumber(advModel.apartments_ids),
-        users_ids: Utils.verifyArrayNumber(advModel.users_ids),
-      };
-      switch (advModel.status_type) {
-        case CONST_TYPE_ADVERTISEMENT.COMPLEX.id:
-          // Validamos los datos del complex
-          if (
-            !dataVerifyArrays.complex_ids &&
-            idComplex != CONST_SYSTEM_NOT_PARAM_VIEW
-          )
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.complex_ids = advModel.complex_ids;
-          break;
-        case CONST_TYPE_ADVERTISEMENT.TOWERS.id:
-          // Validamos los datos de las torres
-          if (!dataVerifyArrays.towers_ids)
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.towers_ids = advModel.towers_ids;
-          break;
-        case CONST_TYPE_ADVERTISEMENT.APARTMENT.id:
-          // Validamos los datos del apartamento
-          if (!dataVerifyArrays.apartments_ids)
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.apartments_ids = advModel.apartments_ids;
-          break;
-        case CONST_TYPE_ADVERTISEMENT.USERS.id:
-          // Validamos los datos del usuario
-          if (
-            !Utils.verifyId(advModel.idApartment) ||
-            !dataVerifyArrays.users_ids
-          )
-            return res.json(Utils.Message(false, 0, "Datos erróneos"));
-          dataArraysIds.idApartment = advModel.idApartment;
-          dataArraysIds.users_ids = advModel.users_ids;
-          break;
-        default:
-          break;
-      }
-      // Validamos la existencia del "category_Adv"
-      if (!Utils.verifyId(advModel.category_adv))
-        return res.json(Utils.Message(false, 0, "Datos erróneos"));
-      // Estructuramos los datos para guardar el anuncio
-      const dataSendAdvertisement = {
-        id_complex: advModel.id_complex,
-        title: advModel.title,
-        description: advModel.description,
-        miniature: advModel.miniature,
-        status_adv: advModel.status_adv,
-        status_type: advModel.status_type,
-        category_adv: advModel.category_adv,
-      };
-      const sendAdvertisement =
-        await AdvertisementFetching.putApiPrincipalUpdate(
-          dataSendAdvertisement,
-          idAdvertisement,
-          cookie
-        );
-      if (sendAdvertisement.error || sendAdvertisement.statusCode != 200)
-        return res.json(sendAdvertisement);
-      // Guardamos los datos de la segmentación
-      const sendSegmentation =
-        await SegmentationAdvertisementFetching.setApiPrincipalSegmentation(
-          dataArraysIds,
-          idAdvertisement,
-          cookie
-        );
-      if (sendSegmentation.error || sendSegmentation.statusCode != 200)
-        return res.json(
-          Utils.Message(
-            false,
-            200,
-            "Anuncio creado, pero no se guardo sus elecciones"
-          )
-        );
-      return res.json(Utils.Message(false, 200, "Ok"));
-    } catch (error) {
-      console.log(error);
-      return res.json(Utils.Message(true, 500, "Error al procesar"));
-    }
-  }
-
   static async viewPutEdit(getData, image, idComplex, idAdvertisement) {
     try {
       idComplex =
@@ -458,22 +266,13 @@ export class AdvertisementController {
           break;
       }
       // Sí obtenemos una Imagen
-      // Debemos VALIDAR que la imagen en verdad cambio de la que se ha elegido
-      if (image) {
-        // Enviamos la imagen para que se cree la miniatura de la misma
-        const formData = new FormData();
-        formData.append("file", image);
-        // Obtenemos el ID de la miniatura
-        const sendImage = await FileFetching.setLocalFile(formData);
-        if (!sendImage.error && sendImage.statusCode === 200) {
-          advModel.miniature = sendImage.payload.id_file;
-        }
-      } else {
-        advModel.miniature = undefined;
-      }
       // Enviamos los datos para crear un anuncio con sus respectiva segmentación
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("idComplex", idComplex);
+      formData.append("data", JSON.stringify(advModel.getAll));
       const sendAdvertisement = await AdvertisementFetching.putApiLocalUpdate(
-        advModel.getAll,
+        formData,
         idAdvertisement
       );
       return sendAdvertisement;

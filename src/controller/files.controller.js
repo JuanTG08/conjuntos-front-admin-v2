@@ -70,4 +70,24 @@ export class FilesController {
       return res.status(200).end(defaultImageBuffer);
     }
   }
+
+  static async apiAsyncSaveImage(image, nameImage, cookie) {
+    try {
+      const imageBuffer = await sharp(image.buffer).jpeg().toBuffer();
+      const formImageData = new FormData();
+      const imageBlob = new Blob([imageBuffer], { type: "image/jpeg" });
+      formImageData.append("file", imageBlob, nameImage);
+      formImageData.append("fileName", nameImage);
+      const saveImage =
+        await FileFetching.postApiPrincipalSaveImageToAdvertisement(
+          formImageData,
+          nameImage,
+          cookie
+        );
+      return saveImage;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
 }

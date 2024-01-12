@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 
 const CallState = {
@@ -55,16 +56,13 @@ const ViewA = () => {
           "JuanDaTest@dev-aviv.connectics.n2.voximplant.com",
           "l:JRzI2F"
         )
-      )
-      .then(() => {
-        createCall();
-      });
+      );
   }, [sdk]);
 
   const createCall = async () => {
     const VoxImplant = await import("voximplant-websdk");
     const _call = sdk.call({
-      number: "573224338072",
+      number: "+573224338072",
       video: { sendVideo: false, receiveVideo: false },
     });
     setCallState(CallState.CONNECTING);
@@ -74,7 +72,8 @@ const ViewA = () => {
     _call.on(VoxImplant.CallEvents.Disconnected, () => {
       setCallState(CallState.DISCONNECTED);
     });
-    _call.on(VoxImplant.CallEvents.Failed, () => {
+    _call.on(VoxImplant.CallEvents.Failed, (e) => {
+      console.log(e);
       setCallState(CallState.DISCONNECTED);
     });
     setCall(_call);
@@ -97,7 +96,25 @@ const ViewA = () => {
     setMicHint(value);
   };
 
-  return <div>ViewA</div>;
+  const hangup = async () => {
+    try {
+      const dis = await call.hangup();
+      console.log(dis);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <Button color="success" onPress={createCall}>
+        Llamar
+      </Button>
+      <Button color="danger" onPress={hangup}>
+        Colgar
+      </Button>
+    </>
+  );
 };
 
 export default ViewA;

@@ -18,7 +18,7 @@ const ViewCreateNewMoving = () => {
       }
       messageApi.success(
         "Mudanza creada con éxito",
-        4,
+        3,
         () => router.push("/moving")
       );
       return true;

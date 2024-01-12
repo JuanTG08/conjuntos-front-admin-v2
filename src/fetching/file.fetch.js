@@ -29,4 +29,22 @@ export class FileFetching {
       return Utils.Message(true, 500, "Error al obtener la información.");
     }
   }
+
+  static async postApiPrincipalSaveImageToAdvertisement(
+    data,
+    nameImage,
+    tokenOuth
+  ) {
+    try {
+      const url =
+        URL_API_PRINCIPAL +
+        env._API.routes.files.create_img_advertisement +
+        nameImage;
+      const res = await FetchUtils.sendPostAxios(url, data, tokenOuth);
+      return res;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Error al obtener la información.");
+    }
+  }
 }

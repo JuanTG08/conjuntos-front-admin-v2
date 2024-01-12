@@ -56,6 +56,8 @@ const AdvertisementCorrespondenceFormComponent = ({
   // Listado de usuarios escogida por un apartamento seleccionado
   const [listApartmentSetUsers, setListApartmentSetUsers] = useState([]);
 
+  const [disabledButton, setDisabledButton] = useState(false);
+
   useEffect(() => {
     if (!listDataTower) return;
     setTypeCorrespondence(form.getFieldValue("status_type"));
@@ -252,7 +254,8 @@ const AdvertisementCorrespondenceFormComponent = ({
 
   const onFinish = async (values) => {
     setSending(true);
-    await onSubmit(values);
+    const resp = await onSubmit(values);
+    setDisabledButton(resp);
     setSending(false);
   };
 
@@ -361,7 +364,11 @@ const AdvertisementCorrespondenceFormComponent = ({
       </Form.Item>
       <RenderTypeCorrespondence />
       <Form.Item>
-        <ButtonFormSubmit value="Guardar" isLoading={sending} />
+        <ButtonFormSubmit
+          value="Guardar"
+          isLoading={sending}
+          isDisabled={disabledButton}
+        />
       </Form.Item>
     </Form>
   );

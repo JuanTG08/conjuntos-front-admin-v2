@@ -107,10 +107,7 @@ export class AdvertisementFetching {
   static async putApiLocalUpdate(data, idAdvertisement) {
     try {
       const url = URL_API_LOCAL + "/" + idAdvertisement;
-      const res = await FetchUtils.send(url, {
-        method: "PUT",
-        body: data,
-      });
+      const res = await FetchUtils.sendPutAxios(url, data);
       return res;
     } catch (error) {
       return Utils.Message(true, 500, "Error al obtener la información.");

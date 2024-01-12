@@ -63,20 +63,6 @@ export class CorrespondenceController {
         ? values.miniature?.fileList[0]?.originFileObj
         : undefined;
 
-      if (miniature) {
-        // Enviamos la imagen para que se cree la miniatura de la misma
-        const formData = new FormData();
-        formData.append("file", miniature);
-        // Obtenemos el ID de la miniatura
-        const sendImage = await FileFetching.setLocalFile(formData);
-        if (!sendImage.error && sendImage.statusCode === 200) {
-          data.miniature = sendImage.payload.id_file;
-        } else {
-          data.miniature = null;
-        }
-      } else {
-        data.miniature = null;
-      }
       switch (data.status_type) {
         case CONST_ADVERTISEMENT_TYPES.APARTMENT.id:
           if (!Utils.verifyId(values.arraysIdsApartments))
@@ -97,8 +83,11 @@ export class CorrespondenceController {
           return Utils.Message(true, 500, "Datos erróneos");
       }
       // Enviamos los datos para crear la correspondencia con sus respectiva segmentación
+      const formData = new FormData();
+      formData.append("file", miniature);
+      formData.append("data", JSON.stringify(data));
       const sendCorrespondence = await AdvertisementFetching.postApiLocalNew(
-        data,
+        formData, // data,
         CONST_SYSTEM_NOT_PARAM_VIEW
       );
       return sendCorrespondence;

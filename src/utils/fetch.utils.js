@@ -54,6 +54,28 @@ export class FetchUtils {
         return Utils.Message(true, 500, "Error en el servidor");
       return res.data;
     } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
+  static async sendPutAxios(url, data, auth = null) {
+    try {
+      axios.defaults.timeout = timeout;
+      const authorization = auth
+        ? { Authorization: `Bearer ${JSON.stringify(auth)}` }
+        : {};
+      const res = await axios.put(url, data, {
+        headers: {
+          application_type: "application/web",
+          ...authorization,
+        },
+      });
+      if (res.status != 200)
+        return Utils.Message(true, 500, "Error en el servidor");
+      return res.data;
+    } catch (error) {
+      console.log(error);
       return Utils.Message(true, 500, "Error");
     }
   }

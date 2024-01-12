@@ -9,8 +9,9 @@ import { StatusController } from "@/controller/status.controller";
 import { TokenUtils } from "@/utils/token.utils";
 import { Typography, message } from "antd";
 import Router from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { env } from "../../../../../next.config";
+import { useRouter } from "next/router";
 
 const AdvertisementCreate = ({
   idComplex,
@@ -21,6 +22,7 @@ const AdvertisementCreate = ({
   listDataTower,
 }) => {
   const [messageApi, contextHolder] = message.useMessage();
+  const router = useRouter();
 
   const onSubmit = async (values, image) => {
     try {
@@ -32,11 +34,14 @@ const AdvertisementCreate = ({
         complex.id_complex
       );
       if (send.error && send.statusCode != 200)
-        return messageApi.error(send.message);
-      messageApi.success("Se creo correctamente el anuncio");
-      Router.push(`/complex/${idComplex}/advertisement`);
+        throw new Error("No fue posible crear este anuncio");
+      messageApi.success("Se creo correctamente el anuncio", 1, () =>
+        router.push(`/complex/${idComplex}/advertisement`)
+      );
+      return true;
     } catch (error) {
-      console.log(error);
+      messageApi.error("No fue posible crear el anuncio.");
+      return false;
     }
   };
 

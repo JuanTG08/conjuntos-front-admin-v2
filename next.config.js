@@ -205,6 +205,7 @@ const nextConfig = {
         files: {
           url: "/api/files",
           list_create: "/handdler-CR-files",
+          create_img_advertisement: "/handler-C-image-advertisement/",
         },
         moving: {
           url: "/api/moving",

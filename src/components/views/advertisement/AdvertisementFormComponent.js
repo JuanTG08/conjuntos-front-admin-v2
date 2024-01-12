@@ -42,6 +42,7 @@ const AdvertisementFormComponent = ({
   listDataTower,
   status,
 }) => {
+  const [disabledButton, setDisabledButton] = useState(false);
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -343,7 +344,8 @@ const AdvertisementFormComponent = ({
   const onFinish = async (data) => {
     setSending(true);
     const _image = fileList.length > 0 ? fileList[0].originFileObj : null;
-    await onSubmit(data, _image);
+    const resp = await onSubmit(data, _image);
+    setDisabledButton(resp);
     setSending(false);
   };
 
@@ -469,7 +471,11 @@ const AdvertisementFormComponent = ({
       </Form.Item>
       <ViewInputsTypes />
       <Form.Item>
-        <ButtonFormSubmit value="Guardar" isLoading={sending} />
+        <ButtonFormSubmit
+          value="Guardar"
+          isLoading={sending}
+          isDisabled={disabledButton}
+        />
       </Form.Item>
     </Form>
   );
