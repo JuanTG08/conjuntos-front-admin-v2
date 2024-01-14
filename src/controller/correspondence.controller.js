@@ -6,7 +6,6 @@ import {
 import { CONST_SYSTEM_NOT_PARAM_VIEW } from "@/constants/system.constant";
 import { AdvertisementFetching } from "@/fetching/advertisement.fetch";
 import { CorrespondenceFetching } from "@/fetching/correspondence.fetch";
-import { FileFetching } from "@/fetching/file.fetch";
 import Utils from "@/helpers/helpers";
 import { env } from "../../next.config";
 

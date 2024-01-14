@@ -3,7 +3,6 @@ import Utils from "@/helpers/helpers";
 import { env } from "../../next.config";
 import { AdvertisementModel } from "@/model/Advertisement.model";
 import { CONST_TYPE_ADVERTISEMENT } from "@/constants/advertisement_types.constant";
-import { FileFetching } from "@/fetching/file.fetch";
 import { SegmentationAdvertisementFetching } from "@/fetching/segmentation_advertisement.fetch";
 import { CONST_SYSTEM_NOT_PARAM_VIEW } from "@/constants/system.constant";
 
