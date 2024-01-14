@@ -31,7 +31,7 @@ apiRoute.put(async (req, res) => {
       return res.json(Utils.Message(true, 500, "Datos erróneos"));
     if (
       !Utils.verifyId(idComplex) &&
-      req.query?.idComplex != CONST_SYSTEM_NOT_PARAM_VIEW
+      req.body?.idComplex != CONST_SYSTEM_NOT_PARAM_VIEW
     )
       return res.json(Utils.Message(true, 500, "Id del Conjunto no valido"));
     idComplex = Utils.verifyId(idComplex)
