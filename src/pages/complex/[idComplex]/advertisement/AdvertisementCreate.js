@@ -26,6 +26,7 @@ const AdvertisementCreate = ({
 
   const onSubmit = async (values, image) => {
     try {
+      console.log(image);
       values.category_adv = CONST_ADVERTISEMENT_CATEGORY.ADVERTISEMENT.ID;
       const send = await AdvertisementController.viewSubmitNew(
         values,

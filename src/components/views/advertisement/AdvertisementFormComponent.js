@@ -6,15 +6,9 @@ import { PlusOutlined } from "@ant-design/icons";
 import ButtonFormSubmit from "../partials/ButtonFormSubmit";
 import dayjs from "dayjs";
 import { FilesUtils } from "@/utils/files.utils";
+import ImageUpload from "@/components/Inputs/ImageUpload";
 const { TextArea } = Input;
 const { Option } = Select;
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
 
 const disabledDateStart = (current) => {
   // Formatea current como una instancia de dayjs
@@ -45,9 +39,6 @@ const AdvertisementFormComponent = ({
   const [disabledButton, setDisabledButton] = useState(false);
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
   // Tipo de dato seleccionado
   const [typeAdvertisement, setTypeAdvertisement] = useState(false);
@@ -57,21 +48,18 @@ const AdvertisementFormComponent = ({
   // Listado de usuarios escogida por un apartamento seleccionado
   const [listApartmentSetUsers, setListApartmentSetUsers] = useState([]);
 
+  // Imagen
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
   useEffect(() => {
     if (!valuesToForm || !listDataTower) return;
     if (valuesToForm.status_type)
       setTypeAdvertisement(valuesToForm.status_type);
-    if (valuesToForm?.management_files?.name_file && fileList.length === 0)
-      setFileList([
-        {
-          uid: "-1",
-          name: "Imagen",
-          status: "done",
-          url: FilesUtils.formatGetImages(
-            valuesToForm.management_files.name_file
-          ),
-        },
-      ]);
+    if (valuesToForm?.management_files?.name_file)
+      setImagePreview(
+        FilesUtils.formatGetImages(valuesToForm.management_files.name_file)
+      );
     switch (valuesToForm.status_type) {
       case CONST_TYPE_ADVERTISEMENT.TOWERS.id:
         break;
@@ -100,32 +88,6 @@ const AdvertisementFormComponent = ({
         break;
     }
   }, []);
-
-  // Funcionalidades de la imagen
-  const handleCancel = () => setPreviewOpen(false);
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
-  };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
 
   // Si el campo de "Tipo de anuncio" cambia se limpiaran los campos
   // Se vaciaran los estados que contienen información
@@ -343,8 +305,7 @@ const AdvertisementFormComponent = ({
 
   const onFinish = async (data) => {
     setSending(true);
-    const _image = fileList.length > 0 ? fileList[0].originFileObj : null;
-    const resp = await onSubmit(data, _image);
+    const resp = await onSubmit(data, selectedImage);
     setDisabledButton(resp);
     setSending(false);
   };
@@ -394,34 +355,10 @@ const AdvertisementFormComponent = ({
         <TextArea rows={4} showCount maxLength={1000} />
       </Form.Item>
       <Form.Item name="miniature" label="Miniatura del anuncio">
-        <Space>
-          <Form.Item name="miniature" noStyle>
-            <Upload
-              listType="picture-card"
-              onPreview={handlePreview}
-              onChange={handleChange}
-              maxCount={1}
-              fileList={fileList}
-              accept="image/png, image/jpeg, image/jpg"
-            >
-              {uploadButton}
-            </Upload>
-          </Form.Item>
-          <Modal
-            open={previewOpen}
-            title={previewTitle}
-            footer={null}
-            onCancel={handleCancel}
-          >
-            <img
-              alt="example"
-              style={{
-                width: "100%",
-              }}
-              src={previewImage}
-            />
-          </Modal>
-        </Space>
+        <ImageUpload
+          onImageSelect={setSelectedImage}
+          defaultImage={imagePreview}
+        />
       </Form.Item>
       <Form.Item
         name="status_adv"

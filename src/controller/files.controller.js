@@ -73,9 +73,9 @@ export class FilesController {
 
   static async apiAsyncSaveImage(image, nameImage, cookie) {
     try {
-      const imageBuffer = await sharp(image.buffer).jpeg().toBuffer();
       const formImageData = new FormData();
-      const imageBlob = new Blob([imageBuffer], { type: "image/jpeg" });
+      const imageBlob = new Blob([image], { type: image.mimetype });
+      console.log(imageBlob);
       formImageData.append("file", imageBlob, nameImage);
       formImageData.append("fileName", nameImage);
       const saveImage =

@@ -92,11 +92,8 @@ const AdvertisementUpdate = ({ idComplex, idAdvertisement }) => {
     }
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, image) => {
     try {
-      let image = undefined;
-      if (values.miniature && values.miniature?.file?.originFileObj)
-        image = values.miniature.file.originFileObj;
       values.category_adv = CONST_ADVERTISEMENT_CATEGORY.ADVERTISEMENT.ID;
       const send = await AdvertisementController.viewPutEdit(
         values,

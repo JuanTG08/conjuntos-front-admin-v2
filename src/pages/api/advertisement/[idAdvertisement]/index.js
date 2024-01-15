@@ -14,6 +14,7 @@ import { FilesController } from "@/controller/files.controller";
 import { AdvertisementController } from "@/controller/advertisement.controller";
 import { CONST_SYSTEM_NOT_PARAM_VIEW } from "@/constants/system.constant";
 import { TokenUtils } from "@/utils/token.utils";
+import mime from "mime-types";
 
 const apiRoute = createRouter();
 
@@ -120,11 +121,14 @@ apiRoute.put(async (req, res) => {
     };
     const image = req?.file; // Obtenemos la imagen
     if (image) {
-      if (!image.mimetype.startsWith("image/"))
+      // Obtener la extensión del archivo a través del tipo MIME
+      const fileExtension = mime.extension(image.mimetype);
+      if (!image.mimetype.startsWith("image/") || !fileExtension)
         return res
           .status(400)
           .json(Utils.Message(true, 400, "Archivo inválido"));
       dataSendAdvertisement.miniature = true;
+      dataSendAdvertisement.imageExtension = `.${fileExtension}`;
     }
     const sendAdvertisement = await AdvertisementFetching.putApiPrincipalUpdate(
       dataSendAdvertisement,
