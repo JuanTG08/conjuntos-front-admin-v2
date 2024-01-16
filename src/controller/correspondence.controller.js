@@ -48,7 +48,7 @@ export class CorrespondenceController {
     }
   }
 
-  static async viewSubmitNew(values) {
+  static async viewSubmitNew(values, image) {
     try {
       const data = {
         title: values.title,
@@ -58,10 +58,6 @@ export class CorrespondenceController {
         category_adv: CONST_ADVERTISEMENT_CATEGORY.CORRESPONDENCE.ID,
         date_start: new Date(),
       };
-      const miniature = values.miniature?.fileList
-        ? values.miniature?.fileList[0]?.originFileObj
-        : undefined;
-
       switch (data.status_type) {
         case CONST_ADVERTISEMENT_TYPES.APARTMENT.id:
           if (!Utils.verifyId(values.arraysIdsApartments))
@@ -83,7 +79,7 @@ export class CorrespondenceController {
       }
       // Enviamos los datos para crear la correspondencia con sus respectiva segmentación
       const formData = new FormData();
-      formData.append("file", miniature);
+      formData.append("file", image);
       formData.append("data", JSON.stringify(data));
       const sendCorrespondence = await AdvertisementFetching.postApiLocalNew(
         formData, // data,

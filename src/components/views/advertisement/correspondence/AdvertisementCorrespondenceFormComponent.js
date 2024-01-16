@@ -3,15 +3,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import { CONST_ADVERTISEMENT_TYPES } from "@/constants/advertisement.constant";
 import { Form, Input, Modal, Select, Space, Upload } from "antd";
 import ButtonFormSubmit from "../../partials/ButtonFormSubmit";
+import ImageUpload from "@/components/Inputs/ImageUpload";
+import { FilesUtils } from "@/utils/files.utils";
 const { TextArea } = Input;
 const { Option } = Select;
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
 
 const AdvertisementCorrespondenceFormComponent = ({
   onSubmit,
@@ -20,35 +15,10 @@ const AdvertisementCorrespondenceFormComponent = ({
 }) => {
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
-  // Funcionalidades de la imagen
-  const handleCancel = () => setPreviewOpen(false);
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
-  };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
+
+  // Imagen
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [typeCorrespondence, setTypeCorrespondence] = useState();
   // Listado de apartamentos escogida por una torre seleccionada
@@ -77,6 +47,11 @@ const AdvertisementCorrespondenceFormComponent = ({
     );
     if (apartmentByUser?.users_roles)
       setListApartmentSetUsers(apartmentByUser.users_roles);
+
+    if (valuesToForm?.management_files?.name_file)
+      setImagePreview(
+        FilesUtils.formatGetImages(valuesToForm.management_files.name_file)
+      );
   }, []);
 
   // Si el campo de "Tipo de anuncio" cambia se limpiaran los campos
@@ -254,7 +229,7 @@ const AdvertisementCorrespondenceFormComponent = ({
 
   const onFinish = async (values) => {
     setSending(true);
-    const resp = await onSubmit(values);
+    const resp = await onSubmit(values, selectedImage);
     setDisabledButton(resp);
     setSending(false);
   };
@@ -268,34 +243,10 @@ const AdvertisementCorrespondenceFormComponent = ({
       initialValues={valuesToForm}
     >
       <Form.Item name="miniature" label="Foto de la Correspondencia">
-        <Space>
-          <Form.Item name="miniature" noStyle>
-            <Upload
-              listType="picture-card"
-              onPreview={handlePreview}
-              onChange={handleChange}
-              maxCount={1}
-              fileList={fileList}
-              accept="image/png, image/jpeg, image/jpg"
-            >
-              {uploadButton}
-            </Upload>
-          </Form.Item>
-          <Modal
-            open={previewOpen}
-            title={previewTitle}
-            footer={null}
-            onCancel={handleCancel}
-          >
-            <img
-              alt="example"
-              style={{
-                width: "100%",
-              }}
-              src={previewImage}
-            />
-          </Modal>
-        </Space>
+        <ImageUpload
+          onImageSelect={setSelectedImage}
+          defaultImage={imagePreview}
+        />
       </Form.Item>
       <Form.Item
         name="title"

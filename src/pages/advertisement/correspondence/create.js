@@ -34,9 +34,9 @@ const CorrespondenceCreate = () => {
     }
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, image) => {
     try {
-      const send = await CorrespondenceController.viewSubmitNew(values);
+      const send = await CorrespondenceController.viewSubmitNew(values, image);
       if (send.error || send.statusCode != 200)
         throw new Error("No fue posible crear la correspondencia");
       messageApi.success("Correspondencia creada con éxito", 1, () =>
