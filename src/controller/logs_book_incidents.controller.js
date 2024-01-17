@@ -30,9 +30,10 @@ export class LogsBookIncidentsCtrl {
 
   static async apiSSRGetListMyLogsBookIncidents(cookies) {
     try {
-      const getListAll = await LogsBookIncidentsFetching.getApiLocalListMyLogsBookIncidents(
-        cookies
-      );
+      const getListAll =
+        await LogsBookIncidentsFetching.getApiLocalListMyLogsBookIncidents(
+          cookies
+        );
       return getListAll;
     } catch (error) {
       return Utils.Message(true, 500, "Error al procesar");
@@ -41,10 +42,26 @@ export class LogsBookIncidentsCtrl {
 
   static async apiSSRGetListAllLogsBookIncidents(cookies) {
     try {
-      const getListAll = await LogsBookIncidentsFetching.getApiPrincipalListAllLogsBookIncidents(
+      const getListAll =
+        await LogsBookIncidentsFetching.getApiPrincipalListAllLogsBookIncidents(
+          cookies
+        );
+      return getListAll;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
+
+  static async apiSSRGetOneLogsBookIncidents(idLogsBookIncident, cookies) {
+    try {
+      idLogsBookIncident = parseInt(idLogsBookIncident);
+      if (!Utils.verifyId(idLogsBookIncident))
+        return Utils.Message(true, 400, "Error en los datos");
+      const getOne = await LogsBookIncidentsFetching.getOneLogsBookIncidents(
+        idLogsBookIncident,
         cookies
       );
-      return getListAll;
+      return getOne;
     } catch (error) {
       return Utils.Message(true, 500, "Error al procesar");
     }

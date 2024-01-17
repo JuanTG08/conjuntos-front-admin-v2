@@ -60,4 +60,17 @@ export class LogsBookIncidentsFetching {
       return Utils.Message(true, 500, "Server Error");
     }
   }
+
+  static async getOneLogsBookIncidents(id, tokenOuth) {
+    try {
+      const url =
+        URL_API_PRINCIPAL + env._API.routes.logs_book_incidents.find_one + id;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
 }
