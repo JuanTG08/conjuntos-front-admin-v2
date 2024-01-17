@@ -115,7 +115,7 @@ export class ApartmentComplexController {
     }
   }
 
-  // Obtener un apartamento mediante SSR
+  // Obtener una unidad mediante SSR
   static async apiSSRGetOne(
     cookie,
     _idApartment = CONST_SYSTEM_NOT_PARAM_VIEW

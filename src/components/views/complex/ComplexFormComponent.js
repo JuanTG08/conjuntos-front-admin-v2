@@ -229,16 +229,16 @@ export const ComplexFormComponent = ({
       </Form.Item>
       <Form.Item
         name="number_units"
-        label="Numero total de Apartamentos o Unidades"
+        label="Numero total de Unidades"
         rules={[
           {
             type: "number",
             message:
-              "El Numero total de Apartamentos o Unidades debe contener solo números",
+              "El Numero total de Unidades debe contener solo números",
           },
           {
             required: true,
-            message: "El número de apartamentos o unidades es requerido",
+            message: "El número de unidades o unidades es requerido",
           },
         ]}
       >
@@ -267,7 +267,7 @@ export const ComplexFormComponent = ({
         rules={[
           {
             type: "number",
-            message: "El área total de Apartamento contener solo números",
+            message: "El área total de la unidad debe contener solo números",
           },
           {
             required: true,

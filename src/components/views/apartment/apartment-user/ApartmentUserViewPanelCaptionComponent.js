@@ -9,7 +9,7 @@ const ApartmentUserViewPanelCaptionComponent = ({
     return [
       {
         key: "1",
-        label: "Apartamento",
+        label: "Unidad",
         children: apartment?.apartment_identifier_tower,
       },
       {

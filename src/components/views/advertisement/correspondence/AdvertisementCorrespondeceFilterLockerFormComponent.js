@@ -49,7 +49,7 @@ const AdvertisementCorrespondeceFilterLockerFormComponent = ({
           {
             required: true,
             message:
-              "Debes escoger una torre para poder obtener los apartamentos.",
+              "Debes escoger una torre para poder obtener las unidades.",
           },
         ]}
       >
@@ -67,17 +67,17 @@ const AdvertisementCorrespondeceFilterLockerFormComponent = ({
       </Form.Item>
       <Form.Item
         name="apartment_id"
-        label="Selecciona un apartamento"
+        label="Selecciona una unidad"
         rules={[
           {
             required: true,
             message:
-              "Debes escoger un apartamento para poder obtener el listado de correspondencia.",
+              "Debes escoger una unidad para poder obtener el listado de correspondencia.",
           },
         ]}
       >
         <Select
-          placeholder="Elige un apartamento"
+          placeholder="Elige una unidad"
           showSearch
           filterOption={filterOption}
           optionFilterProp="children"

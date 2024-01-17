@@ -225,9 +225,9 @@ const UsersViewPanel = ({
   return (
     <>
       {contextHolder}
-      <HeaderPage title={"Usuarios del apartamento"} />
+      <HeaderPage title={"Usuarios de la unidad"} />
       <Typography.Title level={1} style={{ textAlign: "center" }}>
-        Usuarios del apartamento
+        Usuarios de la unidad
       </Typography.Title>
       <Modal
         isOpen={isOpenModal}
@@ -279,7 +279,7 @@ export async function getServerSideProps(context) {
       idApartment
     );
     if (listApartment.error || listApartment.statusCode != 200)
-      throw new Error("No fue posible obtener el apartamento");
+      throw new Error("No fue posible obtener la unidad");
     const complex = listApartment.payload?.complex;
     const tower = listApartment.payload?.tower;
     const apartment = listApartment.payload?.apartment;

@@ -64,12 +64,12 @@ const TowerFormComponent = ({ onSubmit, valuesToForm }) => {
       </Form.Item>
       <Form.Item
         name="number_apartments"
-        label="Número total de apartamentos dentro de la torre"
+        label="Número total de unidades dentro de la torre"
         rules={[
           {
             required: true,
             message:
-              "Se necesita especificar el numero total de apartamentos en la torre",
+              "Se necesita especificar el numero total de unidades en la torre",
           },
         ]}
       >

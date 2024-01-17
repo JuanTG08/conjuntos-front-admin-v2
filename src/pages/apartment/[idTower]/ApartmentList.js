@@ -181,16 +181,16 @@ const ApartmentList = ({ idTower }) => {
   return (
     <>
       {contextHolder}
-      <HeaderPage title={"Listado de apartamentos"} />
+      <HeaderPage title={"Listado de unidades"} />
       <div>
         <Typography.Title level={1} style={{ textAlign: "center" }}>
-          Administración de apartamentos
+          Administración de unidades
         </Typography.Title>
         <ApartmentLegendComponent complex={complex} tower={tower} />
       </div>
       <ButtonCreateNew
         href={`/apartment/${idTower}/ApartmentCreate`}
-        value="Crear apartamento"
+        value="Crear unidad"
       />
       <DataTable />
     </>

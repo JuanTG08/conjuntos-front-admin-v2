@@ -43,9 +43,9 @@ const AdvertisementFormComponent = ({
   // Tipo de dato seleccionado
   const [typeAdvertisement, setTypeAdvertisement] = useState(false);
 
-  // Listado de apartamentos escogida por una torre seleccionada
+  // Listado de unidades escogida por una torre seleccionada
   const [listApartmentSetTower, setListApartmentSetTower] = useState([]);
-  // Listado de usuarios escogida por un apartamento seleccionado
+  // Listado de usuarios escogida por una unidad seleccionado
   const [listApartmentSetUsers, setListApartmentSetUsers] = useState([]);
 
   // Imagen
@@ -111,7 +111,7 @@ const AdvertisementFormComponent = ({
   };
 
   // Si el campo de "Torre" cambia se limpiaran los campos
-  // Se establecerán los apartamentos de la torre en "listApartmentSetTower"
+  // Se establecerán las unidades de la torre en "listApartmentSetTower"
   const handlerChangeTypesTowersApartment = (value) => {
     const idSelected = parseInt(value);
     const tower = listDataTower.find((tower) => tower.id_tower === idSelected);
@@ -124,8 +124,8 @@ const AdvertisementFormComponent = ({
     if (listApartmentSetTower) form.setFieldValue("arraysIdsApartments", []);
   };
 
-  // Sí el input tipo select que contiene los apartamentos cambian
-  // Se establecerán los usuarios de los apartamentos en "listApartmentSetUsers"
+  // Sí el input tipo select que contiene las unidades cambian
+  // Se establecerán los usuarios de las unidades en "listApartmentSetUsers"
   const handlerChangeApartment = (value) => {
     const idSelected = parseInt(value);
     const apartment = listApartmentSetTower.find(
@@ -170,9 +170,9 @@ const AdvertisementFormComponent = ({
           </Form.Item>
         </>
       );
-    // Si el "typeAdvertisement" es igual a tipo "apartamentos"
+    // Si el "typeAdvertisement" es igual a tipo "unidades"
     // Se visualizaran todas las torres que contengan el conjunto residencial en forma de un select
-    // Sí se escoge una torre se visualizaran todos los apartamentos que pertenezcan a esa torre en forma de "checkbox"
+    // Sí se escoge una torre se visualizaran todos las unidades que pertenezcan a esa torre en forma de "checkbox"
     if (typeAdvertisement === CONST_TYPE_ADVERTISEMENT.APARTMENT.id) {
       return (
         <>
@@ -181,7 +181,7 @@ const AdvertisementFormComponent = ({
           </Form.Item>
           <Form.Item
             name="type_tower_apart"
-            label="Elije una torre para los Apartamentos"
+            label="Elije una torre para las unidades"
             rules={[
               {
                 required: true,
@@ -202,10 +202,10 @@ const AdvertisementFormComponent = ({
             </Select>
           </Form.Item>
           {listApartmentSetTower ? (
-            <Form.Item name="arraysIdsApartments" label="Elije un apartamento">
+            <Form.Item name="arraysIdsApartments" label="Elije una unidad">
               <Select
                 mode="multiple"
-                placeholder="Elije apartamentos"
+                placeholder="Elije unidades"
                 allowClear
               >
                 {listApartmentSetTower.map((_apartment) => (
@@ -226,8 +226,8 @@ const AdvertisementFormComponent = ({
     }
     // Si el "typeAdvertisement" es igual a tipo "usuarios"
     // Se visualizaran todas las torres que contengan el conjunto residencial en forma de un select
-    // Sí se escoge una torre se visualizaran todos los apartamentos que pertenezcan a esa torre en forma de un select
-    // Sí se escoge un apartamento se visualizaran todos los usuarios que pertenezcan a esa apartamento en forma de "checkbox"
+    // Sí se escoge una torre se visualizaran todos las unidades que pertenezcan a esa torre en forma de un select
+    // Sí se escoge una unidad se visualizaran todos los usuarios que pertenezcan a esa unidad en forma de "checkbox"
     if (typeAdvertisement === CONST_TYPE_ADVERTISEMENT.USERS.id)
       return (
         <>
@@ -236,7 +236,7 @@ const AdvertisementFormComponent = ({
           </Form.Item>
           <Form.Item
             name="type_tower_apart"
-            label="Elije una torre para los Apartamentos"
+            label="Elije una torre para las unidades"
             rules={[
               {
                 required: true,
@@ -258,9 +258,9 @@ const AdvertisementFormComponent = ({
           </Form.Item>
           {listApartmentSetTower && listApartmentSetTower.length > 0 ? (
             <>
-              <Form.Item name="type_apartment" label="Elije un apartamento">
+              <Form.Item name="type_apartment" label="Elije una unidad">
                 <Select
-                  placeholder="Elije un apartamento para el usuario"
+                  placeholder="Elije una unidad para el usuario"
                   allowClear
                   onChange={handlerChangeApartment}
                 >
@@ -296,7 +296,7 @@ const AdvertisementFormComponent = ({
               )}
             </>
           ) : (
-            <>No hay apartamentos establecidos para esta torre</>
+            <>No hay unidades establecidos para esta torre</>
           )}
         </>
       );

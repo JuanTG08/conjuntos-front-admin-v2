@@ -113,7 +113,7 @@ export const CONST_NAVBAR_USERS = [
             key: "complexAdminTowers",
             label: "Administración de torres",
             description:
-              "Aquí, puede supervisar y administrar eficazmente las operaciones de las torres y apartamentos.",
+              "Aquí, puede supervisar y administrar eficazmente las operaciones de las torres y unidades.",
             link: `/tower/${CONST_SYSTEM_NOT_PARAM_VIEW}/TowerList`,
             icon: (color) => (
               <SettingOutlined style={{ color, fontSize: "2em" }} />
@@ -270,7 +270,7 @@ export const CONST_NAVBAR_USERS = [
     ],
   },
   {
-    idRole: [CONST_USER_UEA.id, CONST_USER_UFP.id], // ENCARGADO DEL APARTAMENTO / USUARIO FAMILIAR PROPIETARIO
+    idRole: [CONST_USER_UEA.id, CONST_USER_UFP.id], // ENCARGADO DE LA UNIDAD / USUARIO FAMILIAR PROPIETARIO
     isLogin: true,
     role: "UPA/UEA",
     mainPage: "/dashboard",

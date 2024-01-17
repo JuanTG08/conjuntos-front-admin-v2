@@ -21,9 +21,9 @@ const AdvertisementCorrespondenceFormComponent = ({
   const [imagePreview, setImagePreview] = useState(null);
 
   const [typeCorrespondence, setTypeCorrespondence] = useState();
-  // Listado de apartamentos escogida por una torre seleccionada
+  // Listado de unidades escogida por una torre seleccionada
   const [listApartmentSetTower, setListApartmentSetTower] = useState([]);
-  // Listado de usuarios escogida por un apartamento seleccionado
+  // Listado de usuarios escogida por una unidad seleccionado
   const [listApartmentSetUsers, setListApartmentSetUsers] = useState([]);
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -89,8 +89,8 @@ const AdvertisementCorrespondenceFormComponent = ({
     if (listApartmentSetTower) form.setFieldValue("arraysIdsApartments", []);
   };
 
-  // Sí el input tipo select que contiene los apartamentos cambian
-  // Se establecerán los usuarios de los apartamentos en "listApartmentSetUsers"
+  // Sí el input tipo select que contiene las unidades cambian
+  // Se establecerán los usuarios de las unidades en "listApartmentSetUsers"
   const handlerChangeApartment = (value) => {
     const idSelected = parseInt(value);
     const apartment = listApartmentSetTower.find(
@@ -133,16 +133,16 @@ const AdvertisementCorrespondenceFormComponent = ({
           </Form.Item>
           <Form.Item
             name="arraysIdsApartments"
-            label="Elije un apartamento"
+            label="Elije una unidad"
             rules={[
               {
                 required: true,
-                message: "Por favor, elija un apartamento",
+                message: "Por favor, elija una unidad",
               },
             ]}
           >
             <Select
-              placeholder="Elije apartamentos"
+              placeholder="Elije unidades"
               showSearch
               optionFilterProp="children"
               filterOption={filterOption}
@@ -159,7 +159,7 @@ const AdvertisementCorrespondenceFormComponent = ({
         <>
           <Form.Item
             name="type_tower_apart"
-            label="Elije una torre para los Apartamentos"
+            label="Elije una torre para las unidades"
             rules={[
               {
                 required: true,
@@ -181,16 +181,16 @@ const AdvertisementCorrespondenceFormComponent = ({
           </Form.Item>
           <Form.Item
             name="arraysIdsApartments"
-            label="Elije un apartamento"
+            label="Elije una unidad"
             rules={[
               {
                 required: true,
-                message: "Por favor, elija un apartamento",
+                message: "Por favor, elija una unidad",
               },
             ]}
           >
             <Select
-              placeholder="Elije apartamentos"
+              placeholder="Elije unidades"
               onChange={handlerChangeApartment}
               showSearch
               optionFilterProp="children"

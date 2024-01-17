@@ -58,9 +58,9 @@ const ApartmentCreate = ({ idTower }) => {
   return (
     <>
       {contextHolder}
-      <HeaderPage title={"Crear apartamentos"} />
+      <HeaderPage title={"Crear unidades"} />
       <Typography.Title level={1} style={{ textAlign: "center" }}>
-        Crear Apartamento
+        Crear Unidad
       </Typography.Title>
       <Rendered />
       <ApartmentFormComponent

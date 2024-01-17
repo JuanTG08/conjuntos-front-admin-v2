@@ -36,7 +36,7 @@ const ApartmentComplexInformation = () => {
       },
       {
         key: "6",
-        label: "Apartamento",
+        label: "Unidad",
         children: apartment?.apartment_identifier_tower,
       },
     ],
@@ -59,7 +59,7 @@ const ApartmentComplexInformation = () => {
   };
   return (
     <>
-      <HeaderPage title={"Información de tu Apartamento"} />
+      <HeaderPage title={"Información de tu Unidad"} />
       <Descriptions
         title="Información General"
         layout="vertical"

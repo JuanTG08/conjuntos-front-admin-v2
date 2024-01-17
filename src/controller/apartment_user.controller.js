@@ -23,7 +23,7 @@ export class ApartmentUserController {
     }
   }
 
-  // Obtenemos el listado de usuarios para un apartamento en modo SSR
+  // Obtenemos el listado de usuarios para una unidad en modo SSR
   static async apiSSRGetListAll(cookie, idApartment) {
     try {
       idApartment = parseInt(idApartment);

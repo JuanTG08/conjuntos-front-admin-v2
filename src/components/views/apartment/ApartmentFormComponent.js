@@ -60,23 +60,23 @@ const ApartmentFormComponent = ({ onSubmit, valuesToForm }) => {
     >
       <Form.Item
         name="apartment_identifier_tower"
-        label="Identificación del apartamento"
+        label="Identificación de la unidad"
         rules={[
           {
             type: "string",
             len: [1, 64],
             message:
-              "El nombre del apartamento debe tener entre 1 y 64 caracteres",
+              "El nombre de la unidad debe tener entre 1 y 64 caracteres",
           },
           {
             required: true,
-            message: "El nombre del apartamento es requerido",
+            message: "El nombre de la unidad es requerido",
           },
         ]}
       >
         <Input />
       </Form.Item>
-      <Form.Item name="level_floor" label="Piso del apartamento">
+      <Form.Item name="level_floor" label="Piso de la unidad">
         <InputNumber style={{ width: "100%" }} />
       </Form.Item>
       <Form.Item name="number_bedrooms" label="Número total de habitaciones">
@@ -87,7 +87,7 @@ const ApartmentFormComponent = ({ onSubmit, valuesToForm }) => {
       </Form.Item>
       <Form.Item
         name="total_area"
-        label="Área del apartamento (Metros)"
+        label="Área de la unidad (Metros)"
         rules={[
           {
             required: true,
@@ -107,7 +107,7 @@ const ApartmentFormComponent = ({ onSubmit, valuesToForm }) => {
           {
             type: "object",
             required: true,
-            message: "La fecha de construcción del apartamento es requerida",
+            message: "La fecha de construcción de la unidad es requerida",
           },
         ]}
       >
@@ -121,11 +121,11 @@ const ApartmentFormComponent = ({ onSubmit, valuesToForm }) => {
       </Form.Item>
       <Form.Item
         name="id_status_apartment"
-        label="Estado del Apartamento"
+        label="Estado de la unidad"
         rules={[
           {
             required: true,
-            message: "Se necesita especificar un estado para el apartamento",
+            message: "Se necesita especificar un estado para la unidad",
           },
         ]}
       >

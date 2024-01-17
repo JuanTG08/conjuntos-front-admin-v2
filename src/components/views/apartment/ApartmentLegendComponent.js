@@ -36,18 +36,18 @@ const ApartmentLegendComponent = ({ tower, complex }) => {
       },
       {
         key: "7",
-        label: "Número máximo de apartamentos",
+        label: "Número máximo de unidades",
         children: tower?.number_apartments,
       },
       {
         key: "8",
-        label: "Total de apartamentos creados",
+        label: "Total de unidades creados",
         children: tower?._count?.apartment_complex,
       },
     ];
   };
 
-  return <Descriptions title="Información del apartamento" items={getData()} />;
+  return <Descriptions title="Información de la unidad" items={getData()} />;
 };
 
 export default ApartmentLegendComponent;

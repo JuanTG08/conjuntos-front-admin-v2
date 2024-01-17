@@ -82,7 +82,7 @@ const CorrespondenceList = ({ dataUser }) => {
       setCorrespondences([]);
       if (listCorrespondences.error || listCorrespondences.statusCode != 200)
         return messageApi.warning(
-          "No se encontró correspondencias para el apartamento seleccionado."
+          "No se encontró correspondencias para la unidad seleccionado."
         );
       setCorrespondences(listCorrespondences.payload);
     } catch (error) {

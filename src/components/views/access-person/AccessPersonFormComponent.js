@@ -11,7 +11,7 @@ const categoryAccess = [
   {
     id: 1,
     name: "Visitas de Invitados",
-    description: "Registrar amigos y familiares que visitan el apartamento.",
+    description: "Registrar amigos y familiares que visitan la unidad.",
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const categoryAccess = [
     id: 5,
     name: "Contratistas",
     description:
-      "Para dar acceso a contratistas que realicen trabajos en el apartamento.",
+      "Para dar acceso a contratistas que realicen trabajos en la unidad.",
   },
 ];
 

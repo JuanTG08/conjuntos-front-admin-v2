@@ -59,7 +59,7 @@ export const CONST_ADVERTISEMENT_TYPES = {
   },
   APARTMENT: {
     id: 4,
-    name: "Apartamento",
+    name: "Unidad",
   },
   USERS: {
     id: 5,

@@ -63,9 +63,9 @@ const ApartmentComplexEdit = ({ idApartment }) => {
   return (
     <>
       {contextHolder}
-      <HeaderPage title={"Editar Apartamento"} />
+      <HeaderPage title={"Editar Unidad"} />
       <Typography.Title level={1} style={{ textAlign: "center" }}>
-        Editar Apartamento
+        Editar Unidad
       </Typography.Title>
       <Rendered />
     </>

@@ -73,13 +73,13 @@ apiRoute.put(async (req, res) => {
         dataArraysIds.towers_ids = advModel.towers_ids;
         break;
       case CONST_TYPE_ADVERTISEMENT.APARTMENT.id:
-        // Validamos los datos del apartamento
+        // Validamos los datos de la unidad
         if (!dataVerifyArrays.apartments_ids)
           return res.json(
             Utils.Message(
               false,
               0,
-              "Datos erróneos, no se obtuvieron los IDs de los apartamentos"
+              "Datos erróneos, no se obtuvieron los IDs de las unidades"
             )
           );
         dataArraysIds.apartments_ids = advModel.apartments_ids;

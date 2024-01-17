@@ -88,7 +88,7 @@ const ViewReplyPQR = ({ pqr, idPQR }) => {
     },
     {
       key: "apartment",
-      label: "Apartamento",
+      label: "Unidad",
       children: pqr.apartment_complex.apartment_identifier_tower,
       span: 1,
     },

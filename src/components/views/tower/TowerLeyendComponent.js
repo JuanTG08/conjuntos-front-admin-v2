@@ -25,7 +25,7 @@ const TowerLeyendComponent = ({ complex }) => {
       },
       {
         key: "5",
-        label: "Numero máximo de apartamentos",
+        label: "Numero máximo de unidades",
         children: complex?.number_units,
       },
     ];

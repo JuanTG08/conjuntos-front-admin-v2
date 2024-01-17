@@ -31,7 +31,7 @@ const columns = [
     responsive: ["lg"],
   },
   {
-    title: "Total de apartamentos",
+    title: "Total de unidades",
     dataIndex: "totalApartment",
     onCell: 0,
     responsive: ["lg"],
@@ -110,7 +110,7 @@ const index = ({ idComplex }) => {
                       href={"/apartment/" + tower.id_tower + "/ApartmentList"}
                       className="btn btn-success"
                     >
-                      Apartamentos
+                      Unidades
                     </Link>
                   ),
                   icon: <EyeOutlined />,

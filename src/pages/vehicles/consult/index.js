@@ -133,7 +133,7 @@ const ViewVehiclesConsult = ({ _vehicles, _tower: towers }) => {
             optionFilterProp="children"
           />
           <Select
-            placeholder="Filtrar por apartamento"
+            placeholder="Filtrar por unidades"
             value={idApartmentFiltered}
             onChange={onChangeApartment}
             options={apartments?.map((apartment) => ({

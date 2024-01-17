@@ -16,7 +16,7 @@ const ConfigurationRoleCaption = ({ complex, tower, apartment, mainRole }) => {
       },
       {
         key: "apartmentName",
-        label: "Apartamento",
+        label: "Unidad",
         children: apartment?.apartment_identifier_tower || "No aplica",
       },
       {

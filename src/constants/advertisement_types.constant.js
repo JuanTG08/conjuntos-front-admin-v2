@@ -13,7 +13,7 @@ export const CONST_TYPE_ADVERTISEMENT = {
   },
   APARTMENT: {
     id: 4,
-    name: "Apartamentos",
+    name: "Unidades",
   },
   USERS: {
     id: 5,

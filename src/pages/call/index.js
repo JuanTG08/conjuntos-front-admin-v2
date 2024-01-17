@@ -233,14 +233,14 @@ const CallPage = ({ apartments, tokenCall, tokenUser }) => {
     setUsersToApartments([]);
     setSelectedApartment(null);
   };
- 
+
   return (
     <>
       <HeaderPage title={"Citofonía"} />
       <div className="w-full rounded-2xl flex justify-center items-center text-white shadow-lg">
         {!selectedApartment && (
           <Search
-            placeholder="Buscar apartamentos"
+            placeholder="Buscar unidades"
             onChange={(e) => setSearchValue(e.target.value)}
             size="large"
           />
@@ -260,7 +260,7 @@ const CallPage = ({ apartments, tokenCall, tokenUser }) => {
             <p className="font-bold text-xl">
               {selectedApartment
                 ? selectedApartment.name
-                : "Listado de Apartamentos"}
+                : "Listado de unidades"}
             </p>
           </div>
         </CardHeader>
@@ -294,7 +294,7 @@ const CallPage = ({ apartments, tokenCall, tokenUser }) => {
                 ))}
               </Listbox>
             ) : (
-              <Empty description="No hay usuarios para este apartamento" />
+              <Empty description="No hay usuarios para esta unidad" />
             )
           ) : (
             <List

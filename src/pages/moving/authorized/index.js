@@ -11,7 +11,7 @@ import React from "react";
 const columns = [
   {
     dataIndex: "apartment",
-    title: "Torre - Apartamento",
+    title: "Torre - Unidad",
   },
 ];
 
