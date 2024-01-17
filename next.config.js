@@ -63,6 +63,9 @@ const nextConfig = {
           department: {
             url: "/department_country",
           },
+          logs_book_incidents: {
+            url: "/logs_book_incidents",
+          },
           moving: {
             url: "/moving",
           },
@@ -205,7 +208,17 @@ const nextConfig = {
         files: {
           url: "/api/files",
           list_create: "/handdler-CR-files",
-          create_img_advertisement: "/handler-C-image-advertisement/",
+          set_image_compress: "/set-image-compress/",
+        },
+        logs_book_incidents: {
+          url: "/api/logs-book-incidents",
+          list_create: "/handler-CR-logs-book-incidents",
+          list_all: "/handler-R-logs-book-incidents-complex",
+          find_one: "/handler-R-logs-book-incidents/",
+        },
+        logs_book_severity: {
+          url: "/api/logs-book-severity",
+          list: "/handler-R-logs-book-severity",
         },
         moving: {
           url: "/api/moving",

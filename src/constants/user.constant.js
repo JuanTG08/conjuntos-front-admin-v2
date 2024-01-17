@@ -165,6 +165,12 @@ export const CONST_NAVBAR_USERS = [
           },
         ],
       },
+      {
+        key: "logBooks",
+        label: "Minuta",
+        link: "/log-book",
+        icon: (color) => <AuditOutlined style={{ color, fontSize: "2em" }} />,
+      },
     ],
   },
   {
@@ -365,6 +371,30 @@ export const CONST_NAVBAR_USERS = [
     role: "UEV",
     mainPage: "/dashboard",
     routesNavbar: [
+      {
+        key: "logs_book",
+        label: "Minuta",
+        children: [
+          {
+            key: "logsBookCreateIncident",
+            label: "Registrar",
+            description: "Realizar un registro de minuta",
+            link: "/log-book/new-log-incident",
+            icon: (color) => (
+              <MailOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+          {
+            key: "logsBook",
+            label: "Consultar minuta",
+            description: "Consultar los registros que he generado",
+            link: "/log-book/history",
+            icon: (color) => (
+              <ProfileOutlined style={{ color, fontSize: "2em" }} />
+            ),
+          },
+        ],
+      },
       {
         key: "correspondence",
         label: "Correspondencia",

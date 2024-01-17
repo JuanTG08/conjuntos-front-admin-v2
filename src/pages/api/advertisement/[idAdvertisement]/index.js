@@ -1,11 +1,8 @@
 import {
-  AdvertisementByComplexRouterGet,
-  AdvertisementByComplexRouterPost,
   AdvertisementIdRouter,
 } from "@/routes/advertisement.router";
 import { createRouter } from "next-connect";
 import multer from "multer";
-import { env } from "../../../../../next.config";
 import Utils from "@/helpers/helpers";
 import { AdvertisementModel } from "@/model/Advertisement.model";
 import { CONST_TYPE_ADVERTISEMENT } from "@/constants/advertisement_types.constant";

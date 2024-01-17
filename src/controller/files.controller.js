@@ -56,7 +56,7 @@ export class FilesController {
       formImageData.append("file", imageBlob, nameImage);
       formImageData.append("fileName", nameImage);
       const saveImage =
-        await FileFetching.postApiPrincipalSaveImageToAdvertisement(
+        await FileFetching.postApiPrincipalSaveImageCompress(
           formImageData,
           nameImage,
           cookie

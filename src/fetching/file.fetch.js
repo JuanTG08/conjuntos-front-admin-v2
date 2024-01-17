@@ -30,7 +30,7 @@ export class FileFetching {
     }
   }
 
-  static async postApiPrincipalSaveImageToAdvertisement(
+  static async postApiPrincipalSaveImageCompress(
     data,
     nameImage,
     tokenOuth
@@ -38,7 +38,7 @@ export class FileFetching {
     try {
       const url =
         URL_API_PRINCIPAL +
-        env._API.routes.files.create_img_advertisement +
+        env._API.routes.files.set_image_compress +
         nameImage;
       const res = await FetchUtils.sendPostAxios(url, data, tokenOuth);
       return res;
