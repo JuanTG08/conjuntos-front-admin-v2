@@ -4,7 +4,7 @@ import { FilesUtils } from "@/utils/files.utils";
 import { TokenUtils } from "@/utils/token.utils";
 import { Descriptions } from "antd";
 import React from "react";
-
+ 
 const LogBookOne = ({ minuta }) => {
   const items = [
     {
