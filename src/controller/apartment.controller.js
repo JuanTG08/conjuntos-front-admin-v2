@@ -4,6 +4,7 @@ import { ApartmentComplexModel } from "@/model/ApartmentComplex.model";
 import { env } from "../../next.config";
 import dayjs from "dayjs";
 import { CONST_SYSTEM_NOT_PARAM_VIEW } from "@/constants/system.constant";
+import { ComplexFetching } from "@/fetching/complex.fetch";
 
 export class ApartmentComplexController {
   static async apiGetListAll(req, res) {

@@ -180,4 +180,16 @@ export class ComplexFetching {
       return Utils.Message(true, 500, "Server Error");
     }
   }
+
+  static async getApiPrincipalListTowersApartments(tokenOuth) {
+    try {
+      const url =
+        URL_API_PRINCIPAL +
+        env._API.routes.complex.find_towers_apartments;
+      const res = await FetchUtils.send(url, { tokenOuth });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al obtener la información.");
+    }
+  }
 }

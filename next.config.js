@@ -193,6 +193,7 @@ const nextConfig = {
           list_create: "/handdler-CR-residential-complex",
           find_upd_del: "/handdler-RUD-residential-complex/",
           list_user: "/handler-R-residential-complex-user/",
+          find_towers_apartments: "/handler-R-tower-apartment",
         },
         country: {
           url: "/api/country",

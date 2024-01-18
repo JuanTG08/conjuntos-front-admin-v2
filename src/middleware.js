@@ -18,7 +18,7 @@ const middleware = async (req) => {
     user_information: { name: nameUserInformationCookie },
   } = env.server.cookies;
   // Establecemos el response y el redirect
-  const redirect = NextResponse.redirect(new URL("/", req.url));
+  const redirect = NextResponse.redirect(new URL("/login", req.url));
   const response = NextResponse.next();
   if (debug) console.log("Establece la función de eliminar");
   // Creamos función para eliminar las cookies
@@ -273,7 +273,7 @@ export const config = {
     "/api/moving/:path*",
     "/api/paths_to/:path*",
     "/api/pqrs/:path*",
-    "/api/pet/:path*", 
+    "/api/pet/:path*",
     "/api/roles/:path*",
     "/api/status/:path*",
     "/api/tower/:path*",

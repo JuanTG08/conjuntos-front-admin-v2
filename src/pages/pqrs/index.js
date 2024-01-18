@@ -93,9 +93,7 @@ const ViewListPQRSToAdmin = ({ listPending, listResolved }) => {
               pqr.pqrs_priority.id_pqrs_priority
             )}
             text={
-              <Link
-                href={`/pqrs/thread/${pqr.id_pqrs}/reply`}
-              >
+              <Link href={`/pqrs/thread/${pqr.id_pqrs}/reply`}>
                 {pqr.tracking_number} ({pqr.pqrs_priority.name})
               </Link>
             }
@@ -134,6 +132,7 @@ const ViewListPQRSToAdmin = ({ listPending, listResolved }) => {
                 style={{ width: "100%" }}
                 value={statusPQRSFilter}
                 onChange={onChangeStatusPQRS}
+                allowClear
                 options={[
                   {
                     value: CONST_PQRS_STATUS.PENDING.id,
@@ -165,6 +164,7 @@ const ViewListPQRSToAdmin = ({ listPending, listResolved }) => {
                 value={priorityPQRSFilter}
                 placeholder="Prioridad"
                 onChange={onChangePriorityPQRS}
+                size="large"
                 allowClear
                 options={[
                   {
@@ -201,7 +201,6 @@ const ViewListPQRSToAdmin = ({ listPending, listResolved }) => {
                     ),
                   },
                 ]}
-                size="large"
               />
             </div>
           </>

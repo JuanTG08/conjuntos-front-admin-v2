@@ -1,12 +1,21 @@
+import React, { useState } from "react";
 import TitlePage from "@/components/data/title";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { MovingController } from "@/controller/moving.controller";
 import { DateUtils } from "@/utils/date.utils";
 import { MovingUtils } from "@/utils/moving.utils";
 import { TokenUtils } from "@/utils/token.utils";
-import { Badge, Table, Tooltip } from "antd";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Card,
+  CardBody,
+  CardHeader,
+} from "@nextui-org/react";
+import { Badge, Select, Table, Tooltip, Typography } from "antd";
 import Link from "next/link";
-import React from "react";
+import { ComplexController } from "@/controller/complex.controller";
+const { Text } = Typography;
 
 const columns = [
   {
@@ -24,7 +33,11 @@ const columns = [
   },
 ];
 
-const ViewListMovingAdmin = ({ movings }) => {
+const ViewListMovingAdmin = ({ movings, towersAndApartments }) => {
+  const [idTower, setIdTower] = useState();
+  const [apartments, setApartments] = useState([]);
+  const [idApartment, setIdApartment] = useState();
+
   const getDataTable = () => {
     const dataTable = movings.map((moving) => {
       return {
@@ -74,10 +87,58 @@ const ViewListMovingAdmin = ({ movings }) => {
       />
     );
   };
+
+  const onChangeTower = (id) => {
+    const tower = towersAndApartments.find((tower) => tower.id_tower == id);
+    const apartments = tower.apartment_complex;
+    setApartments(apartments);
+    setIdTower(id);
+  };
+
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
   return (
     <>
       <HeaderPage title="Mudanzas" />
       <TitlePage level={1}>Mudanzas</TitlePage>
+      <Card>
+        <CardHeader>
+          <h4 className="font-bold text-large">Filtrar mudanzas</h4>
+        </CardHeader>
+        <CardBody className="w-full my-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+          <Select
+            value={idTower}
+            onChange={onChangeTower}
+            options={towersAndApartments.map((tower) => ({
+              value: tower.id_tower,
+              label: tower.tower_name,
+            }))}
+            size="large"
+            placeholder="Torre"
+            style={{ width: "100%" }}
+            showSearch
+            allowClear
+            filterOption={filterOption}
+            optionFilterProp="children"
+          />
+          <Select
+            value={idApartment}
+            onChange={setIdApartment}
+            options={apartments.map((apartment) => ({
+              value: apartment.id_apartment,
+              label: apartment.apartment_identifier_tower,
+            }))}
+            size="large"
+            placeholder="Apartamentos"
+            style={{ width: "100%" }}
+            showSearch
+            allowClear
+            filterOption={filterOption}
+            optionFilterProp="children"
+          />
+        </CardBody>
+      </Card>
       <DataTable />
     </>
   );
@@ -93,9 +154,18 @@ export async function getServerSideProps(context) {
     );
     if (getData.error || getData.statusCode != 200)
       throw new Error("No fue posible obtener los datos");
+    const getTowersAndApartments =
+      await ComplexController.apiSSRGetListTowerAndApartments(getCookies);
+    if (
+      getTowersAndApartments.error ||
+      getTowersAndApartments.statusCode != 200
+    )
+      throw new Error("No fue posible obtener los datos");
     return {
       props: {
         movings: getData.payload || [],
+        towersAndApartments:
+          getTowersAndApartments.payload?.tower_complex || [],
       },
     };
   } catch (error) {

@@ -17,7 +17,6 @@ import {
   Listbox,
   ListboxItem,
 } from "@nextui-org/react";
-import { AcmeLogo } from "@/components/logos/AcmeLogo";
 import Link from "next/link";
 import {
   LoginOutlined,
@@ -26,7 +25,7 @@ import {
 } from "@ant-design/icons";
 import { ChevronDownIcon } from "@/components/Icons/ChevronDownIcon";
 import { useUser } from "@/context/UserContext";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { NavbarUtils } from "@/utils/navbar.utils";
 import { useRouter } from "next/router";
 import Utils from "@/helpers/helpers";
@@ -52,15 +51,6 @@ export function MenuNavBarPages({ dataUser }) {
   };
   const onClose = () => {
     setOpen(false);
-  };
-
-  const signInGoogle = async () => {
-    try {
-      const responseSignIn = await signIn("google", {
-        callbackUrl: "/dashboard",
-        redirect: false,
-      });
-    } catch (error) {}
   };
 
   let indColor = 0;
@@ -259,7 +249,8 @@ export function MenuNavBarPages({ dataUser }) {
               variant="flat"
               startContent={<LoginOutlined />}
               radius="sm"
-              onPress={signInGoogle}
+              as={Link}
+              href="/login"
             >
               Iniciar Sesión
             </Button>

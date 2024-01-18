@@ -60,6 +60,7 @@ export const authOptions = (req, res) => ({
   },
   pages: {
     error: "/auth/error",
+    signIn: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
 });

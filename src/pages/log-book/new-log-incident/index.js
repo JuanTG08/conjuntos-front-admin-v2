@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import React from "react";
 
 const NewLogIncident = ({ severities }) => {
+  console.log(severities)
   const [messageApi, contextHolder] = message.useMessage();
   const router = useRouter();
   const onSubmit = async (values, image) => {
@@ -52,7 +53,7 @@ export async function getServerSideProps(context) {
       throw new Error("No fue posible obtener los datos");
     return {
       props: {
-        minuta: getData.payload || [],
+        severities: getData.payload || [],
       },
     };
   } catch (error) {

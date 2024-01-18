@@ -43,6 +43,7 @@ const HeroContactUs = () => {
               alt="Hero Illustration"
               loading="eager"
               placeholder="blur"
+              priority
             />
           </div>
         </div>

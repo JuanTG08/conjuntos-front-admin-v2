@@ -468,6 +468,17 @@ export class ComplexController {
     }
   }
 
+  static async apiSSRGetListTowerAndApartments(cookie) {
+    try {
+      const listTowersApartments =
+        await ComplexFetching.getApiPrincipalListTowersApartments(cookie);
+      return listTowersApartments;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
   static viewGetDataToForm(data = null) {
     const valuesForm = {
       complex_name: data?.complex_name ? data.complex_name : "",
