@@ -469,7 +469,7 @@ export const CONST_NAVBAR_USERS = [
         key: "serviceAndPricing",
         label: "Servicios y Precios",
         description: "Nuestro catalogo de precios para nuestros servicios.",
-        link: "/service-and-pricing",
+        link: "/login",
         icon: (color) => (
           <ShoppingOutlined style={{ color, fontSize: "2em" }} />
         ),

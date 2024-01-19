@@ -54,6 +54,9 @@ export function MenuNavBarPages({ dataUser }) {
   };
 
   let indColor = 0;
+
+  if (!dataUser.session) return (<></>)
+
   return (
     <Navbar isBordered>
       <NavbarContent className="sm:hidden" justify="start">

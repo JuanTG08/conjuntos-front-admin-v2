@@ -54,7 +54,7 @@ const RegisterUser = ({
             >
               Iniciar Sesión
             </Button>,
-            <LinkUI as={Link} href="/" key="home">
+            <LinkUI as={Link} href="/login" key="home">
               Ir a la Página Principal
             </LinkUI>,
           ]}

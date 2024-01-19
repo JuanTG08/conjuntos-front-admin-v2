@@ -23,10 +23,12 @@ const App = ({ Component, pageProps, props }) => {
         <NextUIProvider>
           <ConfigProvider theme={themeConfig} locale={esES}>
             <Layout style={{ minHeight: "100vh" }}>
-              <MenuNavBarPages
-                dataUser={dataUser}
-                navBarData={dataUser.navbar}
-              />
+              {dataUser?.session && (
+                <MenuNavBarPages
+                  dataUser={dataUser}
+                  navBarData={dataUser?.navbar}
+                />
+              )}
               <Content
                 style={{
                   margin: "24px 16px",
@@ -37,13 +39,15 @@ const App = ({ Component, pageProps, props }) => {
               >
                 <Component {...pageProps} dataUser={props} />
               </Content>
-              <Footer>
-                <FooterPage
-                  navigation={
-                    NavbarUtils.getNavbarUser(dataUser.idRole).routesNavbar
-                  }
-                />
-              </Footer>
+              {dataUser.session && (
+                <Footer>
+                  <FooterPage
+                    navigation={
+                      NavbarUtils.getNavbarUser(dataUser.idRole).routesNavbar
+                    }
+                  />
+                </Footer>
+              )}
             </Layout>
           </ConfigProvider>
         </NextUIProvider>

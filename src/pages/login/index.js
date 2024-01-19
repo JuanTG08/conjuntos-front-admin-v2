@@ -26,36 +26,32 @@ const ViewLogin = () => {
   return (
     <>
       <HeaderPage title="Iniciar Sesión" />
-      <Card>
-        <CardBody>
-          <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4">
-            <div className="col-span-6 md:col-span-6">
-              <Image
-                alt="Album cover"
-                className="p-4"
-                width="100%"
-                src="/svg/login.svg"
-              />
-            </div>
-            <div className="col-span-6 md:col-span-6 flex flex-col items-center justify-center gap-4">
-              <h1 className="text-4xl font-bold leading-snug tracking-tight text-gray-800 lg:text-4xl lg:leading-tight xl:text-6xl xl:leading-tight">
-                Iniciar Sesión
-              </h1>
-              <Button
-                color="primary"
-                variant="bordered"
-                startContent={<GoogleIcon />}
-                radius="sm"
-                size="lg"
-                onPress={signInGoogle}
-                className="w-full"
-              >
-                Iniciar Sesión con Google
-              </Button>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+      <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4">
+        <div className="col-span-6 md:col-span-6">
+          <Image
+            alt="Album cover"
+            className="p-4"
+            width="100%"
+            src="/svg/login.svg"
+          />
+        </div>
+        <div className="col-span-6 md:col-span-6 flex flex-col items-center justify-center gap-4">
+          <h1 className="text-4xl font-bold leading-snug tracking-tight text-gray-800 lg:text-4xl lg:leading-tight xl:text-6xl xl:leading-tight">
+            Iniciar Sesión
+          </h1>
+          <Button
+            color="primary"
+            variant="bordered"
+            startContent={<GoogleIcon />}
+            radius="sm"
+            size="lg"
+            onPress={signInGoogle}
+            className="w-full"
+          >
+            Iniciar Sesión con Google
+          </Button>
+        </div>
+      </div>
     </>
   );
 };
