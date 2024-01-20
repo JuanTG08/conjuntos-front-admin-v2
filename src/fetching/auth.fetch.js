@@ -40,6 +40,7 @@ export class AuthFetching {
     try {
       const url = URL_API_PRINCIPAL + env._API.routes.auth.login;
       console.log("Auth fetch postApiLoginWeb", url);
+      console.log("Auth fetch postApiLoginWeb data", data);
       const res = await FetchUtils.send(url, {
         method: "POST",
         body: data,
