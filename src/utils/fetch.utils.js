@@ -15,7 +15,7 @@ export class FetchUtils {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
-          application_type: env._API.request.application_type,
+          "application_type": env._API.request.application_type,
         },
         timeout,
       };
@@ -25,8 +25,6 @@ export class FetchUtils {
         )}`;
       if (opt?.method) options.method = opt.method;
       if (opt?.body) options.body = JSON.stringify(opt.body);
-      if (opt?.formData)
-        options.headers["Content-Type"] = "multipart/form-data; boundary=";
       if (opt?.headers) options.headers = opt.headers;
       console.log("options fetch utils", options);
       const response = await fetch(url, options);
