@@ -1,15 +1,12 @@
-import { getSession, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { getSession } from "next-auth/react";
 
 export default function Home() {
-  const { data: session } = useSession();
-  useEffect(() => console.log(session), [session]);
   return <></>;
 }
 
 export async function getServerSideProps(context) {
-  /*
   const token = await getSession(context);
+  console.log("Inicio aplicativo token", token);
   if (token)
     return {
       redirect: {
@@ -23,7 +20,7 @@ export async function getServerSideProps(context) {
         destination: "/login",
         permanent: false,
       },
-    };*/
+    };
   return {
     props: {},
   };
