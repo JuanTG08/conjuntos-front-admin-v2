@@ -55,6 +55,8 @@ export class AuthFetching {
   static async postApiPrincipalPreLoginWeb(data) {
     try {
       const url = URL_API_PRINCIPAL + env._API.routes.auth.pre_login;
+      console.log("Auth fetch postApiPrincipalPreLoginWeb", url);
+      console.log("Auth fetch postApiPrincipalPreLoginWeb data", data);
       const res = await FetchUtils.send(url, {
         method: "POST",
         body: data,

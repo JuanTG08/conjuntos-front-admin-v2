@@ -15,9 +15,8 @@ export class FetchUtils {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
-          "application_type": env._API.request.application_type,
+          application_type: env._API.request.application_type,
         },
-        timeout,
       };
       if (opt?.tokenOuth)
         options.headers.authorization = `Bearer ${JSON.stringify(
@@ -32,7 +31,7 @@ export class FetchUtils {
       // Realizamos un middleware para validar los datos de la respuesta
       return res;
     } catch (error) {
-      console.log(error);
+      console.log("Error en el fetch Utils catch:", error);
       return Utils.Message(true, 500, "Error");
     }
   }
