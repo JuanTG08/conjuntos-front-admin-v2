@@ -23,8 +23,10 @@ export const authOptions = (req, res) => ({
     async signIn({ user, account, profile }) {
       try {
         const getTokens = await AuthController.apiPostPreLoginUser(user.email);
+        console.log("NextAuth | validación de correo electronico:", getTokens);
         if (getTokens.error || getTokens.statusCode != 200)
           throw new Error("Usuario no existente");
+        console.log("NextAuth | indicamos que 'true' y seguiria en el middleware.")
         return true;
       } catch (error) {
         console.log(error);

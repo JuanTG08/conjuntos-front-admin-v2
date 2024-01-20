@@ -8,6 +8,7 @@ import { AuthController } from "./controller/auth.controller";
 // This function can be marked `async` if using `await` inside
 
 const middleware = async (req) => {
+  console.log("Llegamos al middleware");
   // Debug
   const debug = process.env.MODE_DEBUG || false;
   if (debug) console.log("Establece las variables");
@@ -244,6 +245,7 @@ const middleware = async (req) => {
 export default withAuth(middleware, {
   callbacks: {
     authorized: ({ token }) => {
+      console.log("Middleware - withAuth | Aqui esta el token:", token);
       return true;
     },
   },
