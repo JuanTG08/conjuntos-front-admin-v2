@@ -8,7 +8,6 @@ import { AuthController } from "./controller/auth.controller";
 // This function can be marked `async` if using `await` inside
 
 const middleware = async (req) => {
-  console.log("Llegamos al middleware");
   // Debug
   const debug = process.env.MODE_DEBUG || false;
   if (debug) console.log("Establece las variables");
@@ -160,43 +159,8 @@ const middleware = async (req) => {
         "Validamos que no existan los 3 tokens cookieMainRole, cookieUserAccessPaths, cookieUserInformation"
       );
     // Validamos la existencia de los dos tokens
-    if (
-      !cookieMainRole ||
-      !cookieUserAccessPaths ||
-      !cookieUserInformation ||
-      !cookieMainRole?.value ||
-      !cookieUserAccessPaths?.value ||
-      !cookieUserInformation?.value ||
-      cookieMainRole?.value == "null" ||
-      cookieUserAccessPaths?.value == "null" ||
-      cookieUserInformation?.value == "null"
-    ) {
-      if (!userAuth0) throw new Error("No hay cookies para establecer");
-      const getTokens = await AuthController.apiPostLoginUser(userAuth0.email);
-      if (debug)
-        console.log(
-          "Re intentamos obtener los tokens del servidor y los validamos:",
-          getTokens
-        );
-      if (debug) console.log("Tokens obtenidos al re intentar:", getTokens);
-      if (getTokens.error || getTokens.statusCode != 200)
-        throw new Error("Usuario no existente");
-      const [cookieMR, cookieUI, cookieUAP] = getTokens.payload;
-      if (debug) console.log("Establecemos tokens al cliente");
-      cookieMainRole = {
-        name: nameMainRoleCookie,
-        value: cookieMR,
-      };
-      cookieUserInformation = {
-        name: nameUserInformationCookie,
-        value: cookieUI,
-      };
-      cookieUserAccessPaths = {
-        name: nameUserAccessPathsCookie,
-        value: cookieUAP,
-      };
-      setCookies(cookieMR, cookieUAP, cookieUI);
-    }
+    if (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation)
+      throw new Error("No hay cookies");
     if (debug)
       console.log(
         "Validamos las rutas que no necesiten token y que se redireccionen al dashboard"
@@ -280,7 +244,6 @@ const middleware = async (req) => {
 export default withAuth(middleware, {
   callbacks: {
     authorized: ({ token }) => {
-      console.log("Middleware - withAuth | Aqui esta el token:", token);
       return true;
     },
   },

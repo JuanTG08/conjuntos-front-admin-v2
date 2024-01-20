@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 const signInGoogle = async () => {
   try {
     const responseSignIn = await signIn("google", {
-      callbackUrl: "/",
+      callbackUrl: "/dashboard",
       redirect: false,
     });
   } catch (error) {}
@@ -47,7 +47,7 @@ const ViewLogin = () => {
               width={128}
               height={41}
               priority
-            /> 
+            />
           </figure>
           <div className="flex flex-col items-center justify-center flex-grow flex-shrink gap-7">
             <div className="p-0 m-0">

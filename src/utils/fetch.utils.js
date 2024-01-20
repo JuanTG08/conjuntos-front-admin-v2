@@ -17,6 +17,7 @@ export class FetchUtils {
           "Access-Control-Allow-Origin": "*",
           application_type: env._API.request.application_type,
         },
+        timeout,
       };
       if (opt?.tokenOuth)
         options.headers.authorization = `Bearer ${JSON.stringify(
@@ -24,14 +25,15 @@ export class FetchUtils {
         )}`;
       if (opt?.method) options.method = opt.method;
       if (opt?.body) options.body = JSON.stringify(opt.body);
+      if (opt?.formData)
+        options.headers["Content-Type"] = "multipart/form-data; boundary=";
       if (opt?.headers) options.headers = opt.headers;
-      console.log("options fetch utils", options);
       const response = await fetch(url, options);
       const res = response.json();
       // Realizamos un middleware para validar los datos de la respuesta
       return res;
     } catch (error) {
-      console.log("Error en el fetch Utils catch:", error);
+      console.log(error);
       return Utils.Message(true, 500, "Error");
     }
   }

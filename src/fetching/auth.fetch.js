@@ -1,7 +1,6 @@
 import Utils from "@/helpers/helpers";
 import { env } from "../../next.config";
 import { FetchUtils } from "@/utils/fetch.utils";
-import axios from "axios";
 
 const URL_API_PRINCIPAL = env._API.url + env._API.routes.auth.url;
 const URL_API_LOCAL =
@@ -37,22 +36,15 @@ export class AuthFetching {
     }
   }
 
-  static async postApiLoginWeb(data) {
+  static async postApiLoginWeb(data, tokenOuth) {
     try {
       const url = URL_API_PRINCIPAL + env._API.routes.auth.login;
-      console.log("Auth fetch postApiLoginWeb", url);
-      console.log("Auth fetch postApiLoginWeb data", data);
-      /*
       const res = await FetchUtils.send(url, {
         method: "POST",
         body: data,
-      });*/
-      const res = await axios.post(url, data, {
-        headers: {
-          "application_type": "application/web",
-        }
+        tokenOuth,
       });
-      return res.data;
+      return res;
     } catch (error) {
       console.log(error);
       return Utils.Message(true, 500, "Server Error");
@@ -62,8 +54,6 @@ export class AuthFetching {
   static async postApiPrincipalPreLoginWeb(data) {
     try {
       const url = URL_API_PRINCIPAL + env._API.routes.auth.pre_login;
-      console.log("Auth fetch postApiPrincipalPreLoginWeb", url);
-      console.log("Auth fetch postApiPrincipalPreLoginWeb data", data);
       const res = await FetchUtils.send(url, {
         method: "POST",
         body: data,
