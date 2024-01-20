@@ -28,6 +28,7 @@ export class FetchUtils {
       if (opt?.formData)
         options.headers["Content-Type"] = "multipart/form-data; boundary=";
       if (opt?.headers) options.headers = opt.headers;
+      console.log("options fetch utils", options);
       const response = await fetch(url, options);
       const res = response.json();
       // Realizamos un middleware para validar los datos de la respuesta
