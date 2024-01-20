@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 const signInGoogle = async () => {
   try {
     const responseSignIn = await signIn("google", {
-      callbackUrl: "/dashboard",
+      callbackUrl: "/",
       redirect: false,
     });
   } catch (error) {}
