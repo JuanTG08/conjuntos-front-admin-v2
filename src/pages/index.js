@@ -5,6 +5,7 @@ export default function Home() {
 }
 
 export async function getServerSideProps(context) {
+  /*
   const token = await getSession(context);
   if (token)
     return {
@@ -19,7 +20,7 @@ export async function getServerSideProps(context) {
         destination: "/login",
         permanent: false,
       },
-    };
+    };*/
   return {
     props: {},
   };
