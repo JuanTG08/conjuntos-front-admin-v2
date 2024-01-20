@@ -41,10 +41,13 @@ export class AuthFetching {
       const url = URL_API_PRINCIPAL + env._API.routes.auth.login;
       console.log("Auth fetch postApiLoginWeb", url);
       console.log("Auth fetch postApiLoginWeb data", data);
+      /*
       const res = await FetchUtils.send(url, {
         method: "POST",
         body: data,
-      });
+      });*/
+      const res = await FetchUtils.sendPostAxios(url, data);
+      console.log("response del res:", res);
       return res;
     } catch (error) {
       console.log(error);
