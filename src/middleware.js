@@ -172,12 +172,12 @@ const middleware = async (req) => {
       cookieUserInformation?.value == "null"
     ) {
       if (!userAuth0) throw new Error("No hay cookies para establecer");
+      const getTokens = await AuthController.apiPostLoginUser(userAuth0.email);
       if (debug)
         console.log(
           "Re intentamos obtener los tokens del servidor y los validamos:",
           getTokens
         );
-      const getTokens = await AuthController.apiPostLoginUser(userAuth0.email);
       if (debug) console.log("Tokens obtenidos al re intentar:", getTokens);
       if (getTokens.error || getTokens.statusCode != 200)
         throw new Error("Usuario no existente");
