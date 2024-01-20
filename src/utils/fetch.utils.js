@@ -15,18 +15,25 @@ export class FetchUtils {
         headers: {
           "'Content-Type'": "application/json",
           "'Access-Control-Allow-Origin'": "*",
-          application_type: env._API.request.application_type,
+          application_type: "application/web",
         },
       };
-      if (opt?.tokenOuth)
-        options.headers.authorization = `Bearer ${JSON.stringify(
-          opt.tokenOuth
-        )}`;
-      if (opt?.method) options.method = opt.method;
-      if (opt?.body) options.body = JSON.stringify(opt.body);
-      if (opt?.headers) options.headers = opt.headers;
       console.log("options fetch utils", options);
-      const response = await fetch(url, options);
+      const response = await fetch(url, {
+        method: opt?.method || "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          application_type: env._API.request.application_type,
+          authorization:
+            opt?.tokenOuth && `Bearer ${JSON.stringify(opt.tokenOuth)}`,
+          ...opt?.headers,
+        },
+        body: opt?.body ? JSON.stringify(opt.body) : null,
+      });
       const res = response.json();
       // Realizamos un middleware para validar los datos de la respuesta
       return res;
