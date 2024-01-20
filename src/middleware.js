@@ -160,9 +160,23 @@ const middleware = async (req) => {
         "Validamos que no existan los 3 tokens cookieMainRole, cookieUserAccessPaths, cookieUserInformation"
       );
     // Validamos la existencia de los dos tokens
-    if (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation) {
+    if (
+      !cookieMainRole ||
+      !cookieUserAccessPaths ||
+      !cookieUserInformation ||
+      !cookieMainRole?.value ||
+      !cookieUserAccessPaths?.value ||
+      !cookieUserInformation?.value ||
+      cookieMainRole?.value == "null" ||
+      cookieUserAccessPaths?.value == "null" ||
+      cookieUserInformation?.value == "null"
+    ) {
       if (!userAuth0) throw new Error("No hay cookies para establecer");
-      if (debug) console.log("Re intentamos obtener los tokens del servidor y los validamos:", getTokens);
+      if (debug)
+        console.log(
+          "Re intentamos obtener los tokens del servidor y los validamos:",
+          getTokens
+        );
       const getTokens = await AuthController.apiPostLoginUser(userAuth0.email);
       if (debug) console.log("Tokens obtenidos al re intentar:", getTokens);
       if (getTokens.error || getTokens.statusCode != 200)
