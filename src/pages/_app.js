@@ -31,10 +31,9 @@ const App = ({ Component, pageProps, props }) => {
               )}
               <Content
                 style={{
-                  margin: "24px 16px",
-                  padding: 24,
                   minHeight: 360,
                   background: colorBgContainer,
+                  padding: dataUser?.session ? 14 : 0,
                 }}
               >
                 <Component {...pageProps} dataUser={props} />
