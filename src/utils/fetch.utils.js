@@ -13,8 +13,8 @@ export class FetchUtils {
         cache: "no-cache",
         credentials: "same-origin",
         headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          'Content-Type': "application/json",
+          'Access-Control-Allow-Origin': "*",
           application_type: env._API.request.application_type,
         },
       };
