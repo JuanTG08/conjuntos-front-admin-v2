@@ -36,13 +36,13 @@ export class AuthFetching {
     }
   }
 
-  static async postApiLoginWeb(data, tokenOuth) {
+  static async postApiLoginWeb(data) {
     try {
       const url = URL_API_PRINCIPAL + env._API.routes.auth.login;
+      console.log("Auth fetch postApiLoginWeb", url);
       const res = await FetchUtils.send(url, {
         method: "POST",
         body: data,
-        tokenOuth,
       });
       return res;
     } catch (error) {
