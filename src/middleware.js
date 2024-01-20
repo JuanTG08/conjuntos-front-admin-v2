@@ -160,8 +160,29 @@ const middleware = async (req) => {
         "Validamos que no existan los 3 tokens cookieMainRole, cookieUserAccessPaths, cookieUserInformation"
       );
     // Validamos la existencia de los dos tokens
-    if (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation)
-      throw new Error("No hay cookies");
+    if (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation) {
+      if (!userAuth0) throw new Error("No hay cookies para establecer");
+      if (debug) console.log("Re intentamos obtener los tokens del servidor y los validamos:", getTokens);
+      const getTokens = await AuthController.apiPostLoginUser(userAuth0.email);
+      if (debug) console.log("Tokens obtenidos al re intentar:", getTokens);
+      if (getTokens.error || getTokens.statusCode != 200)
+        throw new Error("Usuario no existente");
+      const [cookieMR, cookieUI, cookieUAP] = getTokens.payload;
+      if (debug) console.log("Establecemos tokens al cliente");
+      cookieMainRole = {
+        name: nameMainRoleCookie,
+        value: cookieMR,
+      };
+      cookieUserInformation = {
+        name: nameUserInformationCookie,
+        value: cookieUI,
+      };
+      cookieUserAccessPaths = {
+        name: nameUserAccessPathsCookie,
+        value: cookieUAP,
+      };
+      setCookies(cookieMR, cookieUAP, cookieUI);
+    }
     if (debug)
       console.log(
         "Validamos las rutas que no necesiten token y que se redireccionen al dashboard"
