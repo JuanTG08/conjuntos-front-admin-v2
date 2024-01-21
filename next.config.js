@@ -1,10 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // reactStrictMode: true, // El modo esticto se debe desactivar cuando salga a producción
+  // reactStrictMode: true, // El modo estricto se debe desactivar cuando salga a producción
   skipTrailingSlashRedirect: true,
   output: "standalone",
   images: {
     domains: ["picsum.photos", "localhost"],
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+          // Ajusta el tamaño máximo de los encabezados según tus necesidades
+          {
+            key: "Access-Control-Expose-Headers",
+            value: "Content-Length, Content-Range",
+          },
+        ],
+      },
+    ];
   },
   env: {
     server: {
