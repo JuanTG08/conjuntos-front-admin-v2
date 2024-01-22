@@ -51,13 +51,16 @@ export class FetchUtils {
           ...authorization,
         },
       });
+      logs.push(" --- sendPostAxios res.status :", res.status);
       if (res.status != 200)
         return Utils.Message(true, 500, "Error en el servidor");
       return res.data;
     } catch (error) {
       console.log(error);
-      logs.push(" --- sendPostAxios Envio :", error.message)
-      return Utils.Message(true, 500, "Error");
+      logs.push(" --- sendPostAxios Envio :", error.message);
+      return Utils.Message(true, 500, "Error", {
+        logs,
+      });
     }
   }
 
