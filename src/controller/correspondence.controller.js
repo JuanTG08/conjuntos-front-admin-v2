@@ -49,6 +49,7 @@ export class CorrespondenceController {
   }
 
   static async viewSubmitNew(values, image) {
+    const logs = [];
     try {
       const data = {
         title: values.title,
@@ -77,6 +78,12 @@ export class CorrespondenceController {
         default:
           return Utils.Message(true, 500, "Datos erróneos");
       }
+      logs.push(
+        `viewSubmitNew Establecemos los datos imagen: ${!!image}`,
+        `viewSubmitNew Establecemos los datos correspondencia: ${JSON.stringify(
+          data
+        )}`
+      );
       // Enviamos los datos para crear la correspondencia con sus respectiva segmentación
       const formData = new FormData();
       formData.append("file", image);
@@ -85,10 +92,23 @@ export class CorrespondenceController {
         formData, // data,
         CONST_SYSTEM_NOT_PARAM_VIEW
       );
+      logs.push(
+        `viewSubmitNew Enviamos los datos: ${JSON.stringify(
+          sendCorrespondence
+        )}`,
+        `viewSubmitNew Obtenemos los datos del payload: ${JSON.stringify(
+          sendCorrespondence.payload
+        )}`
+      );
+      sendCorrespondence.payload = {
+        ...sendCorrespondence.payload,
+        logs,
+      }
       return sendCorrespondence;
     } catch (error) {
       console.log(error);
-      return Utils.Message(true, 500, "Error al procesar");
+      logs.push(`viewSubmitNew Catch: ${error}`);
+      return Utils.Message(true, 500, "Error al procesar", logs);
     }
   }
 

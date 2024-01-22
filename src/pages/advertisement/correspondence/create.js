@@ -15,9 +15,13 @@ const CorrespondenceCreate = () => {
   const [dataComplex, setDataComplex] = useState();
   // Datos de las torres para los campos dependiendo del tipo
   const [listDataTower, setListDataTower] = useState([]);
+
+  const [errors, setErrors] = useState([]);
+
   useEffect(() => {
     fetchListAdvertisementTypesWithComplex();
   }, []);
+
   const fetchListAdvertisementTypesWithComplex = async () => {
     try {
       const list =
@@ -35,14 +39,31 @@ const CorrespondenceCreate = () => {
 
   const onSubmit = async (values, image) => {
     try {
+      setErrors((prevData) => [
+        ...prevData,
+        `Cargamos los datos ${JSON.stringify(values)}`,
+        `Cargamos la imagen: ${!!image}`,
+      ]);
       const send = await CorrespondenceController.viewSubmitNew(values, image);
+      setErrors((prevData) => [
+        ...prevData,
+        `Enviamos y recibimo una respuesta ${JSON.stringify(send)}`,
+        `Obtenemos los valores del payload ${JSON.stringify(send.payload)}`,
+      ]);
       if (send.error || send.statusCode != 200)
         throw new Error("No fue posible crear la correspondencia");
-      messageApi.success("Correspondencia creada con éxito", 1, () =>
+      messageApi.success(
+        "Correspondencia creada con éxito",
+        1 /*, () =>
         router.push("/advertisement/correspondence/list-admin")
+      */
       );
       return true;
     } catch (error) {
+      setErrors((prevData) => [
+        ...prevData,
+        `Error Catch onSubmit ${error.message}`,
+      ]);
       messageApi.warning("No fue posible crear la correspondencia");
       return false;
     }
@@ -66,6 +87,12 @@ const CorrespondenceCreate = () => {
       {contextHolder}
       <HeaderPage title={"Crear Correspondencia"} />
       <TitlePage level={2}>Crear Correspondencia</TitlePage>
+      <div className="bg-red-500 p-3 m-3">
+        {errors.map((error, index) => (
+          <h4 key={index} className="mb-5">{error}</h4>
+        ))}
+      </div>
+
       <RenderedForm />
     </>
   );

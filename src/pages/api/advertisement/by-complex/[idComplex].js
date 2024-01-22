@@ -1,10 +1,6 @@
-import {
-  AdvertisementByComplexRouterGet,
-  AdvertisementByComplexRouterPost,
-} from "@/routes/advertisement.router";
+import { AdvertisementByComplexRouterGet } from "@/routes/advertisement.router";
 import { createRouter } from "next-connect";
 import multer from "multer";
-import { env } from "../../../../../next.config";
 import Utils from "@/helpers/helpers";
 import { AdvertisementModel } from "@/model/Advertisement.model";
 import { CONST_TYPE_ADVERTISEMENT } from "@/constants/advertisement_types.constant";
@@ -25,6 +21,7 @@ apiRoute.get(async (req, res) => {
   new AdvertisementByComplexRouterGet(req, res);
 });
 apiRoute.post(async (req, res) => {
+  const logs = [];
   try {
     const cookie = TokenUtils.destructureAllCookiesClient({ req });
     let idComplex = parseInt(req.query?.idComplex);
@@ -131,6 +128,7 @@ apiRoute.post(async (req, res) => {
       category_adv: advModel.category_adv,
     };
     const image = req?.file; // Obtenemos la imagen
+    logs.push(`Complex Create setImage: ${!!image}`);
     if (image) {
       if (!image.mimetype.startsWith("image/"))
         return res
@@ -141,6 +139,12 @@ apiRoute.post(async (req, res) => {
     const sendAdvertisement = await AdvertisementFetching.postApiPrincipalNew(
       dataSendAdvertisement,
       cookie
+    );
+    logs.push(
+      `Complex Create sendAdvertisement: ${JSON.stringify(sendAdvertisement)}`,
+      `Complex Create sendAdvertisement.payload: ${JSON.stringify(
+        sendAdvertisement.payload
+      )}`
     );
     if (sendAdvertisement.error || sendAdvertisement.statusCode != 200)
       return res.json(sendAdvertisement);
@@ -157,9 +161,9 @@ apiRoute.post(async (req, res) => {
       sendAdvertisement.payload.id_advertisement,
       cookie
     );
-    return res.json(Utils.Message(false, 200, "Ok"));
+    return res.json(Utils.Message(false, 200, "Ok", { logs }));
   } catch (error) {
-    console.log(error);
+    logs.push(`Complex Create API Catch: ${error.message}`);
     return res.json(Utils.Message(true, 500, "Error al procesar"));
   }
 });
