@@ -75,9 +75,7 @@ const viewOneAccessPerson = ({ accessPerson }) => {
       key: "8",
       label: "Horario de ingreso",
       children: accessPerson?.start_hour_day
-        ? DateUtils.getHourInLettersSpanish(
-            DateUtils.getDateDependMyUTC(accessPerson?.start_hour_day)
-          )
+        ? DateUtils.getHourInLettersSpanish(accessPerson?.start_hour_day)
         : "",
       span: 2,
     },
@@ -85,9 +83,7 @@ const viewOneAccessPerson = ({ accessPerson }) => {
       key: "9",
       label: "Hora de salida",
       children: accessPerson?.end_hour_day
-        ? DateUtils.getHourInLettersSpanish(
-            DateUtils.getDateDependMyUTC(accessPerson?.end_hour_day)
-          )
+        ? DateUtils.getHourInLettersSpanish(accessPerson?.end_hour_day)
         : "",
       span: 2,
     },
