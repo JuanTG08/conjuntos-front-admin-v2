@@ -60,7 +60,9 @@ export class AdvertisementFetching {
         idComplex;
       logs.push(` -- postApiLocalNew url ${url}`);
       const res = await FetchUtils.sendPostAxios(url, data);
-      logs.push(` -- postApiLocalNew response sendPostAxios ${res}`);
+      logs.push(
+        ` -- postApiLocalNew response sendPostAxios ${JSON.stringify(res)}`
+      );
       res.payload = {
         ...res.payload,
         logs,
