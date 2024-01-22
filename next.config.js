@@ -6,6 +6,13 @@ const nextConfig = {
   images: {
     domains: ["picsum.photos", "localhost"],
   },
+  serverRuntimeConfig: {
+    api: {
+      bodyParser: {
+        sizeLimit: "50mb",
+      },
+    },
+  },
   async headers() {
     return [
       {
