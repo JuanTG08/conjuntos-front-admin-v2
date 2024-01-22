@@ -2,33 +2,12 @@ import TitlePage from "@/components/data/title";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { AccessPersonController } from "@/controller/access_person.controller";
 import { DateUtils } from "@/utils/date.utils";
-import { Card, CardBody} from "@nextui-org/react";
+import { TokenUtils } from "@/utils/token.utils";
+import { Card, CardBody } from "@nextui-org/react";
 import { Badge, Descriptions, Divider, Skeleton } from "antd";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React from "react";
 
-const viewOneAccessPerson = ({ idAccessPerson }) => {
-  const router = useRouter();
-  const [accessPerson, setAccessPerson] = useState();
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    fetchGetAccessPerson();
-  }, []);
-  const fetchGetAccessPerson = async () => {
-    try {
-      const getOne = await AccessPersonController.viewGetOneAccessPerson(
-        idAccessPerson
-      );
-      if (getOne.error || getOne.statusCode != 200)
-        return router.push("/access-person");
-      setLoading(false);
-      setAccessPerson(getOne.payload);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+const viewOneAccessPerson = ({ accessPerson }) => {
   const items = [
     {
       key: "1",
@@ -80,7 +59,7 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
       label: "Fecha de ingreso",
       span: 3,
       children: accessPerson?.start_day_allowed
-        ? DateUtils.getDateInLettersSpanish(DateUtils.getDateDependMyUTC(accessPerson?.start_day_allowed))
+        ? DateUtils.getDateInLettersSpanish(accessPerson?.start_day_allowed)
         : "",
       span: 2,
     },
@@ -88,7 +67,7 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
       key: "7",
       label: "Fecha de salida",
       children: accessPerson?.end_day_allowed
-        ? DateUtils.getDateInLettersSpanish(DateUtils.getDateDependMyUTC(accessPerson?.end_day_allowed))
+        ? DateUtils.getDateInLettersSpanish(accessPerson?.end_day_allowed)
         : "",
       span: 2,
     },
@@ -96,7 +75,9 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
       key: "8",
       label: "Horario de ingreso",
       children: accessPerson?.start_hour_day
-        ? DateUtils.getHourInLettersSpanish(accessPerson?.start_hour_day)
+        ? DateUtils.getHourInLettersSpanish(
+            DateUtils.getDateDependMyUTC(accessPerson?.start_hour_day)
+          )
         : "",
       span: 2,
     },
@@ -104,7 +85,9 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
       key: "9",
       label: "Hora de salida",
       children: accessPerson?.end_hour_day
-        ? DateUtils.getHourInLettersSpanish(accessPerson?.end_hour_day)
+        ? DateUtils.getHourInLettersSpanish(
+            DateUtils.getDateDependMyUTC(accessPerson?.end_hour_day)
+          )
         : "",
       span: 2,
     },
@@ -117,14 +100,6 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
   ];
 
   const Rendered = () => {
-    if (loading)
-      return (
-        <Card>
-          <CardBody>
-            <Skeleton active />
-          </CardBody>
-        </Card>
-      );
     return (
       <Card>
         <CardBody>
@@ -156,11 +131,30 @@ const viewOneAccessPerson = ({ idAccessPerson }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { idAccessPerson } = context.query;
-  return {
-    props: {
+  try {
+    const { idAccessPerson } = context.query;
+    // Obtenemos todas las cookies para hacer peticiones al backend
+    const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    // Obtenemos los datos
+    const getData = await AccessPersonController.apiSSRGetOneAccessPerson(
       idAccessPerson,
-    },
-  };
+      getCookies
+    );
+    if (getData.error || getData.statusCode != 200 || !getData.payload)
+      throw new Error("Error al obtener los datos");
+    return {
+      props: {
+        accessPerson: getData.payload,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
 }
 export default viewOneAccessPerson;

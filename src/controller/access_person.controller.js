@@ -51,27 +51,11 @@ export class AccessPersonController {
     }
   }
 
-  static async apiGetAccessPersonToApartment(req, res) {
+  static async apiSSRGetAccessPersonToApartment(cookie) {
     try {
-      const cookie = req.cookies[env.server.cookies.main_cookie.name];
       const send = await AccessPersonFetching.getApiPrincipalListToApartment(
         cookie
       );
-      return res.json(send);
-    } catch (error) {
-      return res.json(Utils.Message(true, 500, "Error al procesar"));
-    }
-  }
-
-  static async viewGetAccessPersonToApartment() {
-    try {
-      const send = await AccessPersonFetching.getApiLocalListToApartment();
-      /*
-      if (send.statusCode == 200)
-        send.payload = send.payload.map(({ users, ...data }) => ({
-          ...data,
-          registeredBy: `${users.name} ${users.last_name}`,
-        }));*/
       return send;
     } catch (error) {
       console.log(error);
@@ -79,31 +63,17 @@ export class AccessPersonController {
     }
   }
 
-  static async apiGetOneAccessPerson(req, res) {
+  static async apiSSRGetOneAccessPerson(idAccessPerson, cookie) {
     try {
-      const cookie = req.cookies[env.server.cookies.main_cookie.name];
-      const idAccessPerson = parseInt(req.query?.idAccessPerson);
-      if (!Utils.verifyId(idAccessPerson))
-        return res.json(Utils.Message(true, 0, "Datos erróneos"));
-      const send = await AccessPersonFetching.getApiPrincipalOne(
-        req.query?.idAccessPerson,
-        cookie
-      );
-      return res.json(send);
-    } catch (error) {
-      console.log(error);
-      return res.json(Utils.Message(true, 500, "Error al procesar"));
-    }
-  }
-
-  static async viewGetOneAccessPerson(idAccessPerson) {
-    try {
-      idAccessPerson = parseInt(idAccessPerson);
       if (!Utils.verifyId(idAccessPerson))
         return Utils.Message(true, 0, "Datos erróneos");
-      const send = await AccessPersonFetching.getApiLocalOne(idAccessPerson);
+      const send = await AccessPersonFetching.getApiPrincipalOne(
+        idAccessPerson,
+        cookie
+      );
       return send;
     } catch (error) {
+      console.log(error);
       return Utils.Message(true, 500, "Error al procesar");
     }
   }
@@ -136,6 +106,18 @@ export class AccessPersonController {
     }
   }
 
+  static async apiSSRGetListAccessPersonToComplex(cookie) {
+    try {
+      const send = await AccessPersonFetching.getApiPrincipalListToComplex(
+        cookie
+      );
+      return send;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
+
+  // Comprobar y luego borrar funcionalidad
   static async apiGetListAccessPersonToComplex(req, res) {
     try {
       const cookie = req.cookies[env.server.cookies.main_cookie.name];
@@ -145,15 +127,6 @@ export class AccessPersonController {
       return res.json(send);
     } catch (error) {
       return res.json(Utils.Message(true, 500, "Error al procesar"));
-    }
-  }
-
-  static async viewGetListAccessPersonToComplex() {
-    try {
-      const send = await AccessPersonFetching.getApiLocalListToComplex();
-      return send;
-    } catch (error) {
-      return Utils.Message(true, 500, "Error al procesar");
     }
   }
 

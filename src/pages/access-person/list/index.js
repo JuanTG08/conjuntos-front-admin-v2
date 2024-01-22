@@ -1,10 +1,11 @@
+import React from "react";
 import TitlePage from "@/components/data/title";
 import { AccessPersonController } from "@/controller/access_person.controller";
 import { Table, Tooltip } from "antd";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 import { DateUtils } from "@/utils/date.utils";
 import HeaderPage from "@/components/views/partials/HeaderPage";
+import { TokenUtils } from "@/utils/token.utils";
 
 const columns = [
   {
@@ -24,23 +25,7 @@ const columns = [
   },
 ];
 
-const AccessPersonList = () => {
-  const [accessPeople, setAccessPeople] = useState([]);
-
-  useEffect(() => {
-    fetchListAccessPerson();
-  }, []);
-  const fetchListAccessPerson = async () => {
-    try {
-      const list =
-        await AccessPersonController.viewGetListAccessPersonToComplex();
-      if (list.error || list.statusCode != 200) return;
-      setAccessPeople(list.payload);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+const AccessPersonList = ({ accessPeople }) => {
   const getDataTable = () =>
     accessPeople.map((visitor, index) => ({
       key: index,
@@ -55,8 +40,10 @@ const AccessPersonList = () => {
         </Link>
       ),
       dates: `${DateUtils.getHourInLettersSpanish(
-        visitor?.start_hour_day
-      )} - ${DateUtils.getHourInLettersSpanish(visitor?.end_hour_day)}`,
+        DateUtils.getDateDependMyUTC(visitor?.start_hour_day)
+      )} - ${DateUtils.getHourInLettersSpanish(
+        DateUtils.getDateDependMyUTC(visitor?.end_hour_day)
+      )}`,
     }));
 
   const RenderedTable = () => {
@@ -78,5 +65,30 @@ const AccessPersonList = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  try {
+    // Obtenemos todas las cookies para hacer peticiones al backend
+    const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    // Obtenemos los datos
+    const getData =
+      await AccessPersonController.apiSSRGetListAccessPersonToComplex(
+        getCookies
+      );
+    return {
+      props: {
+        accessPeople: getData.payload || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+}
 
 export default AccessPersonList;

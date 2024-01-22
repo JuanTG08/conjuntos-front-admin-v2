@@ -4,7 +4,6 @@ import { RoutingClass } from "@/lib/Routing";
 export class AccessPersonRouter extends RoutingClass {
   constructor(req, res) {
     super(req, res, {
-      get: AccessPersonController.apiGetAccessPersonToApartment,
       post: AccessPersonController.apiPostCreateAccessPerson,
     });
   }
@@ -13,7 +12,6 @@ export class AccessPersonRouter extends RoutingClass {
 export class AccessPersonIdRouter extends RoutingClass {
   constructor(req, res) {
     super(req, res, {
-      get: AccessPersonController.apiGetOneAccessPerson,
       delete: AccessPersonController.apiDeleteAccessPerson,
     });
   }

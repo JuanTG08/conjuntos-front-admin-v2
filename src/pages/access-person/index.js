@@ -4,7 +4,7 @@ import {
   EyeOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Dropdown, Input, Space, Table, message } from "antd";
 import Highlighter from "react-highlight-words";
 import { Button } from "@nextui-org/react";
@@ -14,28 +14,14 @@ import { AccessPersonController } from "@/controller/access_person.controller";
 import Link from "next/link";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { DateUtils } from "@/utils/date.utils";
+import { TokenUtils } from "@/utils/token.utils";
 
-const AccessPersonListToUser = () => {
+const AccessPersonListToUser = ({ access_people }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [visitors, setVisitors] = useState([]);
+  const [visitors, setVisitors] = useState(access_people);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-
-  useEffect(() => {
-    fetchListAccessPerson();
-  }, []);
-
-  const fetchListAccessPerson = async () => {
-    try {
-      const list =
-        await AccessPersonController.viewGetAccessPersonToApartment();
-      if (list.error || list.statusCode !== 200) return;
-      setVisitors(list.payload);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const disableAccessPerson = async (idAccessPerson) => {
     try {
@@ -57,10 +43,6 @@ const AccessPersonListToUser = () => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
-  };
-  const handleReset = (clearFilters) => {
-    clearFilters();
-    setSearchText("");
   };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
@@ -164,8 +146,8 @@ const AccessPersonListToUser = () => {
       ),
       registeredBy: `${visitor?.users?.name} ${visitor?.users?.last_name}`,
       dates: `${DateUtils.getDateInLettersSpanish(
-        DateUtils.getDateDependMyUTC(visitor?.start_day_allowed)
-      )} - ${DateUtils.getDateInLettersSpanish(DateUtils.getDateDependMyUTC(visitor?.end_day_allowed))}`,
+        visitor?.start_day_allowed
+      )} - ${DateUtils.getDateInLettersSpanish(visitor?.end_day_allowed)}`,
       options: (
         <Dropdown
           menu={{
@@ -221,5 +203,28 @@ const AccessPersonListToUser = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  try {
+    // Obtenemos todas las cookies para hacer peticiones al backend
+    const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    // Obtenemos los datos
+    const getData =
+      await AccessPersonController.apiSSRGetAccessPersonToApartment(getCookies);
+    return {
+      props: {
+        access_people: getData.payload || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+}
 
 export default AccessPersonListToUser;
