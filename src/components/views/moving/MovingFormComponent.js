@@ -20,7 +20,7 @@ const MovingFormComponent = ({ onSubmit, valuesToForm, buttonLabel }) => {
 
   const disabledDate = (current) => {
     // Deshabilitar fechas mayores a hoy
-    return current && current < dayjs().endOf("day");
+    return current && current < dayjs().subtract(1, 'day').endOf("day");
   };
 
   // Función para manejar el cambio de fecha

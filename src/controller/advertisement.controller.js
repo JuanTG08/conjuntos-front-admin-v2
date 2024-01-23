@@ -328,6 +328,22 @@ export class AdvertisementController {
     }
   }
 
+  static async apiSSRListAdvertisement(typeAdvertisement, cookie) {
+    try {
+      const idToCategory = parseInt(typeAdvertisement);
+      if (!Utils.verifyId(idToCategory))
+        return Utils.Message(true, 0, "Datos erróneos");
+      const send =
+        await AdvertisementFetching.getApiPrincipalListAdvertisementCategory(
+          idToCategory,
+          cookie
+        );
+      return send;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
+
   static async viewListAdvertisement(typeAdvertisement) {
     try {
       const send =

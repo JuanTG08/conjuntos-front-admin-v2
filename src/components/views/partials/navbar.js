@@ -55,7 +55,7 @@ export function MenuNavBarPages({ dataUser }) {
 
   let indColor = 0;
 
-  if (!dataUser.session) return (<></>)
+  if (!dataUser.session) return <></>;
 
   return (
     <Navbar isBordered>
@@ -192,7 +192,6 @@ export function MenuNavBarPages({ dataUser }) {
                     : "https://i.pravatar.cc/150?u=a042581f4e29026704d"
                 }
                 onError={(e) => {
-                  console.log(e);
                   e.target.src =
                     "https://i.pravatar.cc/150?u=a042581f4e29026704d";
                 }}

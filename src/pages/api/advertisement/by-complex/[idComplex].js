@@ -26,9 +26,7 @@ apiRoute.get(async (req, res) => {
   new AdvertisementByComplexRouterGet(req, res);
 });
 apiRoute.post(async (req, res) => {
-  const logs = [];
   try {
-    console.log("Estamos aquí");
     const cookie = TokenUtils.destructureAllCookiesClient({ req });
     let idComplex = parseInt(req.query?.idComplex);
     if (
@@ -36,7 +34,6 @@ apiRoute.post(async (req, res) => {
       req.query?.idComplex != CONST_SYSTEM_NOT_PARAM_VIEW
     )
       return res.json(Utils.Message(true, 500, "Id del Conjunto no valido"));
-    console.log("El idComplex se valido");
     idComplex = Utils.verifyId(idComplex)
       ? idComplex
       : CONST_SYSTEM_NOT_PARAM_VIEW;
@@ -54,10 +51,8 @@ apiRoute.post(async (req, res) => {
       advModel.VAR_MINIATURE,
       advModel.VAR_DATE_END,
     ]);
-    console.log("Verificamos la data", verifyData);
     if (verifyData !== true)
       return res.json(Utils.Message(true, 500, "Datos erróneos", verifyData));
-    console.log("Pasó la verificación :D");
 
     // Validamos los datos de la segmentación
     const dataArraysIds = {};
@@ -67,7 +62,6 @@ apiRoute.post(async (req, res) => {
       apartments_ids: Utils.verifyArrayNumber(advModel.apartments_ids),
       users_ids: Utils.verifyArrayNumber(advModel.users_ids),
     };
-    console.log("Data Verify Arrays", dataVerifyArrays);
     switch (advModel.status_type) {
       case CONST_TYPE_ADVERTISEMENT.COMPLEX.id:
         // Validamos los datos del complex
@@ -125,7 +119,6 @@ apiRoute.post(async (req, res) => {
         break;
     }
     // Validamos la existencia del "category_Adv"
-    console.log("Validamos advModel.category_adv", advModel.category_adv);
     if (!Utils.verifyId(advModel.category_adv))
       return res.json(Utils.Message(false, 0, "Datos erróneos, sin categoría"));
     // Estructuramos los datos para guardar el anuncio
@@ -138,10 +131,7 @@ apiRoute.post(async (req, res) => {
       status_type: advModel.status_type,
       category_adv: advModel.category_adv,
     };
-    console.log("Establecemos la dataSendAdvertisement", dataSendAdvertisement);
     const image = req?.file; // Obtenemos la imagen
-    console.log("Set images", !!image);
-    logs.push(`Complex Create setImage: ${!!image}`);
     if (image) {
       if (!image.mimetype.startsWith("image/"))
         return res
@@ -152,13 +142,6 @@ apiRoute.post(async (req, res) => {
     const sendAdvertisement = await AdvertisementFetching.postApiPrincipalNew(
       dataSendAdvertisement,
       cookie
-    );
-    console.log("Recivimos la respuesta sendAdvertisement", sendAdvertisement);
-    logs.push(
-      `Complex Create sendAdvertisement: ${JSON.stringify(sendAdvertisement)}`,
-      `Complex Create sendAdvertisement.payload: ${JSON.stringify(
-        sendAdvertisement.payload
-      )}`
     );
     if (sendAdvertisement.error || sendAdvertisement.statusCode != 200)
       return res.json(sendAdvertisement);
@@ -175,10 +158,9 @@ apiRoute.post(async (req, res) => {
       sendAdvertisement.payload.id_advertisement,
       cookie
     );
-    return res.json(Utils.Message(false, 200, "Ok", { logs }));
+    return res.json(Utils.Message(false, 200, "Ok"));
   } catch (error) {
-    console.log("Error al procesar EL CATCH UwU", error);
-    logs.push(`Complex Create API Catch: ${error.message}`);
+    console.log(error);
     return res.json(Utils.Message(true, 500, "Error al procesar"));
   }
 });

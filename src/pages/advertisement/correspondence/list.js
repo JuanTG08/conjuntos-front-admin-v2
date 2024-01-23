@@ -27,6 +27,7 @@ import { ChevronDownIcon } from "@/components/Icons/ChevronDownIcon";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { FilesUtils } from "@/utils/files.utils";
 import { DateUtils } from "@/utils/date.utils";
+import { TokenUtils } from "@/utils/token.utils";
 
 const statusOptions = [
   {
@@ -41,17 +42,13 @@ const statusOptions = [
   },
 ];
 
-const CorrespondenceList = ({ dataUser }) => {
+const CorrespondenceList = ({ _correspondences }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [correspondences, setCorrespondences] = useState([]);
+  const [correspondences, setCorrespondences] = useState(_correspondences);
   const [correspondencesFiltered, setCorrespondencesFiltered] = useState([]);
   const [statusFilter, setStatusFilter] = useState(
     new Set([CONST_ADVERTISEMENT_STATUS.WAITING_DELIVERY.id.toString()])
   );
-
-  useEffect(() => {
-    fetchListCorrespondences();
-  }, []);
 
   useEffect(() => {
     if (correspondences.length === 0) return;
@@ -62,20 +59,6 @@ const CorrespondenceList = ({ dataUser }) => {
     );
     setCorrespondencesFiltered(correspondencesFiltered);
   }, [correspondences, statusFilter]);
-
-  const fetchListCorrespondences = async () => {
-    try {
-      const listCorrespondences =
-        await AdvertisementController.viewListAdvertisement(
-          CONST_ADVERTISEMENT_CATEGORY.CORRESPONDENCE.ID
-        );
-      if (listCorrespondences.error || listCorrespondences.statusCode != 200)
-        return console.log(listCorrespondences.message);
-      setCorrespondences(listCorrespondences.payload);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const changeCheckCorrespondence = async (idCorrespondence) => {
     try {
@@ -277,5 +260,32 @@ const CorrespondenceList = ({ dataUser }) => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  try {
+    // Obtenemos todas las cookies para hacer peticiones al backend
+    const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    // Obtenemos los datos
+    const getData = await AdvertisementController.apiSSRListAdvertisement(
+      CONST_ADVERTISEMENT_CATEGORY.CORRESPONDENCE.ID,
+      getCookies
+    );
+    if (getData.error || getData.statusCode != 200)
+      throw new Error("No fue posible obtener los datos");
+    return {
+      props: {
+        _correspondences: getData.payload || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+}
 
 export default CorrespondenceList;

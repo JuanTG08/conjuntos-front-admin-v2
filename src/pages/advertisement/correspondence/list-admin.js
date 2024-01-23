@@ -26,6 +26,7 @@ import { TowerController } from "@/controller/tower.controller";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { FilesUtils } from "@/utils/files.utils";
 import { DateUtils } from "@/utils/date.utils";
+import { TokenUtils } from "@/utils/token.utils";
 
 const statusOptions = [
   {
@@ -40,19 +41,13 @@ const statusOptions = [
   },
 ];
 
-const CorrespondenceList = ({ dataUser }) => {
+const CorrespondenceList = ({ towers }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [correspondences, setCorrespondences] = useState([]);
   const [correspondencesFiltered, setCorrespondencesFiltered] = useState([]);
   const [statusFilter, setStatusFilter] = useState(
     new Set([CONST_ADVERTISEMENT_STATUS.WAITING_DELIVERY.id.toString()])
   );
-
-  const [towers, setTowers] = useState([]);
-
-  useEffect(() => {
-    fetchTowerData();
-  }, []);
 
   useEffect(() => {
     setCorrespondencesFiltered([]);
@@ -64,17 +59,6 @@ const CorrespondenceList = ({ dataUser }) => {
     );
     setCorrespondencesFiltered(correspondencesFiltered);
   }, [correspondences, statusFilter]);
-
-  const fetchTowerData = async () => {
-    try {
-      const listTowers = await TowerController.viewGetListAll();
-      if (listTowers.errror || listTowers.statusCode != 200)
-        return console.log(listTowers.message);
-      setTowers(listTowers.payload.towers);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const onSubmitSearchCorrespondences = async (values) => {
     try {
@@ -303,5 +287,30 @@ const CorrespondenceList = ({ dataUser }) => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  try {
+    // Obtenemos todas las cookies para hacer peticiones al backend
+    const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    // Obtenemos los datos
+    const getData = await TowerController.apiSSRGetListAll(getCookies);
+    if (getData.error || getData.statusCode != 200 || !getData.payload?.towers)
+      throw new Error("No fue posible obtener los datos");
+    const { towers } = getData.payload;
+    return {
+      props: {
+        towers,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+}
 
 export default CorrespondenceList;

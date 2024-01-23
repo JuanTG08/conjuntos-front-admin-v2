@@ -38,6 +38,38 @@ export class TowerController {
       return res.status(500).json(Utils.Message(true, 500, "Server Error"));
     }
   }
+
+  static async apiSSRGetListAll(cookie, id = CONST_SYSTEM_NOT_PARAM_VIEW) {
+    try {
+      let idComplex = parseInt(id);
+      if (
+        !Utils.verifyId(idComplex) &&
+        id !== CONST_SYSTEM_NOT_PARAM_VIEW
+      )
+        return Utils.Message(true, 500, "Datos erróneos");
+
+      idComplex = Utils.verifyId(idComplex)
+        ? idComplex
+        : CONST_SYSTEM_NOT_PARAM_VIEW;
+      const list = await TowerFetching.getApiPrincipalListAll(
+        idComplex,
+        cookie
+      );
+      list.payload.complex._count_apartment = 0;
+      list.payload.complex._count_apartment_by_tower = 0;
+      list.payload.complex.total = list.payload?.towers.length;
+      list.payload?.towers.map((tower) => {
+        list.payload.complex._count_apartment += tower._count.apartment_complex;
+        list.payload.complex._count_apartment_by_tower +=
+          tower.number_apartments;
+      });
+      return list;
+    } catch (error) {
+      console.error(error);
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
   // Call Backend API Local
   static async viewGetListAll(id = CONST_SYSTEM_NOT_PARAM_VIEW) {
     try {

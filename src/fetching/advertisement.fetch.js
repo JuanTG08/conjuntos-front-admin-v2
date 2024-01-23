@@ -51,27 +51,16 @@ export class AdvertisementFetching {
   }
 
   static async postApiLocalNew(data, idComplex) {
-    const logs = [];
     try {
       const url =
         URL_API_LOCAL +
         env.server.api.routes.advertisement.list_complex +
         "/" +
         idComplex;
-      logs.push(` -- postApiLocalNew url ${url}`);
       const res = await FetchUtils.sendPostAxios(url, data);
-      logs.push(
-        ` -- postApiLocalNew response sendPostAxios ${JSON.stringify(res)}`
-      );
-      res.payload = {
-        ...res.payload,
-        logs,
-      };
       return res;
     } catch (error) {
-      return Utils.Message(true, 500, "Error al obtener la información.", {
-        logs,
-      });
+      return Utils.Message(true, 500, "Error al obtener la información.");
     }
   }
 
