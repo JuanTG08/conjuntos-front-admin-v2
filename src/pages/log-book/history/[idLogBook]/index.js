@@ -1,10 +1,12 @@
+import TitlePage from "@/components/data/title";
+import HeaderPage from "@/components/views/partials/HeaderPage";
 import { LogsBookIncidentsCtrl } from "@/controller/logs_book_incidents.controller";
 import { DateUtils } from "@/utils/date.utils";
 import { FilesUtils } from "@/utils/files.utils";
 import { TokenUtils } from "@/utils/token.utils";
 import { Descriptions } from "antd";
 import React from "react";
- 
+
 const LogBookOne = ({ minuta }) => {
   const items = [
     {
@@ -54,12 +56,11 @@ const LogBookOne = ({ minuta }) => {
     },
   ];
   return (
-    <Descriptions
-      bordered
-      layout="vertical"
-      title="Información de la mudanza"
-      items={items}
-    />
+    <>
+      <HeaderPage title="Minuta" />
+      <TitlePage level={1}>Minuta</TitlePage>
+      <Descriptions bordered layout="vertical" items={items} />
+    </>
   );
 };
 

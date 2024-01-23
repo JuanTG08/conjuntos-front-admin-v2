@@ -5,7 +5,6 @@ import {
 } from "@/constants/advertisement.constant";
 import { AdvertisementController } from "@/controller/advertisement.controller";
 import {
-  Avatar,
   Button,
   Card,
   CardBody,
@@ -27,6 +26,7 @@ import { CorrespondenceController } from "@/controller/correspondence.controller
 import { ChevronDownIcon } from "@/components/Icons/ChevronDownIcon";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { FilesUtils } from "@/utils/files.utils";
+import { DateUtils } from "@/utils/date.utils";
 
 const statusOptions = [
   {
@@ -134,12 +134,6 @@ const CorrespondenceList = ({ dataUser }) => {
                   <Card className="h-full" radius="none">
                     <CardHeader className="justify-between">
                       <div className="flex gap-5">
-                        <Avatar
-                          isBordered
-                          radius="full"
-                          size="md"
-                          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                        />
                         <div className="flex flex-col gap-1 items-start justify-center">
                           <h4 className="text-small font-semibold leading-none text-default-600">
                             {`${item.users.name} ${item.users.last_name}`}
@@ -186,17 +180,14 @@ const CorrespondenceList = ({ dataUser }) => {
                       )}
                     </CardHeader>
                     <CardBody className="px-3 py-0 text-small text-default-400">
-                      <h3 className="font-bold text-foreground/90">
+                      <h3 className="font-bold text-foreground/60">
                         {item.title}
                       </h3>
                       <span className="pt-2">{item.description}</span>
                       <Divider />
-                      <h4 className="font-semibold text-foreground/60">
-                        {item?.segmentation_advertisement?.map(
-                          (seg) =>
-                            `${seg.tower_complex.tower_name} - ${seg.apartment_complex.apartment_identifier_tower}`
-                        )}
-                      </h4>
+                      <h5 className="font-semibold text-foreground/80">
+                        {DateUtils.getDateInLettersSpanish(item.createdAt)}
+                      </h5>
                     </CardBody>
 
                     <CardFooter>

@@ -386,7 +386,7 @@ export const CONST_NAVBAR_USERS = [
           },
           {
             key: "logsBook",
-            label: "Consultar minuta",
+            label: "Mi minuta",
             description: "Consultar los registros que he generado",
             link: "/log-book/history",
             icon: (color) => (

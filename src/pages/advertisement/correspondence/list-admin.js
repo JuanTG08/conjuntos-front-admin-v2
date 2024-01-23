@@ -25,6 +25,7 @@ import AdvertisementCorrespondeceFilterLockerFormComponent from "@/components/vi
 import { TowerController } from "@/controller/tower.controller";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { FilesUtils } from "@/utils/files.utils";
+import { DateUtils } from "@/utils/date.utils";
 
 const statusOptions = [
   {
@@ -192,7 +193,7 @@ const CorrespondenceList = ({ dataUser }) => {
                         </Button>
                       )}
                     </CardHeader>
-                    <CardBody className="px-3 py-0 text-small text-default-400">
+                    <CardBody className="px-3 py-0 text-small text-default-800">
                       <h3 className="font-bold text-foreground/90">
                         {item.title}
                       </h3>
@@ -204,6 +205,10 @@ const CorrespondenceList = ({ dataUser }) => {
                             `${seg.tower_complex.tower_name} - ${seg.apartment_complex.apartment_identifier_tower}`
                         )}
                       </h4>
+                      <Divider />
+                      <h5 className="font-semibold text-foreground/80">
+                        {DateUtils.getDateInLettersSpanish(item.createdAt)}
+                      </h5>
                     </CardBody>
 
                     <CardFooter>
