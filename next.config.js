@@ -84,6 +84,9 @@ const nextConfig = {
           logs_book_incidents: {
             url: "/logs_book_incidents",
           },
+          nav_bar: {
+            url: "/nav_bar",
+          },
           moving: {
             url: "/moving",
           },
@@ -239,6 +242,10 @@ const nextConfig = {
           url: "/api/logs-book-severity",
           list: "/handler-R-logs-book-severity",
         },
+        nav_bar: {
+          url: "/api/nav-bar",
+          create: "/handler-C-navbar",
+        },
         moving: {
           url: "/api/moving",
           list_create: "/handler-CR-moving",
@@ -262,6 +269,10 @@ const nextConfig = {
           list_create: "/handler-CR-pets",
           get_data_form: "/handler-R-data-form",
           find_upd_del: "/handler-RUD-pet",
+        },
+        service_plans: {
+          url: "/api/service-plans",
+          list_all: "/handler-R-list-all",
         },
         pqrs: {
           url: "/api/pqrs",

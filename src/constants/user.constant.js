@@ -16,7 +16,6 @@ import {
   CarOutlined,
   CompassOutlined,
   HeartOutlined,
-  NodeIndexOutlined,
   PhoneOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";

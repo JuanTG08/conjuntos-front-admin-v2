@@ -13,6 +13,15 @@ export class RolesController {
     }
   }
 
+  static async apiSSRGetListAll(cookie) {
+    try {
+      const roles = await RolesFetching.getApiPrincipalListAll(cookie);
+      return roles
+    } catch (error) {
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
+
   static async viewGetListAll() {
     try {
       const list = await RolesFetching.getApiLocalListAll();

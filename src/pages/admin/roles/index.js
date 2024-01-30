@@ -16,6 +16,7 @@ import { EditDocumentBulkIcon } from "@nextui-org/shared-icons";
 import { SettingOutlined } from "@ant-design/icons";
 import Router from "next/router";
 import HeaderPage from "@/components/views/partials/HeaderPage";
+import { TokenUtils } from "@/utils/token.utils";
 
 const columnsTable = [
   {
@@ -37,24 +38,8 @@ const statusColorMap = {
   Inactivo: "danger",
 };
 
-const AdminRolesList = () => {
+const AdminRolesList = ({ roles }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [roles, setRoles] = useState([]);
-  useEffect(() => {
-    fetchListRoles();
-  }, []);
-
-  const fetchListRoles = async () => {
-    try {
-      const response = await RolesController.viewGetListAll();
-      if (response.statusCode == 200 || response.payload.length > 0)
-        return setRoles(response.payload);
-      messageApi.error(response.message);
-    } catch (error) {
-      messageApi.error(error);
-      console.log(error);
-    }
-  };
 
   const getDataTable = () => {
     return roles.map((rol, id) => ({
@@ -135,5 +120,29 @@ const AdminRolesList = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  try {
+    // Obtenemos todas las cookies para hacer peticiones al backend
+    const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    // Obtenemos los datos
+    const getRoles = await RolesController.apiSSRGetListAll(
+      getCookies
+    );
+    return {
+      props: {
+        roles: getRoles.payload || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+}
 
 export default AdminRolesList;
