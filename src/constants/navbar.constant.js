@@ -22,74 +22,74 @@ import {
 export const CONST_NAVBAR_LIST_ICONS = [
   {
     name: "ApartmentOutlined",
-    icon: <ApartmentOutlined />,
+    icon: (color) => <ApartmentOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "UsergroupAddOutlined",
-    icon: <UsergroupAddOutlined />,
+    icon: (color) => <UsergroupAddOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "CoffeeOutlined",
-    icon: <CoffeeOutlined />,
+    icon: (color) => <CoffeeOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "ContactsOutlined",
-    icon: <ContactsOutlined />,
+    icon: (color) => <ContactsOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "SolutionOutlined",
-    icon: <SolutionOutlined />,
+    icon: (color) => <SolutionOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "QuestionCircleOutlined",
-    icon: <QuestionCircleOutlined />,
+    icon: (color) => <QuestionCircleOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "GlobalOutlined",
-    icon: <GlobalOutlined />,
+    icon: (color) => <GlobalOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "MailOutlined",
-    icon: <MailOutlined />,
+    icon: (color) => <MailOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "UserSwitchOutlined",
-    icon: <UserSwitchOutlined />,
+    icon: (color) => <UserSwitchOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "ProfileOutlined",
-    icon: <ProfileOutlined />,
+    icon: (color) => <ProfileOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "ControlOutlined",
-    icon: <ControlOutlined />,
+    icon: (color) => <ControlOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "SettingOutlined",
-    icon: <SettingOutlined />,
+    icon: (color) => <SettingOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "AuditOutlined",
-    icon: <AuditOutlined />,
+    icon: (color) => <AuditOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "CarOutlined",
-    icon: <CarOutlined />,
+    icon: (color) => <CarOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "CompassOutlined",
-    icon: <CompassOutlined />,
+    icon: (color) => <CompassOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "HeartOutlined",
-    icon: <HeartOutlined />,
+    icon: (color) => <HeartOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "PhoneOutlined",
-    icon: <PhoneOutlined />,
+    icon: (color) => <PhoneOutlined style={{ color, fontSize: "2em" }} />,
   },
   {
     name: "ShoppingOutlined",
-    icon: <ShoppingOutlined />,
+    icon: (color) => <ShoppingOutlined style={{ color, fontSize: "2em" }} />,
   },
 ];

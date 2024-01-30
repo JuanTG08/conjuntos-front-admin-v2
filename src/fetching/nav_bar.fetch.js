@@ -30,4 +30,16 @@ export class NavBarFetching {
       return Utils.Message(true, 500, "Server Error");
     }
   }
+
+  static async getApiPrincipalListAll(tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.nav_bar.list_all;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Server Error");
+    }
+  }
 }

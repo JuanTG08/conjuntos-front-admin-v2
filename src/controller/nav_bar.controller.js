@@ -24,4 +24,14 @@ export class NavBarController {
       return Utils.Message(true, 500, "Error al procesar la información");
     }
   }
+
+  static async apiSSRGetAll(cookie) {
+    try {
+      const send = await NavBarFetching.getApiPrincipalListAll(cookie);
+      return send;
+    } catch (error) {
+      console.log(error);
+      return Utils.Message(true, 500, "Error al procesar la información");
+    }
+  }
 }

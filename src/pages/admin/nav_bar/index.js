@@ -1,9 +1,140 @@
-import React from 'react'
+import { ChevronDownIcon } from "@/components/Icons/ChevronDownIcon";
+import TitlePage from "@/components/data/title";
+import LogoAviv from "@/components/logos/LogoAviv";
+import HeaderPage from "@/components/views/partials/HeaderPage";
+import { NavBarController } from "@/controller/nav_bar.controller";
+import Utils from "@/helpers/helpers";
+import { NavbarUtils } from "@/utils/navbar.utils";
+import { TokenUtils } from "@/utils/token.utils";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Link as LinkNextUI,
+  Card,
+  CardHeader,
+  CardBody,
+  Accordion,
+  AccordionItem,
+} from "@nextui-org/react";
+import Link from "next/link";
+import React from "react";
 
-const ViewNavBarList = () => {
+const ViewNavBarList = ({ navBars }) => {
   return (
-    <div>ViewNavBarList</div>
-  )
+    <>
+      <HeaderPage title={"Barras de Navegación"} />
+      <TitlePage>Barras de Navegación</TitlePage>
+      <Accordion defaultExpandedKeys={["0"]} className="bg-transparent">
+        {navBars.map((navBar, indNavBar) => (
+          <AccordionItem key={indNavBar} title={navBar?.name}>
+            {navBar.role_plan_navigation.map((role_navigation, ind) => (
+              <Card key={ind}>
+                <CardHeader>
+                  <h3>
+                    {role_navigation?.roles?.name} (
+                    {role_navigation?.roles.name_abbreviation})
+                  </h3>
+                  <p>{role_navigation?.navigation_bar?.name}</p>
+                </CardHeader>
+                <CardBody>
+                  <Navbar isBordered className="bg-primary-50">
+                    <NavbarContent
+                      className="flex gap-4 w-full"
+                      justify="center"
+                    >
+                      {role_navigation?.navigation_bar?.navigation_bar_main?.map(
+                        (routeMain, indMain) =>
+                          routeMain?.navigation_bar_sub?.length > 0 ? (
+                            <NavbarItem key={indMain}>
+                              <Dropdown>
+                                <DropdownTrigger>
+                                  <Button
+                                    className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                                    endContent={<ChevronDownIcon />}
+                                    radius="sm"
+                                    variant="light"
+                                    color="primary"
+                                  >
+                                    {routeMain?.label}
+                                  </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                  aria-label="Menu"
+                                  className="w-[340px]"
+                                  itemClasses={{
+                                    base: "gap-4",
+                                  }}
+                                >
+                                  {routeMain?.navigation_bar_sub?.map(
+                                    (routeSub, indJ) => (
+                                      <DropdownItem
+                                        as={Link}
+                                        href={routeSub?.link}
+                                        key={indJ}
+                                        description={routeSub?.caption}
+                                        startContent={NavbarUtils.getIcon(
+                                          routeSub?.icon
+                                        )(Utils.getToColorList(indJ))}
+                                      >
+                                        {routeSub?.label}
+                                      </DropdownItem>
+                                    )
+                                  )}
+                                </DropdownMenu>
+                              </Dropdown>
+                            </NavbarItem>
+                          ) : (
+                            <NavbarItem key={indMain}>
+                              <LinkNextUI
+                                as={Link}
+                                href={routeMain?.link}
+                                color="red"
+                              >
+                                {routeMain?.label}
+                              </LinkNextUI>
+                            </NavbarItem>
+                          )
+                      )}
+                    </NavbarContent>
+                  </Navbar>
+                </CardBody>
+              </Card>
+            ))}
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </>
+  );
+};
+
+export async function getServerSideProps(context) {
+  try {
+    // Obtenemos todas las cookies para hacer peticiones al backend
+    const getCookies = TokenUtils.destructureAllCookiesClient(context);
+    // Obtenemos los datos
+    const getData = await NavBarController.apiSSRGetAll(getCookies);
+    console.log(getData.payload);
+    return {
+      props: {
+        navBars: getData.payload || [],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
 }
 
-export default ViewNavBarList
+export default ViewNavBarList;
