@@ -246,6 +246,7 @@ const nextConfig = {
           url: "/api/nav-bar",
           create: "/handler-C-navbar",
           list_all: "/handler-R-navbar-list-all",
+          find_upd_del: "/handler-RUD-navbar/",
         },
         moving: {
           url: "/api/moving",

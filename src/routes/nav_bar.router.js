@@ -8,3 +8,11 @@ export class NavBarRouter extends RoutingClass {
     });
   }
 }
+
+export class NavBarIDRouter extends RoutingClass {
+  constructor(req, res) {
+    super(req, res, {
+      put: NavBarController.apiPutEditNavBar,
+    });
+  }
+}

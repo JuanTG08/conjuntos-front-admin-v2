@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "@/components/Icons/ChevronDownIcon";
 import TitlePage from "@/components/data/title";
-import LogoAviv from "@/components/logos/LogoAviv";
+import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { NavBarController } from "@/controller/nav_bar.controller";
 import Utils from "@/helpers/helpers";
@@ -31,7 +31,8 @@ const ViewNavBarList = ({ navBars }) => {
     <>
       <HeaderPage title={"Barras de Navegación"} />
       <TitlePage>Barras de Navegación</TitlePage>
-      <Accordion defaultExpandedKeys={["0"]} className="bg-transparent">
+      <ButtonCreateNew href="/admin/nav_bar/create" value="Crear barra de navegación" />
+      <Accordion defaultExpandedKeys={["0"]} className="">
         {navBars.map((navBar, indNavBar) => (
           <AccordionItem key={indNavBar} title={navBar?.name}>
             {navBar.role_plan_navigation.map((role_navigation, ind) => (
@@ -43,7 +44,16 @@ const ViewNavBarList = ({ navBars }) => {
                   </h3>
                   <p>{role_navigation?.navigation_bar?.name}</p>
                 </CardHeader>
-                <CardBody>
+                <CardBody className="flex flex-col gap-4">
+                  <Button
+                    color="primary"
+                    size="lg"
+                    className="w-full"
+                    as={Link}
+                    href={`/admin/nav_bar/${role_navigation?.navigation_bar?.id_navigation_bar}`}
+                  >
+                    Editar
+                  </Button>
                   <Navbar isBordered className="bg-primary-50">
                     <NavbarContent
                       className="flex gap-4 w-full"
@@ -120,7 +130,6 @@ export async function getServerSideProps(context) {
     const getCookies = TokenUtils.destructureAllCookiesClient(context);
     // Obtenemos los datos
     const getData = await NavBarController.apiSSRGetAll(getCookies);
-    console.log(getData.payload);
     return {
       props: {
         navBars: getData.payload || [],
