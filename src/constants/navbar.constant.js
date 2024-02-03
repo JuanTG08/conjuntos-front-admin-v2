@@ -26,7 +26,9 @@ export const CONST_NAVBAR_LIST_ICONS = [
   },
   {
     name: "UsergroupAddOutlined",
-    icon: (color) => <UsergroupAddOutlined style={{ color, fontSize: "2em" }} />,
+    icon: (color) => (
+      <UsergroupAddOutlined style={{ color, fontSize: "2em" }} />
+    ),
   },
   {
     name: "CoffeeOutlined",
@@ -42,7 +44,9 @@ export const CONST_NAVBAR_LIST_ICONS = [
   },
   {
     name: "QuestionCircleOutlined",
-    icon: (color) => <QuestionCircleOutlined style={{ color, fontSize: "2em" }} />,
+    icon: (color) => (
+      <QuestionCircleOutlined style={{ color, fontSize: "2em" }} />
+    ),
   },
   {
     name: "GlobalOutlined",
@@ -93,3 +97,8 @@ export const CONST_NAVBAR_LIST_ICONS = [
     icon: (color) => <ShoppingOutlined style={{ color, fontSize: "2em" }} />,
   },
 ];
+
+export const CONST_NAVBAR_ICON_DEFAULT = {
+  name: "ApartmentOutlined",
+  icon: (color) => <ApartmentOutlined style={{ color, fontSize: "2em" }} />,
+};

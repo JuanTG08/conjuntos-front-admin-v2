@@ -27,7 +27,6 @@ import { ChevronDownIcon } from "@/components/Icons/ChevronDownIcon";
 import { useUser } from "@/context/UserContext";
 import { signOut, useSession } from "next-auth/react";
 import { NavbarUtils } from "@/utils/navbar.utils";
-import { useRouter } from "next/router";
 import Utils from "@/helpers/helpers";
 import { Drawer } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
@@ -35,28 +34,15 @@ import LogoAviv from "@/components/logos/LogoAviv";
 
 export function MenuNavBarPages({ dataUser }) {
   const { user } = useUser();
-  const router = useRouter();
-  const { data: session, status } = useSession();
-  const navBarData = useMemo(
-    () => NavbarUtils.getNavbarUser(dataUser.idRole),
-    []
-  );
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
-  const handleMenuItemClick = (url) => {
-    setIsMenuOpen(false);
-    router.push(url);
-  };
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
-
-  let indColor = 0;
-
   if (!dataUser.session) return <></>;
-
   return (
     <Navbar isBordered>
       <NavbarContent className="sm:hidden" justify="start">
@@ -77,49 +63,47 @@ export function MenuNavBarPages({ dataUser }) {
           open={open}
         >
           <Listbox aria-label="Navbar to phones">
-            {navBarData.routesNavbar.map((route, i) => {
-              return (
-                <ListboxSection key={i} title={route.label} showDivider>
-                  {route?.children ? (
-                    route.children.map((item, j) => (
-                      <ListboxItem
-                        key={j}
-                        as={Link}
-                        href={item.link}
-                        description={item.description}
-                        startContent={item.icon(
-                          Utils.getToColorList(indColor++)
-                        )}
-                        textvalue={<></>}
-                        onPress={onClose}
-                      >
-                        {item.label}
-                      </ListboxItem>
-                    ))
-                  ) : (
+            {dataUser?.user?.navBar?.map((routeMain, indMain) => (
+              <ListboxSection key={indMain} title={routeMain.label} showDivider>
+                {routeMain?.navigation_bar_sub?.length > 0 ? (
+                  routeMain?.navigation_bar_sub.map((routeSub, indJ) => (
                     <ListboxItem
-                      key={i}
+                      key={indJ}
                       as={Link}
-                      href={route.link}
-                      description={route.description}
-                      startContent={route.icon(
-                        Utils.getToColorList(indColor++)
+                      href={routeSub.link}
+                      description={routeSub.description}
+                      startContent={NavbarUtils.getIcon(routeSub?.icon)(
+                        Utils.getToColorList(indJ)
                       )}
                       textvalue={<></>}
                       onPress={onClose}
                     >
-                      {route.label}
+                      {routeSub.label}
                     </ListboxItem>
-                  )}
-                </ListboxSection>
-              );
-            })}
+                  ))
+                ) : (
+                  <ListboxItem
+                    key={indMain}
+                    as={Link}
+                    href={routeMain.link}
+                    description={routeMain.description}
+                    startContent={NavbarUtils.getIcon(routeMain?.icon)(
+                      Utils.getToColorList(indMain)
+                    )}
+                    textvalue={<></>}
+                    onPress={onClose}
+                  >
+                    {routeMain.label}
+                  </ListboxItem>
+                )}
+              </ListboxSection>
+            ))}
           </Listbox>
         </Drawer>
       </NavbarContent>
 
       <NavbarBrand>
-        <LinkNextUI as={Link} href={navBarData.mainPage} className="flex gap-2">
+        <LinkNextUI as={Link} href={"/"} className="flex gap-2">
           <figure className="w-[30px]">
             <LogoAviv className="text-primary-500" />
           </figure>
@@ -129,53 +113,52 @@ export function MenuNavBarPages({ dataUser }) {
         </LinkNextUI>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {navBarData.routesNavbar.map((route, i) => {
-          if (route.children)
-            return (
-              <Dropdown key={i}>
-                <NavbarItem>
-                  <DropdownTrigger>
-                    <Button
-                      disableRipple
-                      className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                      endContent={<ChevronDownIcon />}
-                      radius="sm"
-                      variant="light"
-                      color="primary"
-                    >
-                      {route.label}
-                    </Button>
-                  </DropdownTrigger>
-                </NavbarItem>
+        {dataUser?.user?.navBar?.map((routeMain, indMain) =>
+          routeMain?.navigation_bar_sub?.length > 0 ? (
+            <NavbarItem key={indMain}>
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button
+                    className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                    endContent={<ChevronDownIcon />}
+                    radius="sm"
+                    variant="light"
+                    color="primary"
+                  >
+                    {routeMain?.label}
+                  </Button>
+                </DropdownTrigger>
                 <DropdownMenu
-                  aria-label="ACME features"
+                  aria-label="Menu"
                   className="w-[340px]"
                   itemClasses={{
                     base: "gap-4",
                   }}
                 >
-                  {route.children.map((item, j) => (
+                  {routeMain?.navigation_bar_sub?.map((routeSub, indJ) => (
                     <DropdownItem
                       as={Link}
-                      href={item.link}
-                      key={j}
-                      description={item.description}
-                      startContent={item.icon(Utils.getToColorList(j))}
+                      href={routeSub?.link}
+                      key={indJ}
+                      description={routeSub?.caption}
+                      startContent={NavbarUtils.getIcon(routeSub?.icon)(
+                        Utils.getToColorList(indJ)
+                      )}
                     >
-                      {item.label}
+                      {routeSub?.label}
                     </DropdownItem>
                   ))}
                 </DropdownMenu>
               </Dropdown>
-            );
-          return (
-            <NavbarItem key={i}>
-              <LinkNextUI as={Link} href={route.link} color="red">
-                {route.label}
+            </NavbarItem>
+          ) : (
+            <NavbarItem key={indMain}>
+              <LinkNextUI as={Link} href={routeMain?.link} color="red">
+                {routeMain?.label}
               </LinkNextUI>
             </NavbarItem>
-          );
-        })}
+          )
+        )}
       </NavbarContent>
       <NavbarContent as="div" justify="end">
         {dataUser.session ? (
@@ -259,26 +242,6 @@ export function MenuNavBarPages({ dataUser }) {
           </NavbarItem>
         )}
       </NavbarContent>
-
-      <NavbarMenu className="gap-0">
-        {navBarData.routesNavbar.map((route, i) => {
-          if (route.children)
-            return route.children.map((item, j) => (
-              <NavbarItem key={j}>
-                <Button onClick={() => handleMenuItemClick(item.link)}>
-                  {item.label}
-                </Button>
-              </NavbarItem>
-            ));
-          return (
-            <NavbarItem key={i}>
-              <Button onClick={() => handleMenuItemClick(route.link)}>
-                {route.label}
-              </Button>
-            </NavbarItem>
-          );
-        })}
-      </NavbarMenu>
     </Navbar>
   );
 }

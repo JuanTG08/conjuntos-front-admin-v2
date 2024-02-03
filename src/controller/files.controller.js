@@ -34,7 +34,6 @@ export class FilesController {
       res.setHeader("Content-Type", "image/jpeg");
       return res.status(200).end(imageBuffer);
     } catch (error) {
-      console.log(error);
       const defaultImageBuffer = fs.readFileSync(defaultImagePath);
       res.setHeader("Content-Type", "image/png");
       return res.status(200).end(defaultImageBuffer);

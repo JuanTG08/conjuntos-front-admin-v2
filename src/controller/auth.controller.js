@@ -23,6 +23,7 @@ export class AuthController {
         loginUser.payload.mainRoleToken,
         loginUser.payload.userDataToken,
         loginUser.payload.userAccessPathsToken,
+        loginUser.payload.navBarToken
       ];
       // Devolvemos el token
       return Utils.Message(false, 200, "Ok", combinedCookies);
@@ -42,7 +43,9 @@ export class AuthController {
       if (Utils.verifyDataObject(dataLogin) !== true)
         return Utils.Message(true, 400, "Datos erróneos");
       // Realizamos la petición a la API Principal para obtener un token mediante el login
-      const loginUser = await AuthFetching.postApiPrincipalPreLoginWeb(dataLogin);
+      const loginUser = await AuthFetching.postApiPrincipalPreLoginWeb(
+        dataLogin
+      );
       // Si hay un error, lo devolvemos
       if (loginUser.error || loginUser.statusCode != 200 || !loginUser.payload)
         return loginUser;

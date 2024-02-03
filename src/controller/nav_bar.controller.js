@@ -82,7 +82,13 @@ export class NavBarController {
         ? data?.role_plan_navigation.map((role) => role.id_role)
         : [],
       service_plans: data?.role_plan_navigation
-        ? data?.role_plan_navigation.map((service) => service.id_plan_services)
+        ? Array.from(
+            new Set(
+              data?.role_plan_navigation.flatMap((item) => [
+                item.id_plan_services,
+              ])
+            )
+          )
         : [],
       mainItems: data?.navigation_bar_main
         ? data.navigation_bar_main.map((main) => ({
@@ -90,6 +96,7 @@ export class NavBarController {
             mainLabel: main.label,
             mainCaption: main.caption,
             mainLink: main.link,
+            mainIcon: main.icon,
             subItems: main?.navigation_bar_sub
               ? main.navigation_bar_sub.map((sub) => ({
                   id_navigation_bar_sub: sub.id_navigation_bar_sub,

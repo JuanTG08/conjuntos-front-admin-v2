@@ -109,6 +109,7 @@ export class TokenUtils {
         userDataToken: cookies[env.server.cookies.user_information.name],
         userAccessPathsToken:
           cookies[env.server.cookies.user_access_paths.name],
+        navBar: cookies[env.server.cookies.nav_bar.name],
       };
       return cookiesSend;
     } catch (error) {

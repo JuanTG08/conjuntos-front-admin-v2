@@ -16,6 +16,7 @@ const middleware = async (req) => {
     main_role: { name: nameMainRoleCookie },
     user_access_paths: { name: nameUserAccessPathsCookie },
     user_information: { name: nameUserInformationCookie },
+    nav_bar: { name: nameNavBarCookie },
   } = env.server.cookies;
   // Establecemos el response y el redirect
   const redirect = NextResponse.redirect(new URL("/login", req.url));
@@ -37,17 +38,19 @@ const middleware = async (req) => {
     response.cookies.delete(nameMainRoleCookie);
     response.cookies.delete(nameUserAccessPathsCookie);
     response.cookies.delete(nameUserInformationCookie);
+    response.cookies.delete(nameNavBarCookie);
     response.cookies.delete("next-auth.session-token");
     response.cookies.delete("next-auth.csrf-token");
     redirect.cookies.delete(nameMainRoleCookie);
     redirect.cookies.delete(nameUserAccessPathsCookie);
     redirect.cookies.delete(nameUserInformationCookie);
+    redirect.cookies.delete(nameNavBarCookie);
     redirect.cookies.delete("next-auth.session-token");
     redirect.cookies.delete("next-auth.csrf-token");
   };
 
   if (debug) console.log("Establece la función de establecer cookies");
-  const setCookies = (valueMR, valueUA, valueUI) => {
+  const setCookies = (valueMR, valueUA, valueUI, valueNB) => {
     try {
       response.cookies.set(
         TokenUtils.setCookie(nameUserInformationCookie, valueUI)
@@ -56,6 +59,7 @@ const middleware = async (req) => {
       response.cookies.set(
         TokenUtils.setCookie(nameUserAccessPathsCookie, valueUA)
       );
+      response.cookies.set(TokenUtils.setCookie(nameNavBarCookie, valueNB));
       redirect.cookies.set(
         TokenUtils.setCookie(nameUserInformationCookie, valueUI)
       );
@@ -63,6 +67,7 @@ const middleware = async (req) => {
       redirect.cookies.set(
         TokenUtils.setCookie(nameUserAccessPathsCookie, valueUA)
       );
+      redirect.cookies.set(TokenUtils.setCookie(nameNavBarCookie, valueNB));
     } catch (error) {
       if (debug) console.log(error);
       deleteCookies();
@@ -84,7 +89,14 @@ const middleware = async (req) => {
       );
     if (debug)
       console.log("Establecemos función de obtención de datos en los tokens");
-    const destructureTokens = async (mainRol, userAccess, userInformation) => {
+    let cookieNavBar = req.cookies.get(nameNavBarCookie);
+    if (debug) console.log("Cookie de la barra de navegación:", cookieNavBar);
+    const destructureTokens = async (
+      mainRol,
+      userAccess,
+      userInformation,
+      _navBar
+    ) => {
       try {
         const tokenValidMR = await TokenUtils.validTokenJOSE(mainRol);
         if (debug)
@@ -98,7 +110,13 @@ const middleware = async (req) => {
             "Datos del token de la información del usuario:",
             tokenValidUI
           );
-        return { tokenValidMR, tokenValidUA, tokenValidUI };
+        const tokenValidNB = await TokenUtils.validTokenJOSE(_navBar);
+        if (debug)
+          console.log(
+            "Datos del token de la barra de navegación:",
+            tokenValidNB
+          );
+        return { tokenValidMR, tokenValidUA, tokenValidUI, tokenValidNB };
       } catch (error) {
         if (debug) console.log(error);
         return false;
@@ -109,7 +127,7 @@ const middleware = async (req) => {
     const userAuth0 = req?.nextauth?.token;
     if (debug) console.log("Token de Auth0:", userAuth0);
     if (
-      (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation) &&
+      (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation || !cookieNavBar) &&
       userAuth0
     ) {
       if (debug)
@@ -125,7 +143,7 @@ const middleware = async (req) => {
       if (debug) console.log("Tokens obtenidos:", getTokens);
       if (getTokens.error || getTokens.statusCode != 200)
         throw new Error("Usuario no existente");
-      const [cookieMR, cookieUI, cookieUAP] = getTokens.payload;
+      const [cookieMR, cookieUI, cookieUAP, cookieNB] = getTokens.payload;
       if (debug) console.log("Establecemos tokens al cliente");
       cookieMainRole = {
         name: nameMainRoleCookie,
@@ -139,7 +157,11 @@ const middleware = async (req) => {
         name: nameUserAccessPathsCookie,
         value: cookieUAP,
       };
-      setCookies(cookieMR, cookieUAP, cookieUI);
+      cookieNavBar = {
+        name: nameNavBarCookie,
+        value: cookieNB,
+      };
+      setCookies(cookieMR, cookieUAP, cookieUI, cookieNB);
     }
     if (debug)
       console.log(
@@ -150,8 +172,11 @@ const middleware = async (req) => {
       !cookieMainRole &&
       !cookieUserAccessPaths &&
       !cookieUserInformation &&
-      (req.nextUrl.pathname.startsWith("/api/auth") ||
-        Utils.validPathsToRedirectDashboard(req.nextUrl.pathname))
+      !cookieNavBar &&
+      !cookie(
+        req.nextUrl.pathname.startsWith("/api/auth") ||
+          Utils.validPathsToRedirectDashboard(req.nextUrl.pathname)
+      )
     )
       return response;
     if (debug)
@@ -159,7 +184,12 @@ const middleware = async (req) => {
         "Validamos que no existan los 3 tokens cookieMainRole, cookieUserAccessPaths, cookieUserInformation"
       );
     // Validamos la existencia de los dos tokens
-    if (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation)
+    if (
+      !cookieMainRole ||
+      !cookieUserAccessPaths ||
+      !cookieUserInformation ||
+      !cookieNavBar
+    )
       throw new Error("No hay cookies");
     if (debug)
       console.log(
@@ -172,19 +202,21 @@ const middleware = async (req) => {
     // Validamos si el token de Auth0 existe
     if (!userAuth0) throw new Error("No tiene sesión");
     if (debug) console.log("Validamos si el token de Auth0 es válido");
-    // Validamos si los tokens dentro de las cookies son válidos
-    const { tokenValidMR, tokenValidUA, tokenValidUI } =
+    // Validamos si los tokens dentro de las cookies son válidos}
+    const { tokenValidMR, tokenValidUA, tokenValidUI, tokenValidNB } =
       await destructureTokens(
         cookieMainRole.value,
         cookieUserAccessPaths.value,
-        cookieUserInformation.value
+        cookieUserInformation.value,
+        cookieNavBar.value
       );
     if (debug) console.log("Validamos la integridad de los tokens");
     // Validamos la integridad de los tokens
     if (
       tokenValidMR.statusCode != 200 ||
       tokenValidUA.statusCode != 200 ||
-      tokenValidUI.statusCode != 200
+      tokenValidUI.statusCode != 200 ||
+      tokenValidNB.statusCode != 200
     )
       throw new Error("Cookies no validas");
     if (debug) console.log("Validamos la integridad de los tokens");
@@ -192,9 +224,10 @@ const middleware = async (req) => {
     const { mainRole } = tokenValidMR.payload;
     const { userAccessPaths } = tokenValidUA.payload;
     const userInformation = tokenValidUI.payload;
+    const navBar = tokenValidNB.payload;
     if (debug) console.log("Validamos la información de los tokens");
     // Validamos la información de los tokens
-    if (!mainRole || !userAccessPaths || !userInformation)
+    if (!mainRole || !userAccessPaths || !userInformation || !navBar)
       throw new Error("No hay datos claros");
     // Establecemos información para manejar la información del usuario
     // Debemos traer la información del usuario de la db
@@ -216,7 +249,12 @@ const middleware = async (req) => {
       const redirectToMainPage = NextResponse.redirect(
         new URL(mainRole.access_page.path, req.url)
       );
-      if (!cookieMainRole || !cookieUserAccessPaths || !cookieUserInformation) {
+      if (
+        !cookieMainRole ||
+        !cookieUserAccessPaths ||
+        !cookieUserInformation ||
+        !cookieNavBar
+      ) {
         redirectToMainPage.cookies.set(
           response.cookies.get(nameMainRoleCookie)
         );
@@ -226,6 +264,7 @@ const middleware = async (req) => {
         redirectToMainPage.cookies.set(
           response.cookies.get(cookieUserInformation)
         );
+        redirectToMainPage.cookies.set(response.cookies.get(nameNavBarCookie));
       }
       return redirectToMainPage;
     }

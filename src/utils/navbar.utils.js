@@ -1,4 +1,4 @@
-import { CONST_NAVBAR_LIST_ICONS } from "@/constants/navbar.constant";
+import { CONST_NAVBAR_ICON_DEFAULT, CONST_NAVBAR_LIST_ICONS } from "@/constants/navbar.constant";
 import { CONST_NAVBAR_USERS, CONST_USER_UA } from "@/constants/user.constant";
 
 export class NavbarUtils {
@@ -23,6 +23,6 @@ export class NavbarUtils {
   static getIcon(icon) {
     const findIcon = CONST_NAVBAR_LIST_ICONS.find(({ name }) => name === icon);
     if (findIcon) return findIcon.icon;
-    return null;
+    return CONST_NAVBAR_ICON_DEFAULT.icon;
   }
 }

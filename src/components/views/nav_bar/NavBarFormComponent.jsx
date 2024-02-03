@@ -15,10 +15,14 @@ const NavBarFormComponent = ({
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
   const onFinish = async (values) => {
-    setSending(true);
-    const response = await onSubmit(values);
-    if (!response) {
-      setSending(false);
+    try {
+      setSending(true);
+      const response = await onSubmit(values);
+      if (!response) {
+        setSending(false);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   const filterOption = (input, option) =>
@@ -141,11 +145,28 @@ const NavBarFormComponent = ({
                   >
                     <Input />
                   </Form.Item>
+                  <Form.Item
+                    {...mainRestField}
+                    name={[mainName, "mainIcon"]}
+                    fieldKey={[mainFieldKey, "mainIcon"]}
+                    label="Icono del elemento principal"
+                  >
+                    <Select
+                      placeholder="Seleccione un icono"
+                      options={CONST_NAVBAR_LIST_ICONS.map((icon) => ({
+                        value: icon.name,
+                        label: icon.name,
+                      }))}
+                    />
+                  </Form.Item>
 
                   {/* Campos dinámicos de elementos secundarios */}
                   <Form.List name={[mainName, "subItems"]}>
                     {(subFields, { add: addSub, remove: removeSub }) => (
-                      <div className="flex flex-col gap-4 border rounded-lg p-3 bg-slate-50" key="key">
+                      <div
+                        className="flex flex-col gap-4 border rounded-lg p-3 bg-slate-50"
+                        key="key123"
+                      >
                         {subFields.map(
                           ({
                             key: subKey,
@@ -153,7 +174,10 @@ const NavBarFormComponent = ({
                             fieldKey: subFieldKey,
                             ...subRestField
                           }) => (
-                            <div className="border p-3 rounded-lg bg-gray-200" key={subKey}>
+                            <div
+                              className="border p-3 rounded-lg bg-gray-200"
+                              key={subKey}
+                            >
                               {/* Botón para eliminar el elemento secundario */}
                               <Button
                                 color="danger"
@@ -225,11 +249,7 @@ const NavBarFormComponent = ({
                                   options={CONST_NAVBAR_LIST_ICONS.map(
                                     (icon) => ({
                                       value: icon.name,
-                                      label: (
-                                        <h1 className="text-xl">
-                                          {icon.icon} {icon.name}
-                                        </h1>
-                                      ),
+                                      label: icon.name,
                                     })
                                   )}
                                 />

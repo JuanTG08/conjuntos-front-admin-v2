@@ -13,7 +13,7 @@ export default function NotFound() {
         title="404"
         subTitle="Lo sentimos, la página que visitaste no existe."
         extra={
-          <Button as={Link} size="lg" href="/login" color="primary">
+          <Button as={Link} size="lg" href="/" color="primary">
             Volver a la página de inicio
           </Button>
         }

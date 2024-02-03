@@ -153,6 +153,10 @@ const nextConfig = {
           name: "_cookie_uap0",
           maxAge: 604800,
         },
+        nav_bar: {
+          name: "_cookie_nb0",
+          maxAge: 604800,
+        }
       },
       node_env: "dev",
     },

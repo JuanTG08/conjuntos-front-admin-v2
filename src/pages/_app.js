@@ -23,12 +23,7 @@ const App = ({ Component, pageProps, props }) => {
         <NextUIProvider>
           <ConfigProvider theme={themeConfig} locale={esES}>
             <Layout style={{ minHeight: "100vh" }}>
-              {dataUser?.session && (
-                <MenuNavBarPages
-                  dataUser={dataUser}
-                  navBarData={dataUser?.navbar}
-                />
-              )}
+              {dataUser?.session && <MenuNavBarPages dataUser={dataUser} />}
               <Content
                 style={{
                   minHeight: 360,
@@ -42,7 +37,7 @@ const App = ({ Component, pageProps, props }) => {
                 <Footer>
                   <FooterPage
                     navigation={
-                      NavbarUtils.getNavbarUser(dataUser.idRole).routesNavbar
+                      dataUser?.user?.navBar
                     }
                   />
                 </Footer>
@@ -64,8 +59,8 @@ App.getInitialProps = async (appContext) => {
     };
     const getCookies = TokenUtils.destructureAllCookiesClient(appContext.ctx);
     if (getCookies) {
-      const { mainRoleToken, userDataToken } = getCookies;
-      if (!mainRoleToken || !userDataToken)
+      const { mainRoleToken, userDataToken, navBar } = getCookies;
+      if (!mainRoleToken || !userDataToken || !navBar)
         throw new Error("Tokens no validos");
       const { statusCode: statusCodeMainRole, payload: mainRole } =
         await TokenUtils.validTokenJOSE(mainRoleToken);
@@ -73,6 +68,8 @@ App.getInitialProps = async (appContext) => {
         await TokenUtils.validTokenJOSE(userDataToken);
       if (statusCodeMainRole != 200 || statusCodeUserData != 200)
         throw new Error("Tokens inválidos");
+      const navBarData = await TokenUtils.validTokenJOSE(navBar);
+      if (navBarData.statusCode != 200) throw new Error("Navbar inválido");
       dataUser.user = {
         isLogged: true,
         name: userInformation.userData.name,
@@ -85,6 +82,7 @@ App.getInitialProps = async (appContext) => {
         complex: mainRole.mainRole?.residential_complex,
         tower: mainRole.mainRole?.apartment_complex?.tower_complex,
         apartment: mainRole.mainRole?.apartment_complex,
+        navBar: navBarData.payload.navigation_bar_main,
       };
       dataUser.idRole = mainRole.mainRole.id_roles;
       dataUser.empty = false;

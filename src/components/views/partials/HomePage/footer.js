@@ -4,7 +4,6 @@ import Container from "./container";
 import { AcmeLogo } from "@/components/logos/AcmeLogo";
 
 export default function FooterPage({ navigation }) {
-  // const navigation = NavbarUtils.getNavbarUser().routesNavbar;
   return (
     <div className="relative">
       <Container>
@@ -28,27 +27,27 @@ export default function FooterPage({ navigation }) {
 
           <div>
             <div className="flex flex-wrap w-full -mt-2 -ml-3 lg:ml-0">
-              {navigation.map((route, ind) => {
-                if (route.children)
-                  return route.children.map((item, index) => (
+              {navigation.map((routeMain, indMain) =>
+                routeMain?.navigation_bar_sub?.length > 0 ? (
+                  routeMain?.navigation_bar_sub.map((routeSub, indJ) => (
                     <Link
-                      key={index}
-                      href={item.link}
+                      key={indJ}
+                      href={routeSub?.link}
                       className="w-full px-4 py-2 text-gray-500 rounded-md  hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none "
                     >
-                      {item.label}
+                      {routeSub.label}
                     </Link>
-                  ));
-                return (
+                  ))
+                ) : (
                   <Link
-                    key={ind}
-                    href={route.link}
+                    key={indMain}
+                    href={routeMain?.link}
                     className="w-full px-4 py-2 text-gray-500 rounded-md  hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none "
                   >
-                    {route.label}
+                    {routeMain.label}
                   </Link>
-                );
-              })}
+                )
+              )}
             </div>
           </div>
         </div>
