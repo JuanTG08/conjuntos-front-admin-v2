@@ -5,13 +5,7 @@ import { MovingController } from "@/controller/moving.controller";
 import { DateUtils } from "@/utils/date.utils";
 import { MovingUtils } from "@/utils/moving.utils";
 import { TokenUtils } from "@/utils/token.utils";
-import {
-  Autocomplete,
-  AutocompleteItem,
-  Card,
-  CardBody,
-  CardHeader,
-} from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { Badge, Select, Table, Tooltip, Typography } from "antd";
 import Link from "next/link";
 import { ComplexController } from "@/controller/complex.controller";
@@ -33,10 +27,11 @@ const columns = [
   },
 ];
 
-const ViewListMovingAdmin = ({ movings, towersAndApartments }) => {
-  const [idTower, setIdTower] = useState();
+const ViewListMovingAdmin = ({ movings: _movings, towersAndApartments }) => {
+  const [idTower, setIdTower] = useState(null);
+  const [idApartment, setIdApartment] = useState(null);
   const [apartments, setApartments] = useState([]);
-  const [idApartment, setIdApartment] = useState();
+  const [movings, setMovings] = useState(_movings);
 
   const getDataTable = () => {
     const dataTable = movings.map((moving) => {
@@ -88,11 +83,49 @@ const ViewListMovingAdmin = ({ movings, towersAndApartments }) => {
     );
   };
 
-  const onChangeTower = (id) => {
-    const tower = towersAndApartments.find((tower) => tower.id_tower == id);
+  const onChangeTower = (_idTower) => {
+    if (!_idTower || _idTower == undefined) {
+      cleanTowers();
+      setMovings(_movings);
+      return;
+    }
+    cleanApartments();
+    const tower = towersAndApartments.find(
+      (tower) => tower.id_tower == _idTower
+    );
     const apartments = tower.apartment_complex;
     setApartments(apartments);
-    setIdTower(id);
+    setIdTower(_idTower);
+    setMovings(
+      _movings.filter(
+        (moving) =>
+          moving.users_roles.apartment_complex.tower_complex.id_tower ==
+          _idTower
+      )
+    );
+  };
+  const onChangeApartments = (idApartment) => {
+    if (!idApartment || idApartment == undefined) {
+      onChangeTower(idTower);
+      return;
+    }
+    setIdApartment(idApartment);
+    setMovings(
+      _movings.filter(
+        (moving) =>
+          moving.users_roles.apartment_complex.id_apartment == idApartment
+      )
+    );
+  };
+
+  const cleanTowers = () => {
+    setIdTower(null);
+    cleanApartments(null);
+  };
+
+  const cleanApartments = () => {
+    setIdApartment(null);
+    setApartments([]);
   };
 
   const filterOption = (input, option) =>
@@ -124,7 +157,7 @@ const ViewListMovingAdmin = ({ movings, towersAndApartments }) => {
           />
           <Select
             value={idApartment}
-            onChange={setIdApartment}
+            onChange={onChangeApartments}
             options={apartments.map((apartment) => ({
               value: apartment.id_apartment,
               label: apartment.apartment_identifier_tower,

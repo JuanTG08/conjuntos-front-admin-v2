@@ -75,4 +75,10 @@ export class DateUtils {
     }
     return false;
   }
+
+  static compareDatesToYesterday(date) {
+    const yesterday = dayjs().subtract(1, "day"); // Obtenemos la fecha de ayer
+    const dateToCompare = dayjs(date).utc();
+    return dateToCompare.isAfter(yesterday);
+  }
 }

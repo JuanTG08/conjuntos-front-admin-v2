@@ -45,7 +45,7 @@ const MovingReplyOwnerFormComponent = ({ onSubmit }) => {
             },
             {
               value: CONST_MOVING_STATUS.DISAPPROVED.id,
-              label: "Desaprobar",
+              label: "No aprobar",
             },
           ]}
           placeholder="Seleccione"

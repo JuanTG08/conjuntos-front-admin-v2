@@ -51,20 +51,20 @@ export async function getServerSideProps(context) {
   try {
     // Obtenemos todas las cookies para hacer peticiones al backend
     const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    // Obtenemos el conjunto actual
-    const complex = await ComplexController.apiSSRGetOne(getCookies);
-    if (complex.error || complex.statusCode != 200)
-      throw new Error("No contiene conjunto residencial");
-    // Obtenemos los departamentos totales
-    const states = await DepartmentCountryController.apiSSRListAllDepartment(
-      CONST_COLOMBIA_ID
-    );
-    if (states.error || states.statusCode != 200)
-      throw new Error("Error al obtener todos los Estados");
-    // Obtenemos los municipios del actual departamento
+    const [complex, states] = await Promise.all([
+      ComplexController.apiSSRGetOne(getCookies),
+      DepartmentCountryController.apiSSRListAllDepartment(CONST_COLOMBIA_ID),
+    ]);
     const towns = await MunicipalityController.apiSSRListAll(
       complex.payload?.complex_state
     );
+    if (
+      complex.error ||
+      complex.statusCode != 200 ||
+      states.error ||
+      states.statusCode != 200
+    )
+      throw new Error("No contiene conjunto residencial");
     return {
       props: {
         complex: complex.payload,
@@ -73,6 +73,7 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       redirect: {
         destination: "/dashboard",

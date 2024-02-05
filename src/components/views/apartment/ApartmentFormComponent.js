@@ -103,13 +103,6 @@ const ApartmentFormComponent = ({ onSubmit, valuesToForm }) => {
       <Form.Item
         name="construction_date"
         label="Fecha de Construcción"
-        rules={[
-          {
-            type: "object",
-            required: true,
-            message: "La fecha de construcción de la unidad es requerida",
-          },
-        ]}
       >
         <DatePicker placeholder="Elige una fecha" style={{ width: "100%" }} />
       </Form.Item>

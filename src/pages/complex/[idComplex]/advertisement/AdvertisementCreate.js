@@ -91,24 +91,17 @@ export async function getServerSideProps(context) {
   try {
     const { idComplex } = context.query;
     const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    const complex = await ComplexController.apiSSRGetOne(getCookies, idComplex);
-    if (complex.error || complex.statusCode != 200)
-      throw new Error("No fue posible obtener el conjunto residencial");
-    const status = await StatusController.apiSSRGetStatusSpecific(
-      env._API.routes.status.types.VAR_STATUS_TO_ADVERTISEMENT,
-      getCookies
-    );
-    if (status.error || status.statusCode != 200)
-      throw new Error("No fue posible obtener los estados de los anuncios");
-    const getInfoComplex =
-      await AdvertisementTypesByComplexController.apiSSRListWithComplex(
+    const [complex, status, getInfoComplex] = await Promise.all([
+      ComplexController.apiSSRGetOne(getCookies, idComplex),
+      StatusController.apiSSRGetStatusSpecific(
+        env._API.routes.status.types.VAR_STATUS_TO_ADVERTISEMENT,
+        getCookies
+      ),
+      AdvertisementTypesByComplexController.apiSSRListWithComplex(
         idComplex,
         getCookies
-      );
-    if (getInfoComplex.error || getInfoComplex.statusCode != 200)
-      throw new Error(
-        "No fue posible obtener la información relacionada al conjunto"
-      );
+      ),
+    ]);
     const { tower_complex, ..._complex } = getInfoComplex.payload.listComplex;
     return {
       props: {

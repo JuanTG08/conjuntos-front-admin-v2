@@ -1,7 +1,6 @@
 import MovingDateInvalidComponentAlert from "@/components/alerts/moving/MovingDateInvalidComponentAlert";
 import TitlePage from "@/components/data/title";
 import MovingReplyAdminFormComponent from "@/components/views/moving/reply/MovingReplyAdminFormComponent";
-import MovingReplyOwnerFormComponent from "@/components/views/moving/reply/MovingReplyOwnerFormComponent";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { CONST_MOVING_STATUS } from "@/constants/moving.constant";
 import { MovingController } from "@/controller/moving.controller";
@@ -154,9 +153,10 @@ export async function getServerSideProps(context) {
     );
     if (getData.error || getData.statusCode != 200 || !getData.payload)
       throw new Error("No fue posible obtener los datos");
-    const fechaProgramadaValida = DateUtils.compareDatesToDate(
+    const fechaProgramadaValida = DateUtils.compareDatesToYesterday(
       getData.payload.moving_date
     );
+    console.log(fechaProgramadaValida)
     return {
       props: {
         moving: getData.payload,

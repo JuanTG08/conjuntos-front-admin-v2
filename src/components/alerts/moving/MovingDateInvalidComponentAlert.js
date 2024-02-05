@@ -17,7 +17,7 @@ const MovingDateInvalidComponentAlert = ({ fechaProgramadaValida, status }) => {
     return (
       <Alert
         type="error"
-        message="Mudanza no aprobada: Fecha concluida"
+        message="Mudanza no aprobada: Vencida"
         showIcon
         banner
         style={{ marginBottom: "10px" }}

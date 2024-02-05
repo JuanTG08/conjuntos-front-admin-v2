@@ -145,7 +145,7 @@ export async function getServerSideProps(context) {
     );
     if (getData.error || getData.statusCode != 200 || !getData.payload)
       throw new Error("No fue posible obtener los datos");
-    const fechaProgramadaValida = DateUtils.compareDatesToDate(
+    const fechaProgramadaValida = DateUtils.compareDatesToYesterday(
       getData.payload.moving_date
     );
     return {
