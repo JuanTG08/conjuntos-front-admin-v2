@@ -283,6 +283,7 @@ const nextConfig = {
           url: "/api/service-plans",
           list_all: "/handler-R-list-all",
           create: "/handler-C-create",
+          find_upd_del: "/handler-RUD-service-plans/",
         },
         pqrs: {
           url: "/api/pqrs",

@@ -8,3 +8,11 @@ export class PlanAndServiceRouter extends RoutingClass {
     });
   }
 }
+
+export class PlanAndServiceIdRouter extends RoutingClass {
+  constructor(req, res) {
+    super(req, res, {
+      put: ServicePlansController.apiPutModify,
+    });
+  }
+}

@@ -12,6 +12,9 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import React, { useCallback, useMemo } from "react";
+import { EditDocumentBulkIcon } from "@nextui-org/shared-icons";
+import { EditIcon } from "@/components/Icons/EditIcon";
+import Link from "next/link";
 
 const columns = [
   {
@@ -26,6 +29,10 @@ const columns = [
     name: "Estado",
     uid: "status",
   },
+  {
+    name: "Opciones",
+    uid: "options",
+  },
 ];
 
 const ViewAdminServicePlans = ({ service_plans }) => {
@@ -37,14 +44,27 @@ const ViewAdminServicePlans = ({ service_plans }) => {
       name: item.name,
       description: item.description,
       status: item.plans_and_services_status.name,
-    }));;
+      options: (
+        <div className="relative flex items-center gap-2">
+          <Link
+            className="text-lg text-primary-400 cursor-pointer active:opacity-50"
+            href={"/admin/service_plans/" + item.id_plan_and_service + "/edit"}
+          >
+            <EditIcon />
+          </Link>
+        </div>
+      ),
+    }));
   }, []);
 
   return (
     <>
       <HeaderPage title={"Planes y servicios"} />
       <TitlePage>Planes y servicios</TitlePage>
-      <ButtonCreateNew value="Nuevo plan y servicio" href="/admin/service_plans/create" />
+      <ButtonCreateNew
+        value="Nuevo plan y servicio"
+        href="/admin/service_plans/create"
+      />
       <Table aria-label="Tabla del listado de servicios y precios">
         <TableHeader columns={columns}>
           {(column) => (

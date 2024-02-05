@@ -51,4 +51,59 @@ export class ServicePlansController {
       return Utils.Message(true, 500, "Error al procesar");
     }
   }
+
+  static async apiSSRGetOne(idServicePlans, token) {
+    try {
+      idServicePlans = parseInt(idServicePlans);
+      if (isNaN(idServicePlans))
+        return Utils.Message(true, 400, "Error en los datos");
+      const getOne = await ServicePlansFetching.getApiPrincipalOne(
+        idServicePlans,
+        token
+      );
+      return getOne;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
+
+  static async apiPutModify(req, res) {
+    try {
+      const cookie = req.cookies[env.server.cookies.main_cookie.name];
+      const idServicePlan = parseInt(req.query.idServicePlan);
+      if (isNaN(idServicePlan))
+        return res.json(Utils.Message(true, 400, "Error en los datos"));
+      const modelServicePlan = new ServiceAndPlanModel(req.body);
+      const strObject = await Utils.structureObject(modelServicePlan.getAll);
+      if (!strObject)
+        return res.json(Utils.Message(true, 400, "Error en los datos"));
+      const response = await ServicePlansFetching.putApiPrincipalModify(
+        idServicePlan,
+        modelServicePlan.getAll,
+        cookie
+      );
+      return res.json(response);
+    } catch (error) {
+      console.log(error)
+      return res.json(Utils.Message(true, 500, "Error al procesar"));
+    }
+  }
+
+  static async viewPutModify(idServicePlan, data) {
+    try {
+      idServicePlan = parseInt(idServicePlan);
+      if (isNaN(idServicePlan))
+        return Utils.Message(true, 400, "Error en los datos");
+      const modelServicePlan = new ServiceAndPlanModel(data);
+      const strObject = await Utils.structureObject(modelServicePlan.getAll);
+      if (!strObject) return Utils.Message(true, 400, "Error en los datos");
+      const response = await ServicePlansFetching.putApiLocalModify(
+        idServicePlan,
+        data
+      );
+      return response;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
 }
