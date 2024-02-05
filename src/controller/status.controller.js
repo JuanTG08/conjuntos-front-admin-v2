@@ -34,6 +34,10 @@ export class StatusController {
     }
   }
 
+  static apiGetStatusPlanAndService() {
+    return env._API.routes.status.types.VAR_STATUS_TO_PLAN_AND_SERVICE;
+  }
+
   static async viewGetStatusStatus() {
     try {
       const list = await StatusFetching.getApiLocalListAll(

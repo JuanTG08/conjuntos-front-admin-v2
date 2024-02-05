@@ -76,7 +76,7 @@ const PetsFormComponent = ({
           },
           {
             required: true,
-            message: "El nombre de la torre es requerida",
+            message: "El nombre de la mascota es requerida",
           },
         ]}
       >

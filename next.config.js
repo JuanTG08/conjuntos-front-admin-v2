@@ -99,6 +99,9 @@ const nextConfig = {
           pets: {
             url: "/pet",
           },
+          plan_and_service: {
+            url: "/plan_and_service",
+          },
           pqrs: {
             url: "/pqrs",
             urlThread: "/thread",
@@ -156,7 +159,7 @@ const nextConfig = {
         nav_bar: {
           name: "_cookie_nb0",
           maxAge: 604800,
-        }
+        },
       },
       node_env: "dev",
     },
@@ -279,6 +282,7 @@ const nextConfig = {
         service_plans: {
           url: "/api/service-plans",
           list_all: "/handler-R-list-all",
+          create: "/handler-C-create",
         },
         pqrs: {
           url: "/api/pqrs",
@@ -310,6 +314,7 @@ const nextConfig = {
             VAR_STATUS_TO_RESIDENTIAL_COMPLEX: "status_residential_complex",
             VAR_STATUS_TO_TOWER_COMPLEX: "status_tower_complex",
             VAR_STATUS_TO_ADVERTISEMENT: "status_tower_advertisement",
+            VAR_STATUS_TO_PLAN_AND_SERVICE: "plans_and_services_status",
           },
         },
         tower: {

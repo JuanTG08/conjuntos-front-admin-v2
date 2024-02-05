@@ -1,4 +1,5 @@
 import TitlePage from "@/components/data/title";
+import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { ServicePlansController } from "@/controller/service_plans.controller";
 import { TokenUtils } from "@/utils/token.utils";
@@ -41,9 +42,9 @@ const ViewAdminServicePlans = ({ service_plans }) => {
 
   return (
     <>
-      <HeaderPage title={"Vista de Servicios y Planes"} />
-      <TitlePage>Ola</TitlePage>
-
+      <HeaderPage title={"Planes y servicios"} />
+      <TitlePage>Planes y servicios</TitlePage>
+      <ButtonCreateNew value="Nuevo plan y servicio" href="/admin/service_plans/create" />
       <Table aria-label="Tabla del listado de servicios y precios">
         <TableHeader columns={columns}>
           {(column) => (
