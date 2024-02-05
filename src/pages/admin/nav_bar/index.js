@@ -86,7 +86,7 @@ const ViewNavBarList = ({ navBars }) => {
                                     (routeSub, indJ) => (
                                       <DropdownItem
                                         as={Link}
-                                        href={routeSub?.link}
+                                        href={routeSub?.link || ""}
                                         key={indJ}
                                         description={routeSub?.caption}
                                         startContent={NavbarUtils.getIcon(
@@ -104,7 +104,7 @@ const ViewNavBarList = ({ navBars }) => {
                             <NavbarItem key={indMain}>
                               <LinkNextUI
                                 as={Link}
-                                href={routeMain?.link}
+                                href={routeMain?.link || ""}
                                 color="red"
                               >
                                 {routeMain?.label}
