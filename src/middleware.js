@@ -320,7 +320,6 @@ export const config = {
     "/api/user_roles/:path*",
     "/api/user_to_register/:path*",
     "/api/vehicles/:path*",
-    "/api/voice/:path*",
     "/blog",
     "/call",
     "/complex/:path*",
