@@ -316,6 +316,7 @@ const nextConfig = {
             VAR_STATUS_TO_TOWER_COMPLEX: "status_tower_complex",
             VAR_STATUS_TO_ADVERTISEMENT: "status_tower_advertisement",
             VAR_STATUS_TO_PLAN_AND_SERVICE: "plans_and_services_status",
+            VAR_STATUS_TO_MOVING: "moving_status",
           },
         },
         tower: {

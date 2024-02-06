@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TitlePage from "@/components/data/title";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { MovingController } from "@/controller/moving.controller";
@@ -6,10 +6,10 @@ import { DateUtils } from "@/utils/date.utils";
 import { MovingUtils } from "@/utils/moving.utils";
 import { TokenUtils } from "@/utils/token.utils";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { Badge, Select, Table, Tooltip, Typography } from "antd";
+import { Badge, Select, Table, Tooltip } from "antd";
 import Link from "next/link";
 import { ComplexController } from "@/controller/complex.controller";
-const { Text } = Typography;
+import { StatusController } from "@/controller/status.controller";
 
 const columns = [
   {
@@ -27,11 +27,16 @@ const columns = [
   },
 ];
 
-const ViewListMovingAdmin = ({ movings: _movings, towersAndApartments }) => {
+const ViewListMovingAdmin = ({
+  movings: _movings,
+  towersAndApartments,
+  status,
+}) => {
   const [idTower, setIdTower] = useState(null);
   const [idApartment, setIdApartment] = useState(null);
   const [apartments, setApartments] = useState([]);
   const [movings, setMovings] = useState(_movings);
+  const [idStatus, setIdStatus] = useState();
 
   const getDataTable = () => {
     const dataTable = movings.map((moving) => {
@@ -84,43 +89,59 @@ const ViewListMovingAdmin = ({ movings: _movings, towersAndApartments }) => {
   };
 
   const onChangeTower = (_idTower) => {
+    setIdTower(_idTower);
     if (!_idTower || _idTower == undefined) {
       cleanTowers();
-      setMovings(_movings);
       return;
     }
     cleanApartments();
     const tower = towersAndApartments.find(
       (tower) => tower.id_tower == _idTower
     );
-    const apartments = tower.apartment_complex;
-    setApartments(apartments);
-    setIdTower(_idTower);
-    setMovings(
-      _movings.filter(
+    const _apartments = tower.apartment_complex;
+    setApartments(_apartments);
+  };
+
+  useEffect(() => {
+    filterAll({
+      _idTower: idTower,
+      _idApartment: idApartment,
+      _idStatus: idStatus,
+    })
+  }, [idTower, idApartment, idStatus])
+
+  const filterAll = ({
+    _idTower = idTower,
+    _idApartment = idApartment,
+    _idStatus = idStatus,
+  }) => {
+    let _movingsFilter = _movings;
+    if (_idTower) {
+      _movingsFilter = _movingsFilter.filter(
         (moving) =>
           moving.users_roles.apartment_complex.tower_complex.id_tower ==
           _idTower
-      )
-    );
-  };
-  const onChangeApartments = (idApartment) => {
-    if (!idApartment || idApartment == undefined) {
-      onChangeTower(idTower);
-      return;
+      );
     }
-    setIdApartment(idApartment);
-    setMovings(
-      _movings.filter(
+    if (_idApartment) {
+      _movingsFilter = _movingsFilter.filter(
         (moving) =>
-          moving.users_roles.apartment_complex.id_apartment == idApartment
-      )
-    );
+          moving.users_roles.apartment_complex.id_apartment == _idApartment
+      );
+    }
+    if (_idStatus) {
+      console.log("_idStatus", _idStatus)
+      _movingsFilter = _movingsFilter.filter(
+        (moving) => moving.moving_status.id_status == _idStatus
+      );
+    }
+    console.log("finally", _movingsFilter);
+    setMovings(_movingsFilter);
   };
 
   const cleanTowers = () => {
     setIdTower(null);
-    cleanApartments(null);
+    cleanApartments();
   };
 
   const cleanApartments = () => {
@@ -135,11 +156,11 @@ const ViewListMovingAdmin = ({ movings: _movings, towersAndApartments }) => {
     <>
       <HeaderPage title="Mudanzas" />
       <TitlePage level={1}>Mudanzas</TitlePage>
-      <Card>
+      <Card className="mb-3">
         <CardHeader>
           <h4 className="font-bold text-large">Filtrar mudanzas</h4>
         </CardHeader>
-        <CardBody className="w-full my-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+        <CardBody className="w-full grid grid-cols-1 md:grid-cols-2 gap-2">
           <Select
             value={idTower}
             onChange={onChangeTower}
@@ -157,13 +178,28 @@ const ViewListMovingAdmin = ({ movings: _movings, towersAndApartments }) => {
           />
           <Select
             value={idApartment}
-            onChange={onChangeApartments}
+            onChange={setIdApartment}
             options={apartments.map((apartment) => ({
               value: apartment.id_apartment,
               label: apartment.apartment_identifier_tower,
             }))}
             size="large"
             placeholder="Apartamentos"
+            style={{ width: "100%" }}
+            showSearch
+            allowClear
+            filterOption={filterOption}
+            optionFilterProp="children"
+          />
+          <Select
+            value={idStatus}
+            onChange={setIdStatus}
+            options={status.map((status) => ({
+              value: status.id_status,
+              label: status.name,
+            }))}
+            size="large"
+            placeholder="Estado"
             style={{ width: "100%" }}
             showSearch
             allowClear
@@ -181,24 +217,21 @@ export async function getServerSideProps(context) {
   try {
     // Obtenemos todas las cookies para hacer peticiones al backend
     const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    // Obtenemos los datos necesarios para el formulario
-    const getData = await MovingController.apiSSRListMovingByAdminComplex(
-      getCookies
-    );
-    if (getData.error || getData.statusCode != 200)
-      throw new Error("No fue posible obtener los datos");
-    const getTowersAndApartments =
-      await ComplexController.apiSSRGetListTowerAndApartments(getCookies);
-    if (
-      getTowersAndApartments.error ||
-      getTowersAndApartments.statusCode != 200
-    )
-      throw new Error("No fue posible obtener los datos");
+    const [getData, getTowersAndApartments, getStatusMoving] =
+      await Promise.all([
+        MovingController.apiSSRListMovingByAdminComplex(getCookies),
+        ComplexController.apiSSRGetListTowerAndApartments(getCookies),
+        StatusController.apiSSRGetStatusSpecific(
+          StatusController.apiGetStatusMoving(),
+          getCookies
+        ),
+      ]);
     return {
       props: {
         movings: getData.payload || [],
         towersAndApartments:
           getTowersAndApartments.payload?.tower_complex || [],
+        status: getStatusMoving.payload || [],
       },
     };
   } catch (error) {
