@@ -262,7 +262,7 @@ const middleware = async (req) => {
           response.cookies.get(nameUserAccessPathsCookie)
         );
         redirectToMainPage.cookies.set(
-          response.cookies.get(cookieUserInformation)
+          response.cookies.get(nameUserInformationCookie)
         );
         redirectToMainPage.cookies.set(response.cookies.get(nameNavBarCookie));
       }

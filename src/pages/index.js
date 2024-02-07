@@ -6,7 +6,6 @@ export default function Home() {
 
 export async function getServerSideProps(context) {
   const token = await getSession(context);
-  console.log("Inicio aplicativo token", token);
   if (token)
     return {
       redirect: {
