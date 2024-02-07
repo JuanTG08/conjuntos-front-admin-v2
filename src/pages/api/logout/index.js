@@ -12,7 +12,6 @@ export default function handler(req, res) {
   // Elimina cada cookie existente
   for (const cookieName in cookies) {
     // Configura la cookie para que expire inmediatamente (0 segundos)
-    console.log(cookieName)
     res.setHeader(
       "Set-Cookie",
       serialize(cookieName, "", {

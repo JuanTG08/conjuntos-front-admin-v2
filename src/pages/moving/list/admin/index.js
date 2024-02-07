@@ -130,12 +130,10 @@ const ViewListMovingAdmin = ({
       );
     }
     if (_idStatus) {
-      console.log("_idStatus", _idStatus)
       _movingsFilter = _movingsFilter.filter(
         (moving) => moving.moving_status.id_status == _idStatus
       );
     }
-    console.log("finally", _movingsFilter);
     setMovings(_movingsFilter);
   };
 

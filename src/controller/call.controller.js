@@ -18,7 +18,6 @@ export class CallController {
         return res.json(Utils.Message(true, 500, "Usuario no existente"));
       const countryCode = "+57";
       const numberPhone = `${countryCode}${getNumber.payload.mobile_phone}`;
-      console.log(numberPhone);
       twilioClient.calls
         .create({
           url: "https://85fa-186-84-89-164.ngrok.io",

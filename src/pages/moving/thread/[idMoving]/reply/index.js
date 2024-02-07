@@ -156,7 +156,6 @@ export async function getServerSideProps(context) {
     const fechaProgramadaValida = DateUtils.compareDatesToYesterday(
       getData.payload.moving_date
     );
-    console.log(fechaProgramadaValida)
     return {
       props: {
         moving: getData.payload,

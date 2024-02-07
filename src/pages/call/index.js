@@ -146,8 +146,6 @@ const CallPage = ({ apartments, tokenCall, tokenUser }) => {
         userDataToken: tokenUser.userDataToken,
       };
       if (_device) {
-        console.log("Intentando llamar a", idUserToCall);
-        console.log(params);
         const call = await _device.connect(params);
         setCalling(call);
 
