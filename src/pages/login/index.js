@@ -1,6 +1,6 @@
 import GoogleIcon from "@/components/Icons/GoogleIcon";
 import HeaderPage from "@/components/views/partials/HeaderPage";
-import { Button, Divider, Image } from "@nextui-org/react";
+import { Button, Divider } from "@nextui-org/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import NextImage from "next/image";
 import React, { useEffect } from "react";

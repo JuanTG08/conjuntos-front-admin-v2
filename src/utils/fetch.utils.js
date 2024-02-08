@@ -31,6 +31,7 @@ export class FetchUtils {
       const response = await fetch(url, options);
       const res = response.json();
       // Realizamos un middleware para validar los datos de la respuesta
+      if (!opt?.tokenOuth) console.log("Cliente")
       return res;
     } catch (error) {
       console.log(error);
