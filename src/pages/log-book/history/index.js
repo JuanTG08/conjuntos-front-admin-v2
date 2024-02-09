@@ -1,6 +1,7 @@
 import TitlePage from "@/components/data/title";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { LogsBookIncidentsCtrl } from "@/controller/logs_book_incidents.controller";
+import { LogBookServerSideProps } from "@/server-side-props/log_book.serverSideProps";
 import { DateUtils } from "@/utils/date.utils";
 import { TokenUtils } from "@/utils/token.utils";
 import { Table, Typography } from "antd";
@@ -61,28 +62,9 @@ const LogBookHistory = ({ minuta }) => {
 };
 
 export async function getServerSideProps(context) {
-  try {
-    // Obtenemos todas las cookies para hacer peticiones al backend
-    const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    // Obtenemos los datos necesarios para el formulario
-    const getData =
-      await LogsBookIncidentsCtrl.apiSSRGetListMyLogsBookIncidents(getCookies);
-    if (getData.error || getData.statusCode != 200)
-      throw new Error("No fue posible obtener los datos");
-    return {
-      props: {
-        minuta: getData.payload || [],
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
+  const server = new LogBookServerSideProps(context);
+  await server.LogBookHistory();
+  return server.response;
 }
 
 export default LogBookHistory;

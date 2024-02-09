@@ -102,7 +102,7 @@ export default class Utils {
       if (!Array.isArray(array)) {
         return false;
       }
-      const valid = array.every((value) => typeof value === "number");
+      const valid = array.every((value) => typeof value === "number" || value === "_");
       return valid;
     } catch (error) {
       return false;

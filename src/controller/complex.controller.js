@@ -126,14 +126,7 @@ export class ComplexController {
         model.getAll,
         cookie
       );
-      // Validamos si la respuesta fue correcta
-      if (respApi.statusCode != 200)
-        return res
-          .status(500)
-          .json(
-            Utils.Message(true, 500, "No fue posible guardar la información")
-          );
-      return res.json(Utils.Message(false, 200, "Se creo correctamente"));
+      return res.json(respApi);
     } catch (error) {
       console.log(error);
       return res.json(Utils.Message(true, 500, "Error", error));

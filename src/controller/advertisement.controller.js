@@ -164,6 +164,55 @@ export class AdvertisementController {
     }
   }
 
+  static async apiSSRGetOneById(idAdvertisement, cookie) {
+    try {
+      idAdvertisement = parseInt(idAdvertisement);
+      if (!Utils.verifyId(idAdvertisement)) throw new Error("Datos erróneos");
+      const getAdvertisement =
+        await AdvertisementFetching.getApiPrincipalFindOne(
+          idAdvertisement,
+          cookie
+        );
+      if (getAdvertisement.error || getAdvertisement.statusCode !== 200)
+        throw new Error("Error al obtener los datos");
+      const { status_type, segmentation_advertisement } =
+        getAdvertisement.payload;
+      const arraysIds = {
+        arraysIdsTowers: [],
+        arraysIdsApartments: [],
+        arraysIdsUsers: [],
+      };
+      segmentation_advertisement.map((segAdv) => {
+        switch (status_type) {
+          case CONST_TYPE_ADVERTISEMENT.TOWERS.id:
+            arraysIds.arraysIdsTowers.push(segAdv.id_tower);
+            break;
+          case CONST_TYPE_ADVERTISEMENT.APARTMENT.id:
+            if (!getAdvertisement.payload.type_tower_apart)
+              getAdvertisement.payload.type_tower_apart = segAdv.id_tower;
+            arraysIds.arraysIdsApartments.push(segAdv.id_apartment);
+            break;
+          case CONST_TYPE_ADVERTISEMENT.USERS.id:
+            if (!getAdvertisement.payload.type_tower_apart)
+              getAdvertisement.payload.type_tower_apart = segAdv.id_tower;
+            if (!getAdvertisement.payload.type_apartment)
+              getAdvertisement.payload.type_apartment = segAdv.id_apartment;
+            arraysIds.arraysIdsUsers.push(segAdv.id_user);
+            break;
+          default:
+            break;
+        }
+      });
+      getAdvertisement.payload = {
+        ...getAdvertisement.payload,
+        ...arraysIds,
+      };
+      return getAdvertisement;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
+
   static async viewGetOneById(idAdvertisement) {
     try {
       idAdvertisement = parseInt(idAdvertisement);

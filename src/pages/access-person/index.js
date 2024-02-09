@@ -15,6 +15,7 @@ import Link from "next/link";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { DateUtils } from "@/utils/date.utils";
 import { TokenUtils } from "@/utils/token.utils";
+import { AccessPersonServerSideProps } from "@/server-side-props/access_person.serverSideProps";
 
 const AccessPersonListToUser = ({ access_people }) => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -205,26 +206,9 @@ const AccessPersonListToUser = ({ access_people }) => {
 };
 
 export async function getServerSideProps(context) {
-  try {
-    // Obtenemos todas las cookies para hacer peticiones al backend
-    const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    // Obtenemos los datos
-    const getData =
-      await AccessPersonController.apiSSRGetAccessPersonToApartment(getCookies);
-    return {
-      props: {
-        access_people: getData.payload || [],
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
+  const server = new AccessPersonServerSideProps(context);
+  await server.AccessPersonListToUser();
+  return server.response;
 }
 
 export default AccessPersonListToUser;

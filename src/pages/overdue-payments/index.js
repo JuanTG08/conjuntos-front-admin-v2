@@ -1,13 +1,16 @@
-import GoogleIcon from "@/components/Icons/GoogleIcon";
-import TitlePage from "@/components/data/title";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { Button } from "@nextui-org/react";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 const ViewOverduePayments = () => {
+  const { data: session } = useSession();
+  useEffect(() => {
+    console.log(session)
+    // if (window && session) signOutGoogle();
+  }, [session]);
   return (
     <>
       <HeaderPage title="Falta de pago" />

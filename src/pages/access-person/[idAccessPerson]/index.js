@@ -1,10 +1,11 @@
 import TitlePage from "@/components/data/title";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { AccessPersonController } from "@/controller/access_person.controller";
+import { AccessPersonServerSideProps } from "@/server-side-props/access_person.serverSideProps";
 import { DateUtils } from "@/utils/date.utils";
 import { TokenUtils } from "@/utils/token.utils";
 import { Card, CardBody } from "@nextui-org/react";
-import { Badge, Descriptions, Divider, Skeleton } from "antd";
+import { Badge, Descriptions, Divider } from "antd";
 import React from "react";
 
 const viewOneAccessPerson = ({ accessPerson }) => {
@@ -127,30 +128,8 @@ const viewOneAccessPerson = ({ accessPerson }) => {
 };
 
 export async function getServerSideProps(context) {
-  try {
-    const { idAccessPerson } = context.query;
-    // Obtenemos todas las cookies para hacer peticiones al backend
-    const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    // Obtenemos los datos
-    const getData = await AccessPersonController.apiSSRGetOneAccessPerson(
-      idAccessPerson,
-      getCookies
-    );
-    if (getData.error || getData.statusCode != 200 || !getData.payload)
-      throw new Error("Error al obtener los datos");
-    return {
-      props: {
-        accessPerson: getData.payload,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
+  const server = new AccessPersonServerSideProps(context);
+  await server.ViewOneAccessPerson();
+  return server.response;
 }
 export default viewOneAccessPerson;

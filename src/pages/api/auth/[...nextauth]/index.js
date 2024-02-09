@@ -4,6 +4,7 @@ import { AuthController } from "@/controller/auth.controller";
 import { setCookie } from "nookies";
 import { env } from "../../../../../next.config";
 import { TokenUtils } from "@/utils/token.utils";
+import { CONST_STATUS_CODE } from "@/constants/status_code.constant";
 
 export const authOptions = (req, res) => ({
   providers: [
@@ -23,6 +24,11 @@ export const authOptions = (req, res) => ({
     async signIn({ user, account, profile }) {
       try {
         const getTokens = await AuthController.apiPostPreLoginUser(user.email);
+        if (
+          getTokens.error &&
+          getTokens.statusCode == CONST_STATUS_CODE.unauthorizedUserOverdue.code
+        )
+          return "/overdue-payments";
         if (getTokens.error || getTokens.statusCode != 200)
           throw new Error("Usuario no existente");
         return true;
@@ -66,5 +72,6 @@ export const authOptions = (req, res) => ({
 });
 
 export default (req, res) => {
-  return NextAuth(req, res, authOptions(req, res));
+  const nextAuth = NextAuth(req, res, authOptions(req, res));
+  return nextAuth;
 };

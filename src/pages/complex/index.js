@@ -12,6 +12,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import HeaderPage from "@/components/views/partials/HeaderPage";
+import CreditCardIcon from "@/components/Icons/CreditCardIcon";
 
 const columns = [
   {
@@ -133,6 +134,18 @@ const ComplexIndex = () => {
                 },
                 {
                   key: "5",
+                  label: (
+                    <Link
+                      href={"/complex/" + complex.id_complex + "/advertisement"}
+                      className="btn btn-primary"
+                    >
+                      Plan y servicio
+                    </Link>
+                  ),
+                  icon: <CreditCardIcon width="16px" />,
+                },
+                {
+                  key: "6",
                   label: (
                     <Popconfirm
                       title="Eliminar"

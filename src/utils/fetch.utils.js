@@ -1,6 +1,8 @@
 import Utils from "@/helpers/helpers";
 import { env } from "../../next.config";
 import axios from "axios";
+import { CONST_STATUS_CODE } from "@/constants/status_code.constant";
+import { clientRedirectToLogin } from "./redirect.client.utils";
 
 const timeout = process.env.MAX_TIME_AUTH_FETCHING || 100000;
 
@@ -30,11 +32,22 @@ export class FetchUtils {
       if (opt?.headers) options.headers = opt.headers;
       const response = await fetch(url, options);
       const res = response.json();
+      if (!opt?.tokenOuth) {
+        try {
+          if (!window) throw new Error("Estamos en el servidor");
+          const dataResp = await res;
+          if (
+            dataResp?.statusCode == CONST_STATUS_CODE.unauthorized.code ||
+            dataResp?.statusCode == CONST_STATUS_CODE.unauthorizedUserOverdue.code
+          )
+            clientRedirectToLogin(); //window.location.href = "/login";
+        } catch (error) {
+          // Estamos en el servidor
+        }
+      }
       // Realizamos un middleware para validar los datos de la respuesta
-      if (!opt?.tokenOuth) console.log("Cliente")
       return res;
     } catch (error) {
-      console.log(error);
       return Utils.Message(true, 500, "Error");
     }
   }
@@ -51,6 +64,20 @@ export class FetchUtils {
           ...authorization,
         },
       });
+      if (!auth) {
+        try {
+          if (!window) throw new Error("Estamos en el servidor");
+          if (
+            res.data?.statusCode == CONST_STATUS_CODE.unauthorized.code ||
+            res.data?.statusCode ==
+              CONST_STATUS_CODE.unauthorizedUserOverdue.code
+          )
+            clientRedirectToLogin(); //window.location.href = "/login";
+        } catch (error) {
+          // Estamos en el servidor
+          console.log(error);
+        }
+      }
       if (res.status != 200)
         return Utils.Message(true, 500, "Error en el servidor");
       return res.data;
@@ -72,6 +99,20 @@ export class FetchUtils {
           ...authorization,
         },
       });
+      if (!auth) {
+        try {
+          if (!window) throw new Error("Estamos en el servidor");
+          if (
+            res.data?.statusCode == CONST_STATUS_CODE.unauthorized.code ||
+            res.data?.statusCode ==
+              CONST_STATUS_CODE.unauthorizedUserOverdue.code
+          )
+            clientRedirectToLogin(); //window.location.href = "/login";
+        } catch (error) {
+          // Estamos en el servidor
+          console.log(error);
+        }
+      }
       if (res.status != 200)
         return Utils.Message(true, 500, "Error en el servidor");
       return res.data;

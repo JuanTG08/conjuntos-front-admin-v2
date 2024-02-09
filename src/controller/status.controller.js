@@ -42,6 +42,9 @@ export class StatusController {
     return env._API.routes.status.types.VAR_STATUS_TO_MOVING;
   }
 
+  static apiGetStatusAdvertisement =
+    env._API.routes.status.types.VAR_STATUS_TO_ADVERTISEMENT;
+
   static async viewGetStatusStatus() {
     try {
       const list = await StatusFetching.getApiLocalListAll(

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { DateUtils } from "@/utils/date.utils";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { TokenUtils } from "@/utils/token.utils";
+import { AccessPersonServerSideProps } from "@/server-side-props/access_person.serverSideProps";
 
 const columns = [
   {
@@ -67,28 +68,9 @@ const AccessPersonList = ({ accessPeople }) => {
 };
 
 export async function getServerSideProps(context) {
-  try {
-    // Obtenemos todas las cookies para hacer peticiones al backend
-    const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    // Obtenemos los datos
-    const getData =
-      await AccessPersonController.apiSSRGetListAccessPersonToComplex(
-        getCookies
-      );
-    return {
-      props: {
-        accessPeople: getData.payload || [],
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
+  const server = new AccessPersonServerSideProps(context);
+  await server.AccessPersonList();
+  return server.response;
 }
 
 export default AccessPersonList;
