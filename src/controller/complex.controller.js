@@ -21,14 +21,12 @@ export class ComplexController {
     }
   }
 
-  // Listamos todos los conjuntos haciendo una petición a nuestra api local
-  static async viewListAll() {
+  static async apiSSRGetListAll(cookie) {
     try {
-      const data = await ComplexFetching.getApiLocalListAll();
-      return data;
+      const list = await ComplexFetching.getApiPrincipalListAll(cookie);
+      return list;
     } catch (error) {
-      console.log(error);
-      return Utils.Message(true, 500, "Error", error);
+      return Utils.Message(true, 500, "Error");
     }
   }
 
@@ -484,7 +482,7 @@ export class ComplexController {
         );
       return listPlanAndService;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return Utils.Message(true, 500, "Error");
     }
   }

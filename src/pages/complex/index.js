@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import CreditCardIcon from "@/components/Icons/CreditCardIcon";
+import { ComplexServerSideProps } from "@/server-side-props/complex.serverSideProps";
 
 const columns = [
   {
@@ -56,18 +57,9 @@ const columns = [
   },
 ];
 
-const ComplexIndex = () => {
+const ComplexIndex = ({ listAllComplex }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [resComplexs, setResComplexs] = useState([]);
-
-  useEffect(() => {
-    const fetchListAllComplex = async () => {
-      const listComplex = await ComplexController.viewListAll();
-      if (!listComplex.error && listComplex.statusCode == 200)
-        setResComplexs(listComplex.payload);
-    };
-    fetchListAllComplex();
-  }, []);
+  const [resComplexs, setResComplexs] = useState(listAllComplex);
 
   const getDataTable = () => {
     const dataTable = resComplexs.map((complex, index) => {
@@ -217,6 +209,12 @@ const ComplexIndex = () => {
       <DataTable />
     </>
   );
+};
+
+export const getServerSideProps = async (context) => {
+  const server = new ComplexServerSideProps(context);
+  await server.GetComplexListIndex();
+  return server.response;
 };
 
 export default ComplexIndex;

@@ -4,7 +4,6 @@ import { RoutingClass } from "@/lib/Routing";
 export class ComplexRouter extends RoutingClass {
   constructor(req, res) {
     super(req, res, {
-      get: ComplexController.apiGetListAll,
       post: ComplexController.apiPostNew,
       put: ComplexController.apiPutEditToSettingComplex,
     });

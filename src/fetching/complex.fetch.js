@@ -6,17 +6,6 @@ const URL_API_PRINCIPAL = env._API.url + env._API.routes.complex.url;
 const URL_API_LOCAL =
   env.server.url_local + env.server.api.url + env.server.api.routes.complex.url;
 export class ComplexFetching {
-  // Obtenemos todos los conjuntos residenciales de la API local del proyecto
-  static async getApiLocalListAll() {
-    try {
-      const url = URL_API_LOCAL;
-      const res = await FetchUtils.send(url);
-      return res;
-    } catch (error) {
-      return Utils.Message(true, 500, "Server Error");
-    }
-  }
-
   // Obtenemos todos los datos de la API principal que esta conectada a la base de datos
   static async getApiPrincipalListAll(tokenOuth) {
     try {
