@@ -136,7 +136,9 @@ const ComplexIndex = () => {
                   key: "5",
                   label: (
                     <Link
-                      href={"/complex/" + complex.id_complex + "/advertisement"}
+                      href={
+                        "/complex/" + complex.id_complex + "/plan_and_service"
+                      }
                       className="btn btn-primary"
                     >
                       Plan y servicio

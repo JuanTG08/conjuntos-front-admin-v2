@@ -222,6 +222,7 @@ const nextConfig = {
           find_upd_del: "/handdler-RUD-residential-complex/",
           list_user: "/handler-R-residential-complex-user/",
           find_towers_apartments: "/handler-R-tower-apartment",
+          crud_plan_and_service: "/handler-CRUD-plan-and-service/",
         },
         country: {
           url: "/api/country",

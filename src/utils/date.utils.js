@@ -81,4 +81,8 @@ export class DateUtils {
     const dateToCompare = dayjs(date).utc();
     return dateToCompare.isAfter(yesterday);
   }
+
+  static formatDateDMY(date) {
+    return dayjs(date).format("DD/MM/YYYY");
+  }
 }

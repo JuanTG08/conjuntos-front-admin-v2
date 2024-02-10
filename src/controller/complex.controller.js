@@ -472,6 +472,23 @@ export class ComplexController {
     }
   }
 
+  static async apiSSRGetListPlanAndService(idComplex, cookie) {
+    try {
+      idComplex = parseInt(idComplex);
+      if (!Utils.verifyId(idComplex))
+        return Utils.Message(true, 500, "Datos erróneos");
+      const listPlanAndService =
+        await ComplexFetching.getApiPrincipalListPlanAndService(
+          idComplex,
+          cookie
+        );
+      return listPlanAndService;
+    } catch (error) {
+      console.log(error)
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
   static viewGetDataToForm(data = null) {
     const valuesForm = {
       complex_name: data?.complex_name ? data.complex_name : "",

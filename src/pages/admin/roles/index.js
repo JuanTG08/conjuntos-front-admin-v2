@@ -1,6 +1,5 @@
 import { RolesController } from "@/controller/roles.controller";
 import { Typography, message } from "antd";
-import { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
