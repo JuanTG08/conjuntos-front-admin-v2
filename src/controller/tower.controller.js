@@ -42,10 +42,7 @@ export class TowerController {
   static async apiSSRGetListAll(cookie, id = CONST_SYSTEM_NOT_PARAM_VIEW) {
     try {
       let idComplex = parseInt(id);
-      if (
-        !Utils.verifyId(idComplex) &&
-        id !== CONST_SYSTEM_NOT_PARAM_VIEW
-      )
+      if (!Utils.verifyId(idComplex) && id !== CONST_SYSTEM_NOT_PARAM_VIEW)
         return Utils.Message(true, 500, "Datos erróneos");
 
       idComplex = Utils.verifyId(idComplex)
@@ -163,23 +160,31 @@ export class TowerController {
     }
   }
 
-  // Obtenemos uno solo mediante su ID hacia la API LOCAL
-  static async viewOne(idTower) {
+  static async apiSSRGetOne(idTower, cookie) {
     try {
       idTower = parseInt(idTower);
-      if (Number.isNaN(idTower))
+      if (
+        !Utils.verifyId(idTower) &&
+        req.query?.idTower !== CONST_SYSTEM_NOT_PARAM_VIEW
+      )
         return Utils.Message(true, 500, "Parámetros fuera de rango");
-      const data = await TowerFetching.getApiLocalOne(idTower);
-      if (data.error || !data.payload)
+      idTower = Utils.verifyId(idTower) ? idTower : CONST_SYSTEM_NOT_PARAM_VIEW;
+      const respOne = await TowerFetching.getApiPrincipalOne(idTower, cookie);
+      if (respOne.statusCode != 200)
         return Utils.Message(true, 500, "Error en los datos");
-      const model = new TowerComplexModel(data.payload.tower_complex);
-      return Utils.Message(false, 200, "Ok", {
-        tower: model.getAllDataForm,
-        complex: data.payload.residential_complex,
+      respOne.payload.residential_complex._count_apartment =
+        respOne.payload.tower_complex._count.apartment_complex;
+      respOne.payload.residential_complex._count_apartment_by_tower = 0;
+      respOne.payload.residential_complex.total =
+        respOne.payload.residential_complex.tower_complex.length;
+      respOne.payload.residential_complex.tower_complex.map((tower) => {
+        respOne.payload.residential_complex._count_apartment_by_tower +=
+          tower.number_apartments;
       });
+      return respOne;
     } catch (error) {
-      console.log(error);
-      return Utils.Message(true, 500, "Error de conexión Local", error);
+      console.error(error);
+      return Utils.Message(true, 500, "Server Error");
     }
   }
 
@@ -261,7 +266,9 @@ export class TowerController {
 
   static async apiListTowerApartment(cookie) {
     try {
-      const respApi = await TowerFetching.getApiPrincipalListTowerApartment(cookie);
+      const respApi = await TowerFetching.getApiPrincipalListTowerApartment(
+        cookie
+      );
       return respApi;
     } catch (error) {
       return Utils.Message(true, 500, "Error");

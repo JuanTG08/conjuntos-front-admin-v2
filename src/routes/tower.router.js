@@ -12,7 +12,6 @@ export class TowerListAllRouter extends RoutingClass {
 export class TowerIdRUDRouter extends RoutingClass {
   constructor(req, res) {
     super(req, res, {
-      get: TowerController.apiGetOne,
       put: TowerController.apiPutEdit,
       delete: TowerController.apiDelete,
     })

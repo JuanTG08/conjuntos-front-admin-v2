@@ -2,28 +2,13 @@ import HeaderPage from "@/components/views/partials/HeaderPage";
 import TowerFormComponent from "@/components/views/tower/TowerFormComponent";
 import TowerLeyendComponent from "@/components/views/tower/TowerLeyendComponent";
 import { TowerController } from "@/controller/tower.controller";
+import { TowerServerSideProps } from "@/server-side-props/tower.serverSideProps";
 import { Typography, message } from "antd";
 import Router from "next/router";
 import { useEffect, useState } from "react";
 
-const TowerEdit = ({ idTower }) => {
+const TowerEdit = ({ idTower, tower, complex }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [complex, setComplex] = useState(false);
-  const [tower, setTower] = useState(false);
-
-  useEffect(() => {
-    fetchOneTower();
-  }, []);
-
-  const fetchOneTower = async () => {
-    const oneTower = await TowerController.viewOne(idTower);
-    if (!oneTower.error && oneTower.statusCode == 200) {
-      setTower(oneTower.payload.tower);
-      setComplex(oneTower.payload.complex);
-    } else {
-      Router.back();
-    }
-  };
 
   const onSubmit = async (data) => {
     try {
@@ -60,12 +45,9 @@ const TowerEdit = ({ idTower }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { idTower } = context.query;
-  return {
-    props: {
-      idTower,
-    },
-  };
+  const server = new TowerServerSideProps(context);
+  await server.ViewTowerEdit();
+  return server.response;
 }
 
 export default TowerEdit;
