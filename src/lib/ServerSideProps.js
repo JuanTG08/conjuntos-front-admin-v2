@@ -54,8 +54,8 @@ export class ServerSideProps {
       for (const res of responseCallbacks) {
         if (this._unauthorized) break; // Si ya hay un error de autorización, no seguimos validando las peticiones)
         if (
-          res.statusCode == CONST_STATUS_CODE.unauthorized.code ||
-          res.statusCode == CONST_STATUS_CODE.unauthorizedUserOverdue
+          res?.statusCode == CONST_STATUS_CODE.unauthorized.code ||
+          res?.statusCode == CONST_STATUS_CODE.unauthorizedUserOverdue.code
         )
           this._unauthorized = true;
       }
@@ -75,7 +75,7 @@ export class ServerSideProps {
     toRedirect = "/dashboard",
     message = "No fue posible obtener los datos",
   }) {
-    if (response.statusCode == codeExpected && response.error == errorExpected)
+    if (response?.statusCode == codeExpected && response?.error == errorExpected)
       return true;
     this.setRedirect(toRedirect);
     throw new Error(message);

@@ -1,7 +1,7 @@
 import TowerLeyendComponent from "@/components/views/tower/TowerLeyendComponent";
 import { TowerController } from "@/controller/tower.controller";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Dropdown, Popconfirm, Table, Typography, message } from "antd";
 import {
   DownOutlined,
@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import HeaderPage from "@/components/views/partials/HeaderPage";
+import { TowerServerSideProps } from "@/server-side-props/tower.serverSideProps";
 
 const columns = [
   {
@@ -49,32 +50,9 @@ const columns = [
   },
 ];
 
-const index = ({ idComplex }) => {
+const ViewTowerListToComplex = ({ idComplex, complex, _towers }) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [complex, setComplex] = useState(false);
-  const [towers, setTowers] = useState([]);
-  const [loadingData, setLoadingData] = useState(true);
-  useEffect(() => {
-    fetchListAllTowers();
-  }, []);
-
-  const fetchListAllTowers = async () => {
-    try {
-      const listTowers = await TowerController.viewGetListAll(idComplex);
-      setLoadingData(false);
-      if (
-        listTowers.error ||
-        !listTowers.payload ||
-        listTowers.statusCode != 200
-      )
-        return;
-      setComplex(listTowers.payload.complex);
-      setTowers(listTowers.payload.towers);
-    } catch (error) {
-      console.log(error);
-      setLoadingData(false);
-    }
-  };
+  const [towers, setTowers] = useState(_towers);
 
   const getDataTable = () => {
     const dataTable = towers.map((tower, index) => {
@@ -151,7 +129,6 @@ const index = ({ idComplex }) => {
         columns={columns}
         dataSource={getDataTable()}
         bordered
-        loading={loadingData}
       />
     );
   };
@@ -188,12 +165,9 @@ const index = ({ idComplex }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { idComplex } = context.query;
-  return {
-    props: {
-      idComplex,
-    },
-  };
+  const server = new TowerServerSideProps(context);
+  await server.ViewTowerListToComplex();
+  return server.response;
 }
 
-export default index;
+export default ViewTowerListToComplex;

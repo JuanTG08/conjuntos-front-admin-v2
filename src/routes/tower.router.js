@@ -4,7 +4,6 @@ import { RoutingClass } from "@/lib/Routing";
 export class TowerListAllRouter extends RoutingClass {
   constructor(req, res) {
     super(req, res, {
-      get: TowerController.apiGetListAll,
       post: TowerController.apiPostNew,
     });
   }

@@ -70,24 +70,6 @@ export class TowerController {
     }
   }
 
-  // Call Backend API Local
-  static async viewGetListAll(id = CONST_SYSTEM_NOT_PARAM_VIEW) {
-    try {
-      let idComplex = parseInt(id);
-      if (!Utils.verifyId(idComplex) && id != CONST_SYSTEM_NOT_PARAM_VIEW)
-        return Utils.Message(true, 500, "Datos erróneos");
-
-      idComplex = Utils.verifyId(idComplex)
-        ? idComplex
-        : CONST_SYSTEM_NOT_PARAM_VIEW;
-      const list = await TowerFetching.getApiLocalListAll(idComplex);
-      return list;
-    } catch (error) {
-      console.error(error);
-      return Utils.Message(true, 500, "Server Error");
-    }
-  }
-
   // Validamos y enviamos los datos a la API principal
   static async apiPostNew(req, res) {
     try {

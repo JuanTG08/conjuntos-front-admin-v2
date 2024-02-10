@@ -3,6 +3,7 @@ import HeaderPage from "@/components/views/partials/HeaderPage";
 import { CONST_COLOMBIA_ID } from "@/constants/country.constant";
 import { ComplexController } from "@/controller/complex.controller";
 import { DepartmentCountryController } from "@/controller/department_country.controller";
+import { ComplexServerSideProps } from "@/server-side-props/complex.serverSideProps";
 import { TokenUtils } from "@/utils/token.utils";
 import { Typography, message } from "antd";
 
@@ -46,36 +47,9 @@ const ComplexEdit = ({ idComplex, departments, complex }) => {
 };
 
 export const getServerSideProps = async (context) => {
-  try {
-    const { idComplex } = context.query;
-    const getDepartments =
-      await DepartmentCountryController.apiSSRListAllDepartment(
-        CONST_COLOMBIA_ID
-      );
-    const getCookies = TokenUtils.destructureAllCookiesClient(context);
-    const oneComplex = await ComplexController.apiSSRGetOne(
-      getCookies,
-      idComplex
-    );
-    if (oneComplex.error || oneComplex.statusCode != 200)
-      throw new Error("Error al obtener el conjunto residencial");
-    const complex = oneComplex.payload;
-    const departments = getDepartments.payload || [];
-    return {
-      props: {
-        idComplex,
-        departments,
-        complex,
-      },
-    };
-  } catch (error) {
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
+  const server = new ComplexServerSideProps(context);
+  await server.ViewComplexEdit();
+  return server.response;
 };
 
 export default ComplexEdit;

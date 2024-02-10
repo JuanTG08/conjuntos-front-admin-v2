@@ -19,17 +19,6 @@ export class TowerFetching {
     }
   }
 
-  // Hacemos la peticion a nuestra API local para que esta haga la peticion a la API principal
-  static async getApiLocalListAll(idComplex) {
-    try {
-      const url = URL_API_LOCAL + "/" + idComplex;
-      const res = await FetchUtils.send(url);
-      return res;
-    } catch (error) {
-      return Utils.Message(true, 500, "Server Error", error);
-    }
-  }
-
   // Hacemos una peticion a la API principal para almacenar un nuevo conjunto residencial
   static async postApiPrincipalNew(data, tokenOuth) {
     try {
