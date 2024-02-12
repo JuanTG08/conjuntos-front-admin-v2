@@ -16,3 +16,11 @@ export class PlanAndServiceIdRouter extends RoutingClass {
     });
   }
 }
+
+export class ComplexPlanAndServiceRouter extends RoutingClass {
+  constructor(req, res) {
+    super(req, res, {
+      post: ServicePlansController.apiPostSetToComplex,
+    });
+  }
+}

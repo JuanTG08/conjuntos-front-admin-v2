@@ -101,6 +101,7 @@ const nextConfig = {
           },
           plan_and_service: {
             url: "/plan_and_service",
+            complex_plan: "/complex_plan",
           },
           pqrs: {
             url: "/pqrs",
@@ -285,6 +286,7 @@ const nextConfig = {
           list_all: "/handler-R-list-all",
           create: "/handler-C-create",
           find_upd_del: "/handler-RUD-service-plans/",
+          get_data_to_set: "/handler-R-data-set-complex-to-plan-service",
         },
         pqrs: {
           url: "/api/pqrs",

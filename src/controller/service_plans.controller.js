@@ -2,6 +2,7 @@ import { ServicePlansFetching } from "@/fetching/service_plans.fetch";
 import Utils from "@/helpers/helpers";
 import { ServiceAndPlanModel } from "@/model/ServiceAndPlan.model";
 import { env } from "../../next.config";
+import { ComplexPlanAndServiceModel } from "@/model/ComplexPlanAndService.model";
 
 export class ServicePlansController {
   static async apiSSRGetListAll(token) {
@@ -84,7 +85,7 @@ export class ServicePlansController {
       );
       return res.json(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.json(Utils.Message(true, 500, "Error al procesar"));
     }
   }
@@ -102,6 +103,51 @@ export class ServicePlansController {
         data
       );
       return response;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
+
+  static async apiSSRGetDataToSetComplex(token) {
+    try {
+      const getData =
+        await ServicePlansFetching.getApiPrincipalDataToSetComplex(token);
+      return getData;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al procesar");
+    }
+  }
+
+  static async apiPostSetToComplex(req, res) {
+    try {
+      const modelServicePlan = new ComplexPlanAndServiceModel(req.body);
+      const verifyData = modelServicePlan.verifyData([
+        modelServicePlan.VAR_ID_RESIDENTIAL_PLAN_SERVICES,
+      ]);
+      if (!verifyData)
+        return res.json(Utils.Message(true, 400, "Error en los datos"));
+      const cookie = req.cookies[env.server.cookies.main_cookie.name];
+      const response = await ServicePlansFetching.postApiPrincipalSetToComplex(
+        modelServicePlan.getAll,
+        cookie
+      );
+      return res.json(response);
+    } catch (error) {
+      return res.json(Utils.Message(true, 500, "Error al procesar"));
+    }
+  }
+
+  static async viewPostSetToComplex(data) {
+    try {
+      const modelServicePlan = new ComplexPlanAndServiceModel(data);
+      const verifyData = modelServicePlan.verifyData([
+        modelServicePlan.VAR_ID_RESIDENTIAL_PLAN_SERVICES,
+      ]);
+      if (!verifyData) return Utils.Message(true, 400, "Error en los datos");
+      const send = await ServicePlansFetching.postApiLocalSetToComplex(
+        modelServicePlan.getAll
+      );
+      return send;
     } catch (error) {
       return Utils.Message(true, 500, "Error al procesar");
     }

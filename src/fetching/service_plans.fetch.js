@@ -92,4 +92,50 @@ export class ServicePlansFetching {
       return Utils.Message(true, 500, "Error al obtener la información.");
     }
   }
+
+  static async getApiPrincipalDataToSetComplex(tokenOuth) {
+    try {
+      const url =
+        URL_API_PRINCIPAL + env._API.routes.service_plans.get_data_to_set;
+      const res = await FetchUtils.send(url, {
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al obtener la información.");
+    }
+  }
+
+  static async postApiPrincipalSetToComplex(data, tokenOuth) {
+    try {
+      const url =
+        URL_API_PRINCIPAL + env._API.routes.service_plans.get_data_to_set;
+      const res = await FetchUtils.send(url, {
+        method: "POST",
+        body: data,
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al obtener la información.");
+    }
+  }
+
+  static async postApiLocalSetToComplex(data) {
+    try {
+      try {
+        const url =
+          URL_API_LOCAL + env.server.api.routes.plan_and_service.complex_plan;
+        const res = await FetchUtils.send(url, {
+          method: "POST",
+          body: data,
+        });
+        return res;
+      } catch (error) {
+        return Utils.Message(true, 500, "Error al obtener la información.");
+      }
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al obtener la información.");
+    }
+  }
 }
