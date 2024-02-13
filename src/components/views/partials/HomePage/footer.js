@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Container from "./container";
 import { AcmeLogo } from "@/components/logos/AcmeLogo";
+import LogoAviv from "@/components/logos/LogoAviv";
 
 export default function FooterPage({ navigation }) {
   return (
@@ -14,8 +15,7 @@ export default function FooterPage({ navigation }) {
                 href="/"
                 className="flex items-center space-x-2 text-2xl font-medium text-primary "
               >
-                <AcmeLogo />
-                <span>{process.env.NEXT_PUBLIC_NAME_APP}</span>
+                <LogoAviv />
               </Link>
             </div>
 

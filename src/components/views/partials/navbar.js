@@ -1,11 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   Button,
-  NavbarMenu,
   Dropdown,
   DropdownMenu,
   DropdownTrigger,
@@ -104,12 +103,9 @@ export function MenuNavBarPages({ dataUser }) {
 
       <NavbarBrand>
         <LinkNextUI as={Link} href={"/"} className="flex gap-2">
-          <figure className="w-[30px]">
-            <LogoAviv className="text-primary-500" />
+          <figure className="w-[100px]">
+            <LogoAviv />
           </figure>
-          <p className="font-bold text-inherit">
-            {process.env.NEXT_PUBLIC_NAME_APP}
-          </p>
         </LinkNextUI>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">

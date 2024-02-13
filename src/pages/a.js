@@ -7,7 +7,7 @@ const CallState = {
   DISCONNECTED: "Disconnected",
 };
 
-const ViewA = () => {
+const ViewA = ({ userLogin, passwordLogin, numberPhone }) => {
   const [sdk, setSdk] = useState(null);
   const [isMicAccessGranted, setIsMicAccessGranted] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
@@ -51,18 +51,13 @@ const ViewA = () => {
         progressToneCountry: "US",
       })
       .then(() => sdk.connect(false))
-      .then(() =>
-        sdk.login(
-          "JuanDaTest@dev-aviv.connectics.n2.voximplant.com",
-          "l:JRzI2F"
-        )
-      );
+      .then(() => sdk.login(userLogin, passwordLogin));
   }, [sdk]);
 
   const createCall = async () => {
     const VoxImplant = await import("voximplant-websdk");
     const _call = sdk.call({
-      number: "+573224338072",
+      number: numberPhone,
       video: { sendVideo: false, receiveVideo: false },
     });
     setCallState(CallState.CONNECTING);
@@ -116,5 +111,15 @@ const ViewA = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      userLogin: process.env?.USER_LOGIN_VOXIMPLANT,
+      passwordLogin: process.env?.PASSWORD_LOGIN_VOXIMPLANT,
+      numberPhone: process.env?.NUMBER_PHONE_VOXIMPLANT,
+    },
+  };
+}
 
 export default ViewA;
