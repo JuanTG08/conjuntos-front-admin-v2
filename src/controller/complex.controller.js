@@ -116,6 +116,8 @@ export class ComplexController {
         model.VAR_ID_COMPLEX,
         model.VAR_WEB_SITE,
         model.VAR_COMPLEX_ZIP,
+        model.VAR_ADMIN_PHONE,
+        model.VAR_PORTER_PHONE,
       ]);
       if (!verifyData)
         return res.json(Utils.Message(true, 500, "Datos erróneos"));
@@ -139,6 +141,8 @@ export class ComplexController {
         model.VAR_ID_COMPLEX,
         model.VAR_WEB_SITE,
         model.VAR_COMPLEX_ZIP,
+        model.VAR_ADMIN_PHONE,
+        model.VAR_PORTER_PHONE,
       ]);
       if (!verifyData) return Utils.Message(true, 500, "Datos erróneos");
       const respApi = await ComplexFetching.postApiLocalNew(model.getAll);
@@ -506,6 +510,8 @@ export class ComplexController {
         ? dayjs(new Date(data.construction_date.toString()))
         : "",
       total_area: data?.total_area ? data.total_area : "",
+      admin_phone: data?.admin_phone ? data.admin_phone : "",
+      porter_phone: data?.porter_phone ? data.porter_phone : "",
       id_complex_status: data?.id_complex_status
         ? data.id_complex_status.toString()
         : "",

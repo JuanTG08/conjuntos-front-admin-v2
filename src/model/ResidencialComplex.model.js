@@ -14,6 +14,8 @@ export class ResidencialComplex extends Model {
   VAR_CONSTRUCTION_DATE = "construction_date";
   VAR_TOTAL_AREA = "total_area";
   VAR_ID_COMPLEX_STATUS = "id_complex_status";
+  VAR_ADMIN_PHONE = "admin_phone";
+  VAR_PORTER_PHONE = "porter_phone";
 
   _id_complex;
   _complex_name;
@@ -28,6 +30,8 @@ export class ResidencialComplex extends Model {
   _construction_date;
   _total_area;
   _id_complex_status;
+  admin_phone;
+  porter_phone;
 
   constructor(complex) {
     super();
@@ -48,6 +52,8 @@ export class ResidencialComplex extends Model {
     this._construction_date = Utils.isDate(complex.construction_date);
     this._total_area = parseInt(complex.total_area);
     this._id_complex_status = parseInt(complex.id_complex_status);
+    this.admin_phone = Utils._length(complex?.admin_phone, 20, 1);
+    this.porter_phone = Utils._length(complex?.porter_phone, 20, 1);
   }
 
   get getAll() {
@@ -65,6 +71,8 @@ export class ResidencialComplex extends Model {
       construction_date: this._construction_date,
       total_area: this._total_area,
       id_complex_status: this._id_complex_status,
+      admin_phone: this.admin_phone,
+      porter_phone: this.porter_phone,
     };
   }
 
@@ -75,7 +83,9 @@ export class ResidencialComplex extends Model {
       complex_nit: this._complex_nit ? this._complex_nit : "",
       complex_address: this._complex_address ? this._complex_address : "",
       id_complex_city: this._id_complex_city ? this._id_complex_city : "",
-      complex_neighborhood: this._complex_neighborhood ? this._complex_neighborhood : "",
+      complex_neighborhood: this._complex_neighborhood
+        ? this._complex_neighborhood
+        : "",
       web_site: this._web_site ? this._web_site : "",
       complex_zip: this._complex_zip ? this._complex_zip : "",
       number_buildings: this._number_buildings ? this._number_buildings : "",
@@ -83,6 +93,8 @@ export class ResidencialComplex extends Model {
       construction_date: this._construction_date ? this._construction_date : "",
       total_area: this._total_area ? this._total_area : "",
       id_complex_status: this._id_complex_status ? this._id_complex_status : "",
+      admin_phone: this.admin_phone ? this.admin_phone : "",
+      porter_phone: this.porter_phone ? this.porter_phone : "",
     };
   }
 }

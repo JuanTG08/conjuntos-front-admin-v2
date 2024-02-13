@@ -180,6 +180,36 @@ export const ComplexFormComponent = ({
         <Input />
       </Form.Item>
       <Form.Item
+        name="admin_phone"
+        label="Número de la Administración"
+        rules={[
+          {
+            type: "string",
+            min: 1,
+            max: 20,
+            message:
+              "El número de la administración debe tener entre 1 20 caracteres",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        name="porter_phone"
+        label="Número de la Portería"
+        rules={[
+          {
+            type: "string",
+            min: 1,
+            max: 20,
+            message:
+              "El número de la portería debe tener entre 1 20 caracteres",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
         name="web_site"
         label="Sitio Web"
         rules={[
