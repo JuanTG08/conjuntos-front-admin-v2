@@ -19,16 +19,10 @@ const LogBookOne = ({ minuta }) => {
       span: 1,
     },
     {
-      key: "severity",
-      label: "Severidad del incidente",
-      children: minuta.logs_book_severity.name,
-      span: 1,
-    },
-    {
       key: "author",
       label: "Autor",
       children: `${minuta.users_roles.users.name} ${minuta.users_roles.users.last_name}`,
-      span: 1,
+      span: 2,
     },
     {
       key: "description",

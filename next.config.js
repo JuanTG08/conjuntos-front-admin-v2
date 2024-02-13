@@ -247,10 +247,6 @@ const nextConfig = {
           list_all: "/handler-R-logs-book-incidents-complex",
           find_one: "/handler-R-logs-book-incidents/",
         },
-        logs_book_severity: {
-          url: "/api/logs-book-severity",
-          list: "/handler-R-logs-book-severity",
-        },
         nav_bar: {
           url: "/api/nav-bar",
           create: "/handler-C-navbar",

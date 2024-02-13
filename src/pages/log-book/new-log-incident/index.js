@@ -3,12 +3,11 @@ import LogsBookIncidentsFormComponent from "@/components/views/logs-book-inciden
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { LogsBookIncidentsCtrl } from "@/controller/logs_book_incidents.controller";
 import { LogBookServerSideProps } from "@/server-side-props/log_book.serverSideProps";
-import { TokenUtils } from "@/utils/token.utils";
 import { message } from "antd/lib";
 import { useRouter } from "next/router";
 import React from "react";
 
-const NewLogIncident = ({ severities }) => {
+const NewLogIncident = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const router = useRouter();
   const onSubmit = async (values, image) => {
@@ -33,10 +32,7 @@ const NewLogIncident = ({ severities }) => {
       <HeaderPage title="Minuta" />
       <TitlePage level={1}>Registrar</TitlePage>
       {contextHolder}
-      <LogsBookIncidentsFormComponent
-        onSubmit={onSubmit}
-        severities={severities}
-      />
+      <LogsBookIncidentsFormComponent onSubmit={onSubmit} />
     </>
   );
 };

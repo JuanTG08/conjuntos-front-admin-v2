@@ -4,7 +4,7 @@ import ButtonFormSubmit from "../partials/ButtonFormSubmit";
 import ImageUpload from "@/components/Inputs/ImageUpload";
 const { TextArea } = Input;
 
-const LogsBookIncidentsFormComponent = ({ onSubmit, severities }) => {
+const LogsBookIncidentsFormComponent = ({ onSubmit }) => {
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
   const [image, setImage] = useState(null);
@@ -24,24 +24,6 @@ const LogsBookIncidentsFormComponent = ({ onSubmit, severities }) => {
       onFinish={onFinish}
       style={{ width: "100%" }}
     >
-      <Form.Item
-        name="id_severity"
-        label="Severidad del incidente"
-        rules={[
-          {
-            required: true,
-            message: "Este campo es requerido",
-          },
-        ]}
-      >
-        <Select
-          placeholder="Severidades"
-          options={severities.map((severity) => ({
-            label: severity.name,
-            value: severity.id_log_book_severity,
-          }))}
-        />
-      </Form.Item>
       <Form.Item
         name="description"
         label="Descripción"

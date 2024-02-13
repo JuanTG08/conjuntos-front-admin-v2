@@ -16,9 +16,8 @@ apiRoute.post(async (req, res) => {
     const cookie = TokenUtils.destructureAllCookiesClient({ req });
     if (!req?.body?.data)
       return res.json(Utils.Message(true, 400, "Datos faltantes"));
-    const { id_severity, description, location } = JSON.parse(req?.body?.data);
+    const { description, location } = JSON.parse(req?.body?.data);
     const data = {
-      id_severity: Utils.isNumeric(id_severity),
       description: Utils._length(description, 700, 1),
       location: Utils._length(location, 255, 1),
       id_image_attachment: null,

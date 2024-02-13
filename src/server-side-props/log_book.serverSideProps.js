@@ -60,15 +60,6 @@ export class LogBookServerSideProps extends ServerSideProps {
 
   async NewLogIncident() {
     try {
-      const getData = await this.guardFetch(
-        LogsBookIncidentsCtrl.apiSSRGetListSeverity(this.getCookies)
-      );
-      this.validateResponseFetch({
-        response: getData,
-      });
-      this.setResponseProps({
-        severities: getData.payload || [],
-      });
     } catch (error) {
       console.log(error);
       this.setRedirect();
