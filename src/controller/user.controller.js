@@ -27,7 +27,7 @@ export class UserController {
     try {
       // Obtenemos el token del registro
       const cookie = req.cookies[env.server.cookies.main_cookie.name];
-      const token = Utils._length(req.query?.tokenToRegister, 15, 15);
+      const token = Utils._length(req.query?.tokenToRegister, 36, 1);
       if (!token) return res.json(Utils.Message(true, 400, "Token not found"));
       // Obtenemos los datos del registro
       const model = new UserModel(req.body);
@@ -55,7 +55,7 @@ export class UserController {
   // Obtenemos los datos del usuario a registrar y enviamos a nuestra api local
   static async viewSubmitRegisterUser(data, token) {
     try {
-      token = Utils._length(token, 15, 15);
+      token = Utils._length(token, 36, 1);
       if (!token) return Utils.Message(true, 400, "Token not found");
       const model = new UserModel(data);
       const verifyData = model.verifyData([

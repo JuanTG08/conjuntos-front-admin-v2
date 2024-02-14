@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.17.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
+    "@mui/x-date-pickers": "^6.19.4",
     "@nextui-org/react": "^2.2.9",
     "@voximplant/spaceui": "^2.54.0",
     "antd": "^5.8.6",

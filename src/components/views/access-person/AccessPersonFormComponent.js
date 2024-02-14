@@ -3,9 +3,9 @@ import { DatePicker, Form, Input, Select, Switch } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import ButtonFormSubmit from "../partials/ButtonFormSubmit";
+import DateTimePicker from "@/components/Inputs/DateTimePicker";
 const { TextArea } = Input;
 const { Option } = Select;
-const { TimePicker } = DatePicker;
 
 const categoryAccess = [
   {
@@ -45,7 +45,6 @@ const disabledDate = (current) => {
   return currentDate.isBefore(dayjs(), "day");
 };
 
-
 const AccessPersonFormComponent = ({ onSubmit, valuesToForm }) => {
   const [sending, setSending] = useState(false);
   const [form] = Form.useForm();
@@ -54,6 +53,13 @@ const AccessPersonFormComponent = ({ onSubmit, valuesToForm }) => {
     await onSubmit(values);
     setSending(false);
   };
+
+  const changeFormDatePicker = (value, name) => {
+    form.setFieldsValue({
+      [name]: value,
+    });
+  };
+
   return (
     <Form
       form={form}
@@ -176,11 +182,9 @@ const AccessPersonFormComponent = ({ onSubmit, valuesToForm }) => {
           },
         ]}
       >
-        <TimePicker
-          format={"HH:mm"}
-          style={{ width: "100%" }}
-          allowClear={false}
-          showNow={false}
+        <DateTimePicker
+          changeFormDatePicker={changeFormDatePicker}
+          name="start_hour_day"
         />
       </Form.Item>
       <Form.Item
@@ -193,11 +197,9 @@ const AccessPersonFormComponent = ({ onSubmit, valuesToForm }) => {
           },
         ]}
       >
-        <TimePicker
-          format={"HH:mm"}
-          style={{ width: "100%" }}
-          allowClear={false}
-          showNow={false}
+        <DateTimePicker
+          changeFormDatePicker={changeFormDatePicker}
+          name="end_hour_day"
         />
       </Form.Item>
       <Form.Item

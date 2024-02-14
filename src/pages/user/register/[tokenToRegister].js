@@ -1,15 +1,12 @@
 import UserToRegisterFormComponent from "@/components/views/user/register/UserToRegisterFormComponent";
 import { UserController } from "@/controller/user.controller";
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { Result, Typography, message } from "antd";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { Button, Link as LinkUI } from "@nextui-org/react";
 import Link from "next/link";
 import { getSession, signIn } from "next-auth/react";
 import { LoginOutlined } from "@ant-design/icons";
-import { CountryController } from "@/controller/country.controller";
-import { DepartmentCountryController } from "@/controller/department_country.controller";
 
 const RegisterUser = ({
   tokenToRegister,
@@ -64,15 +61,17 @@ const RegisterUser = ({
           <Typography.Title level={1} style={{ textAlign: "center" }}>
             !Regístrate!
           </Typography.Title>
-          <UserToRegisterFormComponent
-            onSubmit={onSubmit}
-            valuesToForm={UserController.viewGetDataToFormUserToRegister(
-              dataUserRegister,
-            )}
-            typesIdentification={dataSelectToRegister.typesIdentification}
-            departamentos={dataSelectToRegister.departments}
-            genders={dataSelectToRegister.genders}
-          />
+          <div className="p-3">
+            <UserToRegisterFormComponent
+              onSubmit={onSubmit}
+              valuesToForm={UserController.viewGetDataToFormUserToRegister(
+                dataUserRegister
+              )}
+              typesIdentification={dataSelectToRegister.typesIdentification}
+              departamentos={dataSelectToRegister.departments}
+              genders={dataSelectToRegister.genders}
+            />
+          </div>
         </>
       )}
     </>

@@ -7,7 +7,6 @@ import { MenuNavBarPages } from "@/components/views/partials/navbar";
 const { Content, Footer } = Layout;
 import esES from "antd/locale/es_ES";
 import { UserProvider } from "@/context/UserContext";
-import { NavbarUtils } from "@/utils/navbar.utils";
 import { SessionProvider, getSession } from "next-auth/react";
 import FooterPage from "@/components/views/partials/HomePage/footer";
 import { TokenUtils } from "@/utils/token.utils";
