@@ -2,7 +2,10 @@ import Utils from "@/helpers/helpers";
 import { env } from "../../next.config";
 import axios from "axios";
 import { CONST_STATUS_CODE } from "@/constants/status_code.constant";
-import { clientRedirectToLogin } from "./redirect.client.utils";
+
+const redirect = () => {
+  window.location.href = "/login";
+}
 
 const timeout = process.env.MAX_TIME_AUTH_FETCHING || 100000;
 
@@ -40,7 +43,7 @@ export class FetchUtils {
             dataResp?.statusCode == CONST_STATUS_CODE.unauthorized.code ||
             dataResp?.statusCode == CONST_STATUS_CODE.unauthorizedUserOverdue.code
           )
-            clientRedirectToLogin(); //window.location.href = "/login";
+            redirect; //window.location.href = "/login";
         } catch (error) {
           // Estamos en el servidor
         }
@@ -72,7 +75,7 @@ export class FetchUtils {
             res.data?.statusCode ==
               CONST_STATUS_CODE.unauthorizedUserOverdue.code
           )
-            clientRedirectToLogin(); //window.location.href = "/login";
+            redirect; //window.location.href = "/login";
         } catch (error) {
           // Estamos en el servidor
           console.log(error);
@@ -107,7 +110,7 @@ export class FetchUtils {
             res.data?.statusCode ==
               CONST_STATUS_CODE.unauthorizedUserOverdue.code
           )
-            clientRedirectToLogin(); //window.location.href = "/login";
+            redirect; //window.location.href = "/login";
         } catch (error) {
           // Estamos en el servidor
           console.log(error);
