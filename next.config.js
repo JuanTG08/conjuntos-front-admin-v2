@@ -216,6 +216,7 @@ const nextConfig = {
         call: {
           url: "/api/call",
           find_number: "/handler-R-find-number-user/",
+          credential_user: "/handler-R-credentials",
         },
         complex: {
           url: "/api/residential-complex",

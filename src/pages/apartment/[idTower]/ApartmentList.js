@@ -12,6 +12,7 @@ import {
 import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
 import HeaderPage from "@/components/views/partials/HeaderPage";
 import { useRouter } from "next/router";
+import TitlePage from "@/components/data/title";
 
 const columns = [
   {
@@ -141,9 +142,7 @@ const ApartmentList = ({ idTower }) => {
                     <Popconfirm
                       title="Eliminar"
                       description={`¿Deseas eliminar esta torre "${apartment.apartment_identifier_tower}"?`}
-                      onConfirm={() =>
-                        deleteApartment(apartment)
-                      }
+                      onConfirm={() => deleteApartment(apartment)}
                       okButtonProps={{
                         className: "bg-danger",
                       }}
@@ -182,12 +181,8 @@ const ApartmentList = ({ idTower }) => {
     <>
       {contextHolder}
       <HeaderPage title={"Listado de unidades"} />
-      <div>
-        <Typography.Title level={1} style={{ textAlign: "center" }}>
-          Administración de unidades
-        </Typography.Title>
-        <ApartmentLegendComponent complex={complex} tower={tower} />
-      </div>
+      <TitlePage>Administración de unidades</TitlePage>
+      <ApartmentLegendComponent complex={complex} tower={tower} />
       <ButtonCreateNew
         href={`/apartment/${idTower}/ApartmentCreate`}
         value="Crear unidad"

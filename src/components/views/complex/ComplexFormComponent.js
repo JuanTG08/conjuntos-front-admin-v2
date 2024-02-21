@@ -263,8 +263,7 @@ export const ComplexFormComponent = ({
         rules={[
           {
             type: "number",
-            message:
-              "El Numero total de Unidades debe contener solo números",
+            message: "El Numero total de Unidades debe contener solo números",
           },
           {
             required: true,
@@ -326,6 +325,36 @@ export const ComplexFormComponent = ({
           <Option value="2">Inactivo</Option>
           <Option value="3">Moroso</Option>
         </Select>
+      </Form.Item>
+      <Form.Item
+        name="cytophony_user"
+        label="Usuario para la Citofonía"
+        rules={[
+          {
+            type: "string",
+            min: 1,
+            max: 64,
+            message:
+              "Usuario para la citofonía debe tener entre 1 a 64 caracteres.",
+          },
+        ]}
+      >
+        <Input placeholder="Usuario" />
+      </Form.Item>
+      <Form.Item
+        name="cytophony_password"
+        label="Contraseña para la Citofonía"
+        rules={[
+          {
+            type: "string",
+            min: 1,
+            max: 128,
+            message:
+              "Contraseña para la citofonía debe tener entre 1 a 64 caracteres.",
+          },
+        ]}
+      >
+        <Input.Password placeholder="Contraseña" />
       </Form.Item>
       <Form.Item>
         <ButtonFormSubmit value="Actualizar conjunto" isLoading={sending} />

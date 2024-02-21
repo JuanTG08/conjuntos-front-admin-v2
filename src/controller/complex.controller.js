@@ -118,6 +118,8 @@ export class ComplexController {
         model.VAR_COMPLEX_ZIP,
         model.VAR_ADMIN_PHONE,
         model.VAR_PORTER_PHONE,
+        model.VAR_CYTOPHONY_USER,
+        model.VAR_CYTOPHONY_PASSWORD,
       ]);
       if (!verifyData)
         return res.json(Utils.Message(true, 500, "Datos erróneos"));
@@ -143,6 +145,8 @@ export class ComplexController {
         model.VAR_COMPLEX_ZIP,
         model.VAR_ADMIN_PHONE,
         model.VAR_PORTER_PHONE,
+        model.VAR_CYTOPHONY_USER,
+        model.VAR_CYTOPHONY_PASSWORD,
       ]);
       if (!verifyData) return Utils.Message(true, 500, "Datos erróneos");
       const respApi = await ComplexFetching.postApiLocalNew(model.getAll);
@@ -492,6 +496,36 @@ export class ComplexController {
   }
 
   static viewGetDataToForm(data = null) {
+    const valuesForm = {
+      complex_name: data?.complex_name ? data.complex_name : "",
+      complex_nit: data?.complex_nit ? data.complex_nit : "",
+      complex_country: "COLOMBIA",
+      complex_state: data?.complex_state ? data.complex_state : "",
+      id_complex_city: data?.id_complex_city ? data.id_complex_city : "",
+      complex_address: data?.complex_address ? data.complex_address : "",
+      complex_neighborhood: data?.complex_neighborhood
+        ? data.complex_neighborhood
+        : "",
+      web_site: data?.web_site ? data.web_site : "",
+      complex_zip: data?.complex_zip ? data.complex_zip : "",
+      number_buildings: data?.number_buildings ? data.number_buildings : "",
+      number_units: data?.number_units ? data.number_units : "",
+      construction_date: data?.construction_date
+        ? dayjs(new Date(data.construction_date.toString()))
+        : "",
+      total_area: data?.total_area ? data.total_area : "",
+      admin_phone: data?.admin_phone ? data.admin_phone : "",
+      porter_phone: data?.porter_phone ? data.porter_phone : "",
+      id_complex_status: data?.id_complex_status
+        ? data.id_complex_status.toString()
+        : "",
+      cytophony_user: data?.cytophony_user ? data.cytophony_user : "",
+      cytophony_password: data?.cytophony_password ? data.cytophony_password : "",
+    };
+    return valuesForm;
+  }
+
+  static viewGetDataToFormToAdminComplex(data = null) {
     const valuesForm = {
       complex_name: data?.complex_name ? data.complex_name : "",
       complex_nit: data?.complex_nit ? data.complex_nit : "",

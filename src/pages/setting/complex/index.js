@@ -27,7 +27,7 @@ const SettingComplex = ({ complex, states, towns }) => {
   const RenderedFormBasic = () => {
     return (
       <ComplexSettingBasicFormComponent
-        valuesToForm={ComplexController.viewGetDataToForm(complex)}
+        valuesToForm={ComplexController.viewGetDataToFormToAdminComplex(complex)}
         onSubmit={onSubmitDataBasic}
         resState={states}
         initialTowns={towns}

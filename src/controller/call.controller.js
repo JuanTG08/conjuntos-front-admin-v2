@@ -1,9 +1,9 @@
 import { CallFetching } from "@/fetching/call.fetch";
 import Utils from "@/helpers/helpers";
-import twilioClient from "@/lib/Twilio.lib";
 import { env } from "../../next.config";
 import AccessToken, { VoiceGrant } from "twilio/lib/jwt/AccessToken";
 export class CallController {
+  /*
   static async apiExecuteCall(req, res) {
     try {
       const cookie = req.cookies[env.server.cookies.main_cookie.name];
@@ -43,7 +43,7 @@ export class CallController {
       return Utils.Message(true, 500, "Error");
     }
   }
-
+  */
   static apiGenerateToken() {
     const identity = "JuanDavidTriana";
     const accessToken = new AccessToken(
@@ -63,5 +63,29 @@ export class CallController {
       identity,
       token: accessToken.toJwt(),
     };
+  }
+
+  static async apiSSRGetUserCredentials(cookie) {
+    try {
+      const send = await CallFetching.getApiPrincipalCredentialUser(cookie);
+      return send;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
+  static async apiGetTokenUser(req, res) {
+    try {
+      const cookie = req.cookies[env.server.cookies.main_cookie.name];
+      const key = req.body?.key;
+      if (!key) throw new Error("La key no existe");
+      const getToken = await CallFetching.postApiPrincipalGetToken(
+        { key },
+        cookie
+      );
+      return res.json(getToken);
+    } catch (error) {
+      return res.json(Utils.Message(true, 500, "Error"));
+    }
   }
 }

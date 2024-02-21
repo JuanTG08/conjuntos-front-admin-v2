@@ -22,6 +22,7 @@ import { TokenUtils } from "@/utils/token.utils";
 import { RolesController } from "@/controller/roles.controller";
 import UserViewPanelFormComponent from "@/components/views/partials/modals/UserViewPanelFormComponent";
 import ButtonCreateNew from "@/components/views/partials/ButtonCreateNew";
+import TitlePage from "@/components/data/title";
 
 const columns = [
   {
@@ -229,11 +230,7 @@ const UsersViewPanel = ({
     <>
       {contextHolder}
       <HeaderPage title={"Administración de usuarios administradores"} />
-      <div style={{ textAlign: "center" }}>
-        <Typography.Title level={1} style={{ textAlign: "center" }}>
-          Usuarios administradores de conjuntos residenciales
-        </Typography.Title>
-      </div>
+      <TitlePage>Administración de usuarios</TitlePage>
       <Modal
         isOpen={isOpenModal}
         onOpenChange={onOpenChangeModal}

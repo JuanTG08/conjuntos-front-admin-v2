@@ -16,6 +16,8 @@ export class ResidencialComplex extends Model {
   VAR_ID_COMPLEX_STATUS = "id_complex_status";
   VAR_ADMIN_PHONE = "admin_phone";
   VAR_PORTER_PHONE = "porter_phone";
+  VAR_CYTOPHONY_USER = "cytophony_user";
+  VAR_CYTOPHONY_PASSWORD = "cytophony_password";
 
   _id_complex;
   _complex_name;
@@ -32,6 +34,8 @@ export class ResidencialComplex extends Model {
   _id_complex_status;
   admin_phone;
   porter_phone;
+  cytophony_user;
+  cytophony_password;
 
   constructor(complex) {
     super();
@@ -54,6 +58,12 @@ export class ResidencialComplex extends Model {
     this._id_complex_status = parseInt(complex.id_complex_status);
     this.admin_phone = Utils._length(complex?.admin_phone, 20, 1);
     this.porter_phone = Utils._length(complex?.porter_phone, 20, 1);
+    this.cytophony_user = Utils._length(complex?.cytophony_user, 64, 1);
+    this.cytophony_password = Utils._length(
+      complex?.cytophony_password,
+      128,
+      1
+    );
   }
 
   get getAll() {
@@ -73,6 +83,8 @@ export class ResidencialComplex extends Model {
       id_complex_status: this._id_complex_status,
       admin_phone: this.admin_phone,
       porter_phone: this.porter_phone,
+      cytophony_user: this.cytophony_user,
+      cytophony_password: this.cytophony_password,
     };
   }
 
@@ -95,6 +107,8 @@ export class ResidencialComplex extends Model {
       id_complex_status: this._id_complex_status ? this._id_complex_status : "",
       admin_phone: this.admin_phone ? this.admin_phone : "",
       porter_phone: this.porter_phone ? this.porter_phone : "",
+      cytophony_user: this?.cytophony_user,
+      cytophony_password: this?.cytophony_password,
     };
   }
 }

@@ -8,3 +8,11 @@ export class CallRouter extends RoutingClass {
     });
   }
 }
+
+export class CallCredentialsRouter extends RoutingClass {
+  constructor(req, res) {
+    super(req, res, {
+      post: CallController.apiGetTokenUser,
+    });
+  }
+}

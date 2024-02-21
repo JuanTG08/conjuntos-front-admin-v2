@@ -25,4 +25,41 @@ export class CallFetching {
       return Utils.Message(true, 500, "Error al enviarse");
     }
   }
+
+  static async getApiPrincipalCredentialUser(tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.call.credential_user;
+      const res = await FetchUtils.send(url, { tokenOuth });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error al enviarse");
+    }
+  }
+
+  static async postApiPrincipalGetToken(data, tokenOuth) {
+    try {
+      const url = URL_API_PRINCIPAL + env._API.routes.call.credential_user;
+      const res = await FetchUtils.send(url, {
+        method: "POST",
+        body: data,
+        tokenOuth,
+      });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error");
+    }
+  }
+
+  static async postApiLocalGetToken(data) {
+    try {
+      const url = URL_API_LOCAL;
+      const res = await FetchUtils.send(url, {
+        method: "POST",
+        body: data,
+      });
+      return res;
+    } catch (error) {
+      return Utils.Message(true, 500, "Error");
+    }
+  }
 }

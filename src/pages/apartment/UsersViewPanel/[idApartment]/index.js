@@ -28,6 +28,7 @@ const columns = [
   {
     title: "Residente",
     dataIndex: "resident",
+    responsive: ["md"],
   },
   {
     title: "Email",
@@ -41,7 +42,7 @@ const columns = [
     ),
   },
   {
-    title: "Rol del usuario",
+    title: "Rol",
     dataIndex: "role",
     onCell: 0,
     ellipsis: false,

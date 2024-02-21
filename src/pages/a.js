@@ -1,3 +1,5 @@
+import { CallFetching } from "@/fetching/call.fetch";
+import { CallServerSideProps } from "@/server-side-props/call.serverSideProps";
 import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 
@@ -7,7 +9,7 @@ const CallState = {
   DISCONNECTED: "Disconnected",
 };
 
-const ViewA = ({ userLogin, passwordLogin, numberPhone }) => {
+const ViewA = ({ userLogin, passwordLogin, numberPhone, userNameCall }) => {
   const [sdk, setSdk] = useState(null);
   const [isMicAccessGranted, setIsMicAccessGranted] = useState(false);
   const [accessDenied, setAccessDenied] = useState(false);
@@ -18,15 +20,32 @@ const ViewA = ({ userLogin, passwordLogin, numberPhone }) => {
   const [micHint, setMicHint] = useState("Mute");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      Initialization();
-    }
+    if (typeof window !== "undefined" && !sdk) Initialization();
   }, []);
 
   const Initialization = async () => {
     try {
       const VoxImplant = await import("voximplant-websdk");
       const _sdk = VoxImplant.getInstance();
+      _sdk.init();
+      _sdk.connect().then(() => _sdk.requestOneTimeLoginKey(userNameCall));
+      _sdk.on(VoxImplant.Events.AuthResult, async (e) => {
+        try {
+          console.log(`AuthResult: ${e.result}`);
+          console.log(`Auth code: ${e.code}`);
+          if (e.code == 302) {
+            console.log(e.key);
+            const getToken = await CallFetching.postApiLocalGetToken({
+              key: e.key,
+            });
+            if (getToken.error || getToken.statusCode != 200)
+              throw new Error("No fue posible obtener el token");
+            _sdk.loginWithOneTimeKey(userNameCall, getToken.payload);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
       _sdk.on(VoxImplant.Events.MicAccessResult, (e) => {
         if (e.result === true) {
           setIsMicAccessGranted(true);
@@ -42,16 +61,23 @@ const ViewA = ({ userLogin, passwordLogin, numberPhone }) => {
 
   useEffect(() => {
     if (!sdk) return;
-
-    sdk
-      .init({
-        micRequired: true,
-        showDebugInfo: true,
-        progressTone: true,
-        progressToneCountry: "US",
-      })
-      .then(() => sdk.connect(false))
-      .then(() => sdk.login(userLogin, passwordLogin));
+    /*
+    try {
+      sdk
+        ?.init({
+          micRequired: true,
+          showDebugInfo: true,
+          progressTone: true,
+          progressToneCountry: "US",
+        })
+        .then(() => sdk.connect(false))
+        .then(() =>
+          sdk.login(
+            "JuanDaTest@dev-aviv.connectics.n2.voximplant.com",
+            passwordLogin
+          )
+        );
+    } catch (error) {}*/
   }, [sdk]);
 
   const createCall = async () => {
@@ -59,12 +85,16 @@ const ViewA = ({ userLogin, passwordLogin, numberPhone }) => {
     const _call = sdk.call({
       number: numberPhone,
       video: { sendVideo: false, receiveVideo: false },
+      extraHeaders: {},
     });
+    console.log("_call", _call)
     setCallState(CallState.CONNECTING);
-    _call.on(VoxImplant.CallEvents.Connected, () => {
+    _call.on(VoxImplant.CallEvents.Connected, (...e) => {
+      console.log("Connected", e)
       setCallState(CallState.CONNECTED);
     });
-    _call.on(VoxImplant.CallEvents.Disconnected, () => {
+    _call.on(VoxImplant.CallEvents.Disconnected, (...e) => {
+      console.log("Disconnected", e)
       setCallState(CallState.DISCONNECTED);
     });
     _call.on(VoxImplant.CallEvents.Failed, (e) => {
@@ -113,13 +143,9 @@ const ViewA = ({ userLogin, passwordLogin, numberPhone }) => {
 };
 
 export async function getServerSideProps(context) {
-  return {
-    props: {
-      userLogin: process.env?.USER_LOGIN_VOXIMPLANT,
-      passwordLogin: process.env?.PASSWORD_LOGIN_VOXIMPLANT,
-      numberPhone: process.env?.NUMBER_PHONE_VOXIMPLANT,
-    },
-  };
+  const server = new CallServerSideProps(context);
+  await server.getCallUsers();
+  return server.response;
 }
 
 export default ViewA;

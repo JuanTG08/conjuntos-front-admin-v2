@@ -14,6 +14,7 @@ const ModalCalling = ({
   onModalCallingChange,
   userCalling,
   endCall,
+  callState,
 }) => {
   return (
     <Modal
@@ -35,6 +36,7 @@ const ModalCalling = ({
                 Nombre: {userCalling?.name} {userCalling?.last_name}
               </p>
               <p>Información de la llamada</p>
+              <p className="">Estado: {callState}</p>
             </ModalBody>
             <ModalFooter>
               <Button
